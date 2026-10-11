@@ -302,3 +302,114 @@ button.send { margin-top: 28px; }
 .prima { font-style: italic; font-size: calc(var(--fs-libro) - 2px); line-height: 1.42; }
 .blocco-lilla { font-size: var(--fs-libro); max-width: calc(var(--measure-libro) + 64px); }
 .blocco-lilla p { max-width: none; }
+
+/* =====================================================================
+   ESERCIZI IN GARAMOND E STATI (F5)
+   Per richiesta del docente il testo dei tre esercizi è in EB Garamond come la prosa.
+   Restano in Geist solo: pulsanti e controlli segmentati, etichette maiuscole di metadati,
+   contatori e indici in Geist Mono, campi di testo a una riga. Le righe brevi non sono mai giustificate.
+   EB Garamond ha solo i pesi 400 e 500 (più il corsivo 400): niente 600, per non avere grassetti finti.
+   ===================================================================== */
+.esercizio, .form-sec {
+  font-family: var(--f-libro);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.4;
+  font-variant-numeric: oldstyle-nums proportional-nums;
+  font-kerning: normal;
+}
+/* restano in Geist */
+.esercizio button, .form-sec button,
+.seg label, .prova-titolo .kicker, .assemappa, input[type=text] {
+  font-family: var(--f-sans);
+  font-variant-numeric: normal;
+}
+input[type=text] { font-size: 16px; }
+
+/* titoli e istruzioni */
+.prova-titolo .tit {
+  font-family: var(--f-libro); font-weight: 500;
+  font-size: clamp(32px, 8vw, 46px); line-height: 1.04; letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+.istruzioni {
+  margin-top: 22px;
+  font-size: var(--fs-libro); line-height: var(--lh-libro);
+  max-width: var(--measure-libro);
+  hyphens: auto; -webkit-hyphens: auto;
+}
+/* paragrafo lungo: giustificato come la prosa, ma non nella colonna stretta del desktop (si aprirebbero buchi) */
+@media (min-width: 600px) and (max-width: 1199px) { .istruzioni { text-align: justify; } }
+
+/* etichette dei campi e testi di servizio */
+label { font-weight: 500; font-size: 19px; line-height: 1.25; margin: 1.3em 0 0.35em; }
+.nome label, .lbl-altro { margin: 0 0 6px; }
+.manca { font-size: 19px; line-height: 1.35; color: var(--muted); }
+.hintline, .small { font-size: 19px; line-height: 1.4; }
+
+/* esercizio 1: voci della lista e estremi dell'asse */
+.fonti .ft { font-size: 20px; line-height: 1.22; }
+.fonti .lbl-altro { font-weight: 400; font-size: 19px; }
+.estremo { font-size: 19px; font-weight: 500; line-height: 1.25; font-style: italic; }
+.fonti li { transition: background-color .15s ease; }
+.fonti li:focus-within { background: var(--lilac-wash); }
+
+/* esercizio 2: righe e mappa */
+.nome { font-weight: 400; font-size: 20px; line-height: 1.25; }
+#risultato h3 { font-family: var(--f-libro); font-weight: 500; font-size: clamp(28px, 6.4vw, 34px); line-height: 1.1; letter-spacing: 0; }
+.col h4 { font-weight: 500; font-size: 22px; line-height: 1.15; }
+.col .sub { margin: 4px 0 12px; font-size: 18px; font-style: italic; letter-spacing: 0; text-transform: none; color: var(--muted); }
+.col li { margin: 0.25em 0; font-size: 20px; line-height: 1.3; }
+.col .vuoto { font-size: 19px; font-style: italic; }
+
+/* esercizio finale */
+.blocco-lilla h3 { font-family: var(--f-libro); font-weight: 500; font-size: clamp(26px, 5.8vw, 32px); line-height: 1.1; letter-spacing: 0; }
+h3.step { font-family: var(--f-libro); font-weight: 500; font-size: clamp(25px, 5.6vw, 30px); line-height: 1.16; letter-spacing: 0; }
+.riga.voce .nome label { font-size: 17px; font-weight: 500; color: var(--muted); }
+.voce-cit { font-size: clamp(21px, 5.4vw, 24px); line-height: 1.28; }
+textarea {
+  font-family: var(--f-libro); font-size: 20px; line-height: 1.45;
+  font-variant-numeric: oldstyle-nums proportional-nums;
+}
+
+/* ---------- stati: confermato, pronto, errore, invio in corso ---------- */
+.vedi.fatto { background: transparent; color: var(--ink); }
+.vedi.fatto:hover { background: transparent; }
+#fonti-msg:not(:empty), .manca.pronto {
+  position: relative; padding-left: 28px; color: var(--ink);
+}
+#fonti-msg:not(:empty)::before, .manca.pronto::before {
+  content: ""; position: absolute; left: 0; top: 0.42em; width: 12px; height: 12px;
+  border-radius: 50%; background: var(--lilac-strong); border: 1px solid var(--ink);
+}
+#fonti-msg:not(:empty) { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line-light); }
+#fonti-msg:not(:empty)::before { top: calc(16px + 0.42em); }
+
+#msg { min-height: 1.4em; font-size: 20px; line-height: 1.35; }
+#msg.err {
+  padding: 12px 16px; max-width: var(--measure);
+  border: 1px solid var(--err); background: var(--white);
+  color: var(--err); font-weight: 500;
+}
+[aria-invalid="true"] { border-color: var(--err); }
+input[aria-invalid="true"], textarea[aria-invalid="true"] { box-shadow: inset 0 0 0 1px var(--err); }
+.riga[aria-invalid="true"] { border-left: 1px solid var(--err); padding-left: 14px; }
+.riga[aria-invalid="true"] .seg label, .seg[aria-invalid="true"] label { border-color: var(--err); }
+.seg[aria-invalid="true"] { padding-left: 14px; border-left: 1px solid var(--err); }
+
+.ok { font-size: 22px; line-height: 1.3; padding: 22px 24px 22px 56px; }
+.ok strong { font-weight: 500; }
+button.again { font-size: 16px; }
+
+/* invio in corso: nessun testo nuovo, solo una linea lilla che scorre sul pulsante */
+button.send { position: relative; overflow: hidden; }
+form[aria-busy="true"] button.send::after {
+  content: ""; position: absolute; left: 0; bottom: 0; height: 3px; width: 40%;
+  background: var(--lilac-strong);
+  animation: invio 1.1s ease-in-out infinite alternate;
+}
+form[aria-busy="true"] button.send[disabled] { opacity: 0.6; }
+@keyframes invio { from { transform: translateX(0); } to { transform: translateX(150%); } }
+@media (prefers-reduced-motion: reduce) {
+  form[aria-busy="true"] button.send::after { animation: none; width: 100%; }
+}

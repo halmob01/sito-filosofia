@@ -8,7 +8,7 @@ before(async () => { t = await avvia(); });
 after(async () => { await t.chiudi(); });
 
 const CHIAVI = ['fam', 'pos', 'lin', 'pas', 'sgu', 'fut', 'val'];
-const NOMI = { fam: 'la musica che mi piace', pos: 'ciò che considero giusto e sbagliato', lin: 'l’idea che ho di me', pas: 'il mio carattere', sgu: 'ciò che voglio fare da grande', fut: 'le parole e le frasi che uso', val: 'le cose di cui ho paura' };
+const NOMI = { fam: 'La musica che mi piace', pos: 'Ciò che considero giusto e sbagliato', lin: 'L’idea che ho di me', pas: 'Il mio carattere', sgu: 'Ciò che voglio fare da grande', fut: 'Le parole e le frasi che uso', val: 'Le cose di cui ho paura' };
 const voci = (page, id) => page.$$eval(`#${id} li`, (li) => li.map((e) => e.textContent));
 
 test('stato iniziale: pulsante disattivato, conteggio delle risposte mancanti, mappa nascosta', async () => {
@@ -42,17 +42,17 @@ test('il pulsante si attiva solo con le sette risposte e la mappa riporta le voc
   await ctx.close();
 });
 
-test('«altro» con testo finisce nella colonna scelta e le colonne vuote dicono «nessuna voce»', async () => {
+test('«altro» con testo finisce nella colonna scelta e le colonne vuote dicono «Nessuna voce»', async () => {
   const { page, ctx } = await t.pagina();
   for (const k of CHIAVI) await page.click(`label[for="${k}-r"]`);
   await page.fill('#altro', 'il colore preferito');
   await page.click('label[for="alt-c"]');
   await page.click('#vedi');
-  assert.deepEqual(await voci(page, 'm-c'), ['altro: il colore preferito']);
-  assert.equal(await page.textContent('#m-n'), 'nessuna voce');
+  assert.deepEqual(await voci(page, 'm-c'), ['Altro: il colore preferito']);
+  assert.equal(await page.textContent('#m-n'), 'Nessuna voce');
   assert.equal((await voci(page, 'm-r')).length, 7);
   const testo = await page.evaluate(() => window.Esercizi.mappaTesto());
-  assert.match(testo, /^resterebbe: .+ \| non so: - \| cambierebbe: altro: il colore preferito$/);
+  assert.match(testo, /^resterebbe: .+ \| non so: - \| cambierebbe: Altro: il colore preferito$/);
   await ctx.close();
 });
 

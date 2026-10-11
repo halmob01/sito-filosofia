@@ -8,7 +8,9 @@ before(async () => { t = await avvia(); });
 after(async () => { await t.chiudi(); });
 
 const ordine = (page) => page.$$eval('#fonti > li', (li) => li.map((e) => e.dataset.k));
-const testi = (page) => page.$$eval('#fonti > li', (li) => li.map((e) => (e.querySelector('input') ? 'altro' : e.querySelector('.ft').textContent)));
+// dentro la frase di conferma la voce ha l'iniziale minuscola, come nel testo approvato
+const nellaFrase = (t) => t.charAt(0).toLowerCase() + t.slice(1);
+const testi = (page) => page.$$eval('#fonti > li', (li) => li.map((e) => (e.querySelector('input') ? 'Altro' : e.querySelector('.ft').textContent)));
 
 async function portaInCima(page, k) {
   for (let i = 0; i < 10; i++) {
@@ -48,8 +50,8 @@ test('conferma dell\'ordine: messaggio, testo del pulsante e annullamento dopo u
   await page.click('#fonti-ok');
   assert.equal(await page.textContent('#fonti-ok'), 'Ordine confermato');
   assert.equal(await page.textContent('#fonti-msg'),
-    `Ordine confermato. Più fuori di te: ${ts[0]}. Più dentro di te: ${ts[ts.length - 1]}.`);
-  assert.equal(ts[0], 'i miei valori');
+    `Ordine confermato. Più fuori di te: ${nellaFrase(ts[0])}. Più dentro di te: ${nellaFrase(ts[ts.length - 1])}.`);
+  assert.equal(ts[0], 'I miei valori');
   await page.locator('#fonti > li:nth-child(2) .su').click();
   assert.equal(await page.textContent('#fonti-msg'), '');
   assert.equal(await page.textContent('#fonti-ok'), 'Confermo l’ordine');

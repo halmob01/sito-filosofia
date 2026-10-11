@@ -65,7 +65,8 @@ test('prosa in EB Garamond «come un libro», formule e controlli in Geist', asy
     assert.ok(r.caricato, 'EB Garamond non caricato');
     for (const k of ['corpo', 'hero', 'ponte', 'blocco']) assert.match(r[k], /^"?EB Garamond/, k);
     assert.match(r.prima[0], /^"?EB Garamond/); assert.equal(r.prima[1], 'italic');
-    for (const k of ['formula', 'sosp', 'hint', 'istr', 'seg']) assert.match(r[k], /^"?Geist/, k);
+    for (const k of ['formula', 'sosp', 'hint', 'seg']) assert.match(r[k], /^"?Geist/, k);
+    assert.match(r.istr, /^"?EB Garamond/, 'istruzioni degli esercizi');
     assert.equal(r.size, w < 1200 ? '20px' : '22px');
     assert.equal(r.align, w < 600 ? 'left' : 'justify');
     assert.equal(r.rientro1, '0px'); assert.notEqual(r.rientro2, '0px'); assert.equal(r.margine, '0px');

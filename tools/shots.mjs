@@ -226,6 +226,71 @@ if (modo === 'f4video') {
     fs.rmdirSync(dir);
   }
 }
+if (modo === 'f6') {
+  // F5/F6: esercizi in tutti gli stati e pagina intera, a 390 e 1440
+  const LINK = 'https://docs.google.com/forms/d/e/FAKE/viewform?entry.2=RISPOSTA&entry.8=FONTI';
+  const nuova = async (w, h, link = null) => {
+    const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 1, reducedMotion: 'reduce' });
+    const page = await ctx.newPage();
+    if (link) await page.addInitScript((l) => { Object.defineProperty(window, 'SITE_CONFIG', { value: { prefilledLink: l }, writable: false, configurable: false }); }, link);
+    await page.route('**/formResponse', (r) => r.fulfill({ status: 200, contentType: 'text/html', body: 'ok' }));
+    await page.goto(srv.url + '/index.html', { waitUntil: 'load' });
+    await page.evaluate(() => document.fonts.ready);
+    await page.addStyleTag({ content: 'html{scroll-behavior:auto !important} .barra,.rail{display:none !important}' });
+    return page;
+  };
+  const el = (page, sel, nome) => page.locator(sel).screenshot({ path: path.join(out, nome + '.png') });
+  const compila = async (page) => {
+    await page.click('label[for="dec-t"]');
+    const V = [['il desiderio', 'd'], ['il dovere', 'd'], ['la reputazione', 'f'], ['il distacco', 'n'], ['la pancia', 'n']];
+    for (let i = 1; i <= 5; i++) { await page.fill('#n' + i, V[i - 1][0]); await page.click(`label[for="p${i}-${V[i - 1][1]}"]`); }
+    await page.fill('#q3', 'Ho ascoltato di più la voce del dovere, perché avevo dato la mia parola e non volevo deludere nessuno.');
+    await page.fill('#q4', 'La voce che mi dice di mantenere la parola data.');
+  };
+  const vistaBtn = async (page, nome) => {
+    await page.evaluate(() => { const r = document.getElementById('btn').getBoundingClientRect(); window.scrollTo(0, r.top + scrollY - innerHeight * 0.55); });
+    await page.waitForTimeout(150);
+    await page.screenshot({ path: path.join(out, nome + '.png') });
+  };
+  for (const [w, h, tag] of [[390, 844, 'm390'], [1440, 900, 'desktop']]) {
+    let page = await nuova(w, h);
+    await el(page, '.es1', `es1-vuoto-${tag}`);
+    await page.click('#fonti-ok'); await page.waitForTimeout(150);
+    await el(page, '.es1', `es1-confermato-${tag}`);
+    await el(page, '.es2', `es2-vuoto-${tag}`);
+    for (const [k, v] of [['fam', 'c'], ['pos', 'r'], ['lin', 'n'], ['pas', 'r'], ['sgu', 'c'], ['fut', 'n'], ['val', 'r']]) await page.click(`label[for="${k}-${v}"]`);
+    await page.fill('#altro', 'il colore preferito'); await page.click('label[for="alt-r"]');
+    await page.click('#vedi'); await page.waitForTimeout(200);
+    await el(page, '.es2', `es2-mappa-${tag}`);
+    await page.context().close();
+
+    page = await nuova(w, h);
+    await page.click('#btn'); await vistaBtn(page, `finale-errore-1-${tag}`);
+    await page.click('label[for="dec-f"]'); await page.fill('#n1', 'il desiderio'); await page.click('label[for="p1-d"]');
+    await page.click('#btn'); await vistaBtn(page, `finale-errore-2-${tag}`);
+    await el(page, '#domande .form-sec', `finale-errore-completo-${tag}`);
+    await page.context().close();
+
+    page = await nuova(w, h);        // link vuoto: «Invio non ancora configurato»
+    await compila(page); await page.click('#btn'); await vistaBtn(page, `finale-non-configurato-${tag}`);
+    await el(page, '#domande .form-sec', `finale-compilato-${tag}`);
+    await page.context().close();
+
+    page = await nuova(w, h, LINK);  // invio intercettato: conferma
+    await page.route('**/formResponse', async (r) => { await new Promise((x) => setTimeout(x, 1500)); r.fulfill({ status: 200, contentType: 'text/html', body: 'ok' }); });
+    await compila(page); await page.click('#btn'); await page.waitForTimeout(400);
+    await vistaBtn(page, `finale-invio-in-corso-${tag}`);
+    await page.waitForSelector('.ok');
+    await page.evaluate(() => { const r = document.getElementById('form-area').getBoundingClientRect(); window.scrollTo(0, r.top + scrollY - 120); });
+    await page.waitForTimeout(150);
+    await page.screenshot({ path: path.join(out, `finale-conferma-${tag}.png`) });
+    await page.context().close();
+
+    page = await nuova(w, h);
+    await page.screenshot({ path: path.join(out, `full-${tag}.png`), fullPage: true });
+    await page.context().close();
+  }
+}
 await browser.close();
 await srv.close();
 console.log('screenshot in', out);

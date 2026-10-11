@@ -24,9 +24,11 @@
   }
   function testoFonte(e) {
     var inp = e.querySelector('input');
-    if (inp) { var v = inp.value.trim(); return v ? 'altro: ' + v : 'altro'; }
+    if (inp) { var v = inp.value.trim(); return v ? 'Altro: ' + v : 'Altro'; }
     return e.querySelector('.ft').textContent;
   }
+  /* dentro una frase la voce torna con l’iniziale minuscola, com’era nel testo approvato */
+  function nellaFrase(t) { return t.charAt(0).toLowerCase() + t.slice(1); }
   listaFonti.addEventListener('click', function (ev) {
     var b = ev.target.closest('button');
     if (!b) return;
@@ -36,13 +38,14 @@
     aggiornaFrecce();
     var nuovo = li.querySelector(b.classList.contains('su') ? '.su' : '.giu');
     if (nuovo && !nuovo.disabled) nuovo.focus();
-    fontiConf = false; fontiMsg.textContent = ''; fontiOk.textContent = 'Confermo l’ordine';
+    fontiConf = false; fontiMsg.textContent = ''; fontiOk.textContent = 'Confermo l’ordine'; fontiOk.classList.remove('fatto');
   });
   fontiOk.addEventListener('click', function () {
     fontiConf = true;
     var li = [].slice.call(listaFonti.children);
-    fontiMsg.textContent = 'Ordine confermato. Più fuori di te: ' + testoFonte(li[0]) + '. Più dentro di te: ' + testoFonte(li[li.length - 1]) + '.';
+    fontiMsg.textContent = 'Ordine confermato. Più fuori di te: ' + nellaFrase(testoFonte(li[0])) + '. Più dentro di te: ' + nellaFrase(testoFonte(li[li.length - 1])) + '.';
     fontiOk.textContent = 'Ordine confermato';
+    fontiOk.classList.add('fatto');   // solo stile: il pulsante diventa «vuoto» quando l’ordine è confermato
   });
   aggiornaFrecce();
   function fontiTesto() {
@@ -52,14 +55,14 @@
 
   /* ---------- prova della nascita ---------- */
   var VOCI = [
-    { k: 'fam', t: 'la musica che mi piace' },
-    { k: 'pos', t: 'ciò che considero giusto e sbagliato' },
-    { k: 'lin', t: 'l’idea che ho di me' },
-    { k: 'pas', t: 'il mio carattere' },
-    { k: 'sgu', t: 'ciò che voglio fare da grande' },
-    { k: 'fut', t: 'le parole e le frasi che uso' },
-    { k: 'val', t: 'le cose di cui ho paura' },
-    { k: 'alt', t: 'altro' }
+    { k: 'fam', t: 'La musica che mi piace' },
+    { k: 'pos', t: 'Ciò che considero giusto e sbagliato' },
+    { k: 'lin', t: 'L’idea che ho di me' },
+    { k: 'pas', t: 'Il mio carattere' },
+    { k: 'sgu', t: 'Ciò che voglio fare da grande' },
+    { k: 'fut', t: 'Le parole e le frasi che uso' },
+    { k: 'val', t: 'Le cose di cui ho paura' },
+    { k: 'alt', t: 'Altro' }
   ];
   var prova = document.getElementById('prova');
   var vedi = document.getElementById('vedi');
@@ -79,6 +82,7 @@
   function aggiornaStato() {
     var n = risposte();
     vedi.disabled = n < 7;
+    manca.classList.toggle('pronto', n >= 7);   // solo stile
     manca.textContent = n < 7 ? 'Mancano ' + (7 - n) + ' risposte (tranne «altro»).' : 'Pronto: premi il pulsante.';
   }
   prova.addEventListener('change', aggiornaStato);
@@ -87,7 +91,7 @@
   function etichetta(v) {
     if (v.k !== 'alt') return v.t;
     var t = document.getElementById('altro').value.trim();
-    return t ? 'altro: ' + t : 'altro';
+    return t ? 'Altro: ' + t : 'Altro';
   }
   function costruisciMappa() {
     var res = { c: [], n: [], r: [] };
@@ -103,7 +107,7 @@
     if (!lista.length) {
       var p = document.createElement('p');
       p.className = 'vuoto';
-      p.textContent = 'nessuna voce';
+      p.textContent = 'Nessuna voce';
       box.appendChild(p);
       return;
     }

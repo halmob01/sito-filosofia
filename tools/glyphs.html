@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prova dei glifi</title>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<style>
+  body { padding: 32px; background: #fff; }
+  h1 { font: 600 20px/1.2 var(--f-sans); margin: 0 0 24px; }
+  .riga { margin: 0 0 28px; }
+  .et { font: 500 12px/1.2 var(--f-mono); color: #666; margin: 0 0 8px; letter-spacing: .04em; }
+  .anton { font-family: Anton, serif; font-size: 72px; line-height: 1.05; text-transform: none; }
+  .anton.up { text-transform: uppercase; }
+  .sans { font-family: Geist, serif; font-size: 28px; line-height: 1.3; }
+  .mono { font-family: "Geist Mono", serif; font-size: 22px; }
+  table { border-collapse: collapse; font: 14px/1.3 var(--f-sans); }
+  td, th { border: 1px solid #ccc; padding: 4px 10px; text-align: left; }
+  .no { background: #ffe0e0; color: #900; font-weight: 600; }
+  .ok { color: #060; }
+</style>
+</head>
+<body>
+<h1>Prova dei glifi: Anton, Geist, Geist Mono</h1>
+
+<div class="riga"><p class="et">ANTON · accenti, apostrofo tipografico, caporali, trattino lungo, punto mediano, punto interrogativo</p>
+<div class="anton">À È É Ì Ò Ù à è é ì ò ù ’ « » — · ?</div></div>
+<div class="riga"><p class="et">ANTON · maiuscolo via CSS (come nei titoli del sito)</p>
+<div class="anton up">Da dove vengono le voci? L’io è già dentro. Oggi: nessuno ti dice «sì» — né «no».</div></div>
+<div class="riga"><p class="et">GEIST 400/500/600/700 · stessi glifi più frecce</p>
+<div class="sans" style="font-weight:400">À È É Ì Ò Ù à è é ì ò ù ’ « » — · ? ↑ ↓ ○ ● 01 02 03 / 09</div>
+<div class="sans" style="font-weight:500">À È É Ì Ò Ù à è é ì ò ù ’ « » — · ? ↑ ↓ ○ ● 01 02 03 / 09</div>
+<div class="sans" style="font-weight:600">À È É Ì Ò Ù à è é ì ò ù ’ « » — · ? ↑ ↓ ○ ● 01 02 03 / 09</div>
+<div class="sans" style="font-weight:700">À È É Ì Ò Ù à è é ì ò ù ’ « » — · ? ↑ ↓ ○ ● 01 02 03 / 09</div>
+<div class="sans" style="font-style:italic">Corsivo 400: non sono stato io, è stata la Follia — «Penso, dunque sono.»</div></div>
+<div class="riga"><p class="et">GEIST MONO 500 · contatori</p>
+<div class="mono">01 02 03 04 05 06 07 08 09 · 03 / 09 · à è é ì ò ù ’ « » — ·</div></div>
+
+<div class="riga"><p class="et">COPERTURA (un glifo mancante finirebbe in un carattere di ripiego: si rileva dalla larghezza)</p>
+<table id="tab"><thead><tr><th>glifo</th><th>Anton</th><th>Geist</th><th>Geist Mono</th></tr></thead><tbody></tbody></table></div>
+
+<script>
+// Un glifo manca se, cambiando il carattere di ripiego, cambia la larghezza.
+const GLIFI = ['À','È','É','Ì','Ò','Ù','à','è','é','ì','ò','ù','’','«','»','—','–','·','?','↑','↓','○','●','1','9','/','(',')','“','”','‘','…'];
+const FAMIGLIE = [['Anton', 400], ['Geist', 400], ['Geist Mono', 500]];
+const c = document.createElement('canvas').getContext('2d');
+function larghezza(ch, fam, peso, ripiego) {
+  c.font = `${peso} 100px "${fam}", ${ripiego}`;
+  return c.measureText(ch).width;
+}
+(async () => {
+  await Promise.all([
+    document.fonts.load('400 40px Anton', 'À'), document.fonts.load('400 40px Anton', 'Ā'),
+    document.fonts.load('400 40px Geist', 'À'), document.fonts.load('400 40px Geist', 'Ā'),
+    document.fonts.load('500 40px "Geist Mono"', 'À'),
+  ]);
+  const body = document.querySelector('#tab tbody');
+  const mancanti = {};
+  for (const g of GLIFI) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${g}</td>`;
+    FAMIGLIE.forEach(([fam, peso]) => {
+      const mancaGlifo = larghezza(g, fam, peso, 'monospace') !== larghezza(g, fam, peso, 'serif');
+      const td = document.createElement('td');
+      td.textContent = mancaGlifo ? 'MANCA' : 'ok';
+      td.className = mancaGlifo ? 'no' : 'ok';
+      tr.appendChild(td);
+      if (mancaGlifo) (mancanti[fam] = mancanti[fam] || []).push(g);
+    });
+    body.appendChild(tr);
+  }
+  window.__mancanti = mancanti;
+  document.body.dataset.pronto = '1';
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Dentro o fuori? Da dove viene ciò che ci orienta</title>
+<style>
+  :root { --ink:#1c1c1c; --muted:#555; --line:#cfcac0; --paper:#fff; --tint:#f4f1ea; --accent:#8a3b12; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:"Times New Roman", Times, serif; font-size:18px; line-height:1.5; }
+  .wrap { max-width:860px; margin:0 auto; padding:0 16px 72px; }
+  header.top { padding-top:24px; }
+  h1 { font-size:2rem; line-height:1.15; margin:0 0 .25em; }
+  h2 { font-size:1.35rem; line-height:1.25; margin:0; }
+  h3 { font-size:1.15rem; margin:1.4em 0 .4em; }
+  .lead { color:var(--muted); margin:0 0 1em; }
+  .hintline { color:var(--muted); font-size:.95rem; margin:.4em 0 .8em; }
+
+  /* ---- apertura e prova ---- */
+  .parte1 { border-top:1px solid var(--line); margin-top:18px; padding-top:20px; }
+  .parte1 h2 { margin-bottom:.5em; }
+  .domanda-chiave { background:var(--tint); border-radius:6px; padding:12px 16px; margin:1em 0; font-size:1.1rem; }
+  .prova-titolo { font-weight:bold; margin:1.4em 0 .2em; }
+  .riga { display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; padding:10px 0; border-top:1px solid var(--line); }
+  .riga:last-of-type { border-bottom:1px solid var(--line); }
+  .nome { flex:1 1 230px; font-weight:bold; }
+  .nome label { margin:0 0 4px; }
+  .nome input[type=text] { max-width:none; width:100%; }
+  .seg { display:flex; gap:6px; flex-wrap:wrap; }
+  .seg input { position:absolute; opacity:0; width:1px; height:1px; }
+  .seg label { margin:0; font-weight:normal; border:1px solid #8c867a; border-radius:6px; padding:8px 12px; min-height:44px; display:inline-flex; align-items:center; cursor:pointer; background:#fff; font-size:.95rem; }
+  .seg input:checked + label { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .seg input:focus-visible + label { outline:3px solid #1d4ed8; outline-offset:2px; }
+  button.vedi { font:inherit; font-weight:bold; background:var(--ink); color:#fff; border:0; border-radius:6px; padding:12px 22px; min-height:44px; margin-top:1em; cursor:pointer; }
+  button.vedi[disabled] { opacity:.45; cursor:default; }
+  .manca { color:var(--muted); font-size:.9rem; margin:.4em 0 0; }
+  #risultato { margin-top:1.4em; }
+  .mappa { display:grid; grid-template-columns:1fr; gap:10px; }
+  @media (min-width:700px) { .mappa { grid-template-columns:repeat(3, 1fr); } }
+  .col { background:var(--tint); border-radius:6px; padding:12px 14px; }
+  .col h4 { margin:0; font-size:1rem; }
+  .col .sub { margin:0 0 .4em; font-size:.85rem; color:var(--muted); }
+  .col ul { margin:0; padding-left:1.1em; }
+  .col li { margin:.15em 0; }
+  .col .vuoto { color:var(--muted); font-size:.95rem; margin:0; }
+  .assemappa { display:none; justify-content:space-between; font-size:.85rem; color:var(--muted); margin-top:4px; }
+  @media (min-width:700px) { .assemappa { display:flex; } }
+  .ponte { margin:1.2em 0 .4em; }
+
+  /* ---- grafico ---- */
+  .chartbar { background:var(--paper); padding:6px 0 4px; z-index:10; }
+  @media (min-width:900px) and (min-height:700px) {
+    .chartbar { position:sticky; top:0; border-bottom:1px solid var(--line); }
+    .tappa { scroll-margin-top:250px; }
+  }
+  .tappa { scroll-margin-top:12px; }
+  .chart { position:relative; max-width:560px; margin:0 auto; padding-left:24px; }
+  .axis { position:absolute; left:-22px; top:0; bottom:0; width:18px; display:flex; flex-direction:row; justify-content:space-between; writing-mode:vertical-rl; font-size:12px; color:var(--muted); }
+  .axis span { white-space:nowrap; }
+  .axis .x { display:none; font-style:normal; }
+  @media (min-width:700px) { .axis .x { display:inline; } }
+  .plot { position:relative; width:100%; aspect-ratio:830 / 250; margin-bottom:6px; }
+  .plot svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+  .dot { position:absolute; transform:translate(-50%,-50%); width:32px; height:32px; border-radius:50%; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; font:bold 14px/1 "Times New Roman",Times,serif; text-decoration:none; transition:transform .15s, background .15s; }
+  .dot::after { content:""; position:absolute; inset:-6px; }
+  .dot.hollow { background:#fff; color:var(--accent); border:2px solid var(--accent); }
+  .dot.active { background:var(--accent); color:#fff; transform:translate(-50%,-50%) scale(1.2); }
+  .dot:focus-visible { outline:3px solid #1d4ed8; outline-offset:3px; }
+  .nm { position:absolute; top:calc(100% + 4px); transform:translateX(-50%); font-size:12px; color:var(--muted); white-space:nowrap; display:none; }
+  @media (min-width:700px) { .nm { display:block; } .plot { margin-bottom:26px; } }
+  .cap { text-align:center; margin:2px 0 0; font-size:.95rem; color:var(--accent); font-weight:bold; }
+  .legend { text-align:center; color:var(--muted); font-size:.85rem; margin:2px 0 0; }
+  .note { color:var(--muted); font-size:.9rem; margin:.8em 0 1.2em; }
+
+  /* ---- tappe ---- */
+  .tappa { border-top:1px solid var(--line); padding:22px 0 14px; }
+  .tappa h2 { display:flex; gap:.6em; align-items:baseline; flex-wrap:wrap; }
+  .num { display:inline-flex; width:1.7em; height:1.7em; border-radius:50%; background:var(--ink); color:#fff; align-items:center; justify-content:center; font-size:.9rem; flex:none; transition:background .15s; }
+  .tappa.on .num { background:var(--accent); }
+  .when { color:var(--muted); font-size:.95rem; margin:.1em 0 .7em; }
+  .tappa p { margin:.6em 0; }
+  .gauge { position:relative; height:8px; background:#e2ddd2; border-radius:4px; margin:26px 8px 6px; }
+  .gauge .m { position:absolute; top:50%; width:16px; height:16px; margin:-8px 0 0 -8px; border-radius:50%; background:var(--accent); border:2px solid #fff; box-shadow:0 0 0 1px var(--accent); }
+  .gauge .m.o { background:#fff; border:2px solid var(--accent); box-shadow:none; }
+  .gl { display:flex; justify-content:space-between; font-size:.85rem; color:var(--muted); }
+
+  .formula { font-weight:bold; margin:.2em 0 .8em; }
+  .prima { color:var(--muted); font-style:italic; margin:.8em 0; }
+  .nota { color:var(--muted); font-size:.95rem; }
+  .tappa h3.sosp { font-size:1rem; margin:1.1em 0 .2em; }
+  .badge { display:inline-block; font-size:.78rem; font-weight:normal; border:1px solid var(--ink); border-radius:999px; padding:0 .65em; white-space:nowrap; }
+  .badge.s { border-style:dashed; }
+  .hyp { font-size:.9rem; color:var(--accent); margin:.4em 0 0; }
+
+  /* ---- domande ---- */
+  .finale { border-top:2px solid var(--ink); margin-top:10px; padding-top:20px; }
+  .finale h2 { font-size:1.5rem; margin-bottom:.4em; }
+  .gruppo-q { margin:.4em 0 1.2em; padding-left:1.3em; }
+  .gruppo-q li { margin:.5em 0; }
+  .mia { color:var(--accent); font-size:.95rem; margin:.3em 0 0; }
+  label { display:block; font-weight:bold; margin:1em 0 .25em; }
+  input[type=text], textarea { width:100%; font:inherit; padding:10px 12px; border:1px solid #8c867a; border-radius:6px; background:#fff; color:var(--ink); }
+  input[type=text] { max-width:8em; }
+  textarea { min-height:9em; resize:vertical; }
+  input:focus-visible, textarea:focus-visible, button:focus-visible { outline:3px solid #1d4ed8; outline-offset:2px; }
+  .small { font-size:.9rem; color:var(--muted); margin:.4em 0; }
+  button.send { font:inherit; font-weight:bold; background:var(--ink); color:#fff; border:0; border-radius:6px; padding:12px 22px; min-height:44px; margin-top:1em; cursor:pointer; }
+  button.send[disabled] { opacity:.5; cursor:default; }
+  button.again { font:inherit; background:#fff; color:var(--ink); border:1px solid var(--ink); border-radius:6px; padding:10px 18px; min-height:44px; margin-top:.6em; cursor:pointer; }
+  #msg { margin:.8em 0 0; min-height:1.4em; }
+  #msg.err { color:#9b1c1c; }
+  .ok { background:var(--tint); border-radius:6px; padding:14px 18px; }
+  .hp { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
+
+
+  .fonti { list-style:none; margin:.4em 0; padding:0; }
+  .fonti li { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:6px 0 6px 12px; border:1px solid var(--line); border-radius:6px; margin:6px 0; background:#fff; }
+  .fonti .fb { display:flex; gap:6px; flex:none; }
+  .fonti button { font:inherit; width:44px; height:44px; border:1px solid #8c867a; border-radius:6px; background:#fff; color:var(--ink); cursor:pointer; }
+  .fonti button[disabled] { opacity:.35; cursor:default; }
+  .estremo { margin:.2em 0; font-size:.9rem; color:var(--muted); }
+  .step { margin:1.6em 0 .4em; font-size:1.1rem; }
+  .voce-cit { font-style:italic; flex:1 1 100%; margin:0; }
+  .riga.voce { align-items:flex-end; }
+  .riga.voce .nome { font-weight:normal; }
+  .riga.voce .nome label { font-weight:bold; font-size:.9rem; }
+  .riga.voce .nome input[type=text] { max-width:none; }
+  .situazione { background:var(--tint); border-radius:6px; padding:12px 16px; margin:.6em 0; }
+  .situazione ul { margin:.4em 0 .4em; padding-left:1.2em; }
+
+  @page { size:A4; margin:16mm; }
+  @media print {
+    body { font-size:12pt; }
+    .wrap { max-width:none; padding:0; }
+    .chartbar { position:static !important; }
+    .tappa { break-inside:avoid; }
+    #form-area form { display:none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+
+
+<!-- ============ APERTURA E PROVA ============ -->
+<section class="parte1" id="apertura">
+  <h2>Da dove vengono le voci che sentite vostre?</h2>
+  <p>Nel lavoro di gruppo avete messo in ordine otto voci e poi avete spiegato agli altri perché una sta sopra e un’altra sotto. Quelle in alto sono le voci più importanti, le più vostre, quelle che vi aiutano a orientarvi, cioè a capire che cosa è importante e che cosa non lo è, che cosa è giusto fare e che cosa non lo è, in base alla vostra identità, a chi siete voi.</p>
+  <p class="prova-titolo">Primo esercizio: le voci della tua identità</p>
+  <p class="small" style="margin-top:0">Da qui in poi lavori da solo. Queste voci formano la tua identità e ti orientano. Mettile in ordine con le frecce: in alto quelle che ti orientano più da fuori di te, in basso quelle che ti orientano più da dentro di te.</p>
+  <p class="estremo">↑ più fuori di me</p>
+  <ol class="fonti" id="fonti">
+    <li data-k="fam"><span class="ft">la mia famiglia</span><span class="fb"><button type="button" class="su" aria-label="Sposta su: la mia famiglia">↑</button><button type="button" class="giu" aria-label="Sposta giù: la mia famiglia">↓</button></span></li>
+    <li data-k="pos"><span class="ft">il posto o la zona da cui vengo</span><span class="fb"><button type="button" class="su" aria-label="Sposta su: il posto o la zona da cui vengo">↑</button><button type="button" class="giu" aria-label="Sposta giù: il posto o la zona da cui vengo">↓</button></span></li>
+    <li data-k="lin"><span class="ft">la lingua o le lingue che parlo</span><span class="fb"><button type="button" class="su" aria-label="Sposta su: la lingua o le lingue che parlo">↑</button><button type="button" class="giu" aria-label="Sposta giù: la lingua o le lingue che parlo">↓</button></span></li>
+    <li data-k="pas"><span class="ft">il mio passato, le cose che ho vissuto</span><span class="fb"><button type="button" class="su" aria-label="Sposta su: il mio passato, le cose che ho vissuto">↑</button><button type="button" class="giu" aria-label="Sposta giù: il mio passato, le cose che ho vissuto">↓</button></span></li>
+    <li data-k="sgu"><span class="ft">lo sguardo degli altri, quello che pensano di me</span><span class="fb"><button type="button" class="su" aria-label="Sposta su: lo sguardo degli altri, quello che pensano di me">↑</button><button type="button" class="giu" aria-label="Sposta giù: lo sguardo degli altri, quello che pensano di me">↓</button></span></li>
+    <li data-k="fut"><span class="ft">il progetto che ho per il futuro</span><span class="fb"><button type="button" class="su" aria-label="Sposta su: il progetto che ho per il futuro">↑</button><button type="button" class="giu" aria-label="Sposta giù: il progetto che ho per il futuro">↓</button></span></li>
+    <li data-k="val"><span class="ft">i miei valori</span><span class="fb"><button type="button" class="su" aria-label="Sposta su: i miei valori">↑</button><button type="button" class="giu" aria-label="Sposta giù: i miei valori">↓</button></span></li>
+    <li data-k="alt"><span class="ft"><label for="fonte-altro" style="margin:0;font-weight:normal">altro (scegli tu quale):</label> <input type="text" id="fonte-altro" maxlength="40" autocomplete="off" style="max-width:none"></span><span class="fb"><button type="button" class="su" aria-label="Sposta su: altro">↑</button><button type="button" class="giu" aria-label="Sposta giù: altro">↓</button></span></li>
+  </ol>
+  <p class="estremo">↓ più dentro di me</p>
+  <button type="button" class="vedi" id="fonti-ok">Confermo l’ordine</button>
+  <p class="manca" id="fonti-msg" aria-live="polite"></p>
+
+  <p class="prova-titolo">Secondo esercizio: la prova della nascita</p>
+  <p class="small" style="margin-top:0">Immagina di essere cresciuto in un altro posto e in un’altra famiglia. Per ognuna di queste cose che senti tue rispondi: resterebbe uguale? Se cambierebbe, forse viene più da fuori. Se resterebbe uguale, forse viene più da dentro. È una prova, non una regola.</p>
+
+  <form id="prova" novalidate>
+    <div class="riga" role="radiogroup" aria-labelledby="n-fam">
+      <div class="nome" id="n-fam">la musica che mi piace</div>
+      <div class="seg">
+        <input type="radio" name="fam" id="fam-c" value="c"><label for="fam-c">Cambierebbe</label>
+        <input type="radio" name="fam" id="fam-n" value="n"><label for="fam-n">Non so</label>
+        <input type="radio" name="fam" id="fam-r" value="r"><label for="fam-r">Resterebbe uguale</label>
+      </div>
+    </div>
+    <div class="riga" role="radiogroup" aria-labelledby="n-pos">
+      <div class="nome" id="n-pos">ciò che considero giusto e sbagliato</div>
+      <div class="seg">
+        <input type="radio" name="pos" id="pos-c" value="c"><label for="pos-c">Cambierebbe</label>
+        <input type="radio" name="pos" id="pos-n" value="n"><label for="pos-n">Non so</label>
+        <input type="radio" name="pos" id="pos-r" value="r"><label for="pos-r">Resterebbe uguale</label>
+      </div>
+    </div>
+    <div class="riga" role="radiogroup" aria-labelledby="n-lin">
+      <div class="nome" id="n-lin">l’idea che ho di me</div>
+      <div class="seg">
+        <input type="radio" name="lin" id="lin-c" value="c"><label for="lin-c">Cambierebbe</label>
+        <input type="radio" name="lin" id="lin-n" value="n"><label for="lin-n">Non so</label>
+        <input type="radio" name="lin" id="lin-r" value="r"><label for="lin-r">Resterebbe uguale</label>
+      </div>
+    </div>
+    <div class="riga" role="radiogroup" aria-labelledby="n-pas">
+      <div class="nome" id="n-pas">il mio carattere (per esempio se sono timido o impulsivo)</div>
+      <div class="seg">
+        <input type="radio" name="pas" id="pas-c" value="c"><label for="pas-c">Cambierebbe</label>
+        <input type="radio" name="pas" id="pas-n" value="n"><label for="pas-n">Non so</label>
+        <input type="radio" name="pas" id="pas-r" value="r"><label for="pas-r">Resterebbe uguale</label>
+      </div>
+    </div>
+    <div class="riga" role="radiogroup" aria-labelledby="n-sgu">
+      <div class="nome" id="n-sgu">ciò che voglio fare da grande</div>
+      <div class="seg">
+        <input type="radio" name="sgu" id="sgu-c" value="c"><label for="sgu-c">Cambierebbe</label>
+        <input type="radio" name="sgu" id="sgu-n" value="n"><label for="sgu-n">Non so</label>
+        <input type="radio" name="sgu" id="sgu-r" value="r"><label for="sgu-r">Resterebbe uguale</label>
+      </div>
+    </div>
+    <div class="riga" role="radiogroup" aria-labelledby="n-fut">
+      <div class="nome" id="n-fut">le parole e le frasi che uso</div>
+      <div class="seg">
+        <input type="radio" name="fut" id="fut-c" value="c"><label for="fut-c">Cambierebbe</label>
+        <input type="radio" name="fut" id="fut-n" value="n"><label for="fut-n">Non so</label>
+        <input type="radio" name="fut" id="fut-r" value="r"><label for="fut-r">Resterebbe uguale</label>
+      </div>
+    </div>
+    <div class="riga" role="radiogroup" aria-labelledby="n-val">
+      <div class="nome" id="n-val">le cose di cui ho paura</div>
+      <div class="seg">
+        <input type="radio" name="val" id="val-c" value="c"><label for="val-c">Cambierebbe</label>
+        <input type="radio" name="val" id="val-n" value="n"><label for="val-n">Non so</label>
+        <input type="radio" name="val" id="val-r" value="r"><label for="val-r">Resterebbe uguale</label>
+      </div>
+    </div>
+    <div class="riga" role="radiogroup" aria-labelledby="n-alt">
+      <div class="nome" id="n-alt"><label for="altro">altro (facoltativo: scrivi quale)</label><input type="text" id="altro" maxlength="40" autocomplete="off"></div>
+      <div class="seg">
+        <input type="radio" name="alt" id="alt-c" value="c"><label for="alt-c">Cambierebbe</label>
+        <input type="radio" name="alt" id="alt-n" value="n"><label for="alt-n">Non so</label>
+        <input type="radio" name="alt" id="alt-r" value="r"><label for="alt-r">Resterebbe uguale</label>
+      </div>
+    </div>
+    <button type="submit" class="vedi" id="vedi" disabled>Vedi dove cadono</button>
+    <p class="manca" id="manca" aria-live="polite">Rispondi per tutte le voci, tranne «altro».</p>
+  </form>
+
+  <div id="risultato" hidden>
+    <h3>La tua mappa</h3>
+    <div class="mappa">
+      <div class="col"><h4>Più fuori di me</h4><p class="sub">cambierebbe</p><div id="m-c"></div></div>
+      <div class="col"><h4>Il confine è incerto</h4><p class="sub">non so</p><div id="m-n"></div></div>
+      <div class="col"><h4>Più dentro di me</h4><p class="sub">resterebbe uguale</p><div id="m-r"></div></div>
+    </div>
+    <div class="assemappa" aria-hidden="true"><span>fuori</span><span>dentro</span></div>
+  </div>
+
+  <p class="ponte">Le cose che costruiscono la tua identità possono stare dentro o fuori di te: per il nostro discorso non cambia. Quello che conta è che la tua identità ti orienta: ti parla e ti dice che cosa è giusto e che cosa è sbagliato. Siamo abituati a pensare che questa voce agisca da dentro. Ma non è proprio così.</p>
+  <p>Dare per scontato che ci sia un dentro separato dal fuori ci sembra naturale, ma è un modo di pensare che ha una storia ed è cambiato più volte. Per capire da dove viene la voce che ti orienta, vediamo come lo hanno pensato altri prima di noi.</p>
+  <p>In ogni tappa ci chiediamo una cosa sola: dove sta la voce che ti dice che cosa fare e che cosa vale? Dentro di te o fuori? La risposta cambia. Non è un percorso dal peggio al meglio: è un confine che si sposta.</p>
+  <p class="hintline">Scorri la pagina: la linea qui sotto ti dice a che punto sei. Puoi anche toccare un numero per andare a quella tappa.</p>
+</section>
+
+<div class="chartbar">
+  <div class="chart">
+    <div class="plot">
+      <div class="axis" aria-hidden="true"><span>fuori<i class="x"> di me</i></span><span>dentro<i class="x"> di me</i></span></div>
+      <svg viewBox="0 0 830 250" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <line x1="0" y1="36" x2="830" y2="36" stroke="#e2ddd2"/>
+        <line x1="0" y1="216" x2="830" y2="216" stroke="#e2ddd2"/>
+        <polyline points="60,45 140,81 220,135 300,162 380,189 460,207 540,144 620,117 700,189" fill="none" stroke="#cfcac0" stroke-width="3" vector-effect="non-scaling-stroke"/>
+        <polyline points="620,117 700,72" fill="none" stroke="#8a3b12" stroke-width="2.5" stroke-dasharray="6 5" vector-effect="non-scaling-stroke"/>
+        <polyline id="prog" points="60,45" fill="none" stroke="#1c1c1c" stroke-width="3" vector-effect="non-scaling-stroke"/>
+      </svg>
+      <a class="dot" data-i="1" href="#t1" aria-label="Tappa 1: Omero" style="left:7.23%;top:18%">1</a>
+      <a class="dot" data-i="2" href="#t2" aria-label="Tappa 2: Platone" style="left:16.87%;top:32.4%">2</a>
+      <a class="dot" data-i="3" href="#t3" aria-label="Tappa 3: Agostino" style="left:26.51%;top:54%">3</a>
+      <a class="dot" data-i="4" href="#t4" aria-label="Tappa 4: Montaigne" style="left:36.14%;top:64.8%">4</a>
+      <a class="dot" data-i="5" href="#t5" aria-label="Tappa 5: Descartes" style="left:45.78%;top:75.6%">5</a>
+      <a class="dot" data-i="6" href="#t6" aria-label="Tappa 6: i romantici" style="left:55.42%;top:82.8%">6</a>
+      <a class="dot" data-i="7" href="#t7" aria-label="Tappa 7: il sospetto" style="left:65.06%;top:57.6%">7</a>
+      <a class="dot" data-i="8" href="#t8" aria-label="Tappa 8: Foucault" style="left:74.7%;top:46.8%">8</a>
+      <a class="dot" data-i="9" href="#t9" aria-label="Tappa 9: oggi, come la sento" style="left:84.34%;top:75.6%">9</a>
+      <a class="dot hollow" data-i="9" href="#t9" aria-label="Tappa 9: oggi, da dove arriva" style="left:84.34%;top:28.8%">9</a>
+      <span class="nm" aria-hidden="true" style="left:7.23%">Omero</span>
+      <span class="nm" aria-hidden="true" style="left:16.87%">Platone</span>
+      <span class="nm" aria-hidden="true" style="left:26.51%">Agostino</span>
+      <span class="nm" aria-hidden="true" style="left:36.14%">Montaigne</span>
+      <span class="nm" aria-hidden="true" style="left:45.78%">Descartes</span>
+      <span class="nm" aria-hidden="true" style="left:55.42%">Romantici</span>
+      <span class="nm" aria-hidden="true" style="left:65.06%">Sospetto</span>
+      <span class="nm" aria-hidden="true" style="left:74.7%">Foucault</span>
+      <span class="nm" aria-hidden="true" style="left:84.34%">Oggi</span>
+    </div>
+    <p class="cap" id="cap">Tappa 1 · Omero</p>
+  </div>
+</div>
+<!-- 1 -->
+<section class="tappa" id="t1" data-i="1">
+  <h2><span class="num">1</span> Il dentro è fuori</h2>
+  <p class="when">Omero · circa VIII secolo a.C.</p>
+  <p class="formula">La voce nasce dentro la testa, ma viene vissuta come la voce di un dio.</p>
+  <p>Achille è furioso: Agamennone gli ha tolto la sua schiava davanti a tutto l’esercito. Mette la mano sulla spada. Il poema dice che sta ancora ragionando, indeciso tra sguainare e trattenersi. A questo punto compare Atena, lo afferra per i capelli e gli dice di fermarsi. Nessun altro la vede. Achille obbedisce.</p>
+  <p>Un uomo di oggi direbbe «ci ho pensato un attimo e mi sono fermato». Per Achille, invece, la voce che lo guida non viene da dentro: ha la faccia di una dea. Anche Agamennone, quando riconosce di avere sbagliato, dice: <em>non sono stato io, è stata la Follia mandata da Zeus.</em></p>
+  <p>Lo psicologo Julian Jaynes ha proposto una spiegazione: la coscienza ha una storia. Noi abbiamo imparato a riconoscere come nostra la voce che sentiamo dentro la testa mentre pensiamo. Secondo Jaynes la società di Omero non lo faceva ancora: dentro la testa si sentivano voci che le persone non riconoscevano come proprie e le attribuivano a un dio. Ecco gli dèi: una voce interna vissuta come esterna. È un’ipotesi molto discussa e molti studiosi la rifiutano, ma l’immagine è efficace: il fuori sta dentro la testa.</p>
+  <p class="nota">I greci avevano già parole come cuore, respiro, anima. Quello che manca è l’abitudine di dire «questo pensiero è mio».</p>
+  <div class="gauge" role="img" aria-label="Quasi tutto fuori"><span class="m" style="left:5%"></span></div>
+  <div class="gl"><span>fuori</span><span>dentro</span></div>
+</section>
+<!-- 2 -->
+<section class="tappa" id="t2" data-i="2">
+  <h2><span class="num">2</span> Il dentro si divide</h2>
+  <p class="when">Platone · IV secolo a.C.</p>
+  <p class="formula">C’è una lotta dentro di te, ma ciò che è giusto sta ancora fuori.</p>
+  <p>Socrate dice di sentire, fin da bambino, una voce che lo ferma quando sta per sbagliare. La chiama segno divino: come in Omero, la voce viene da un dio. Ma c’è una differenza. Il dio non parla più davanti a tutti: parla dentro, a una sola persona e Socrate la usa per decidere che cosa fare. Il suo allievo Platone fa un passo in più: per lui non serve un dio che ti fermi, perché la lotta tra ciò che vuoi e ciò che devi fare è già dentro di te. L’anima è come un carro con due cavalli, uno docile e uno ribelle. Chi guida il carro, cioè la ragione, deve tenerli insieme.</p>
+  <p>Rispetto a Omero, la lotta ora si svolge dentro di noi e non più tra dèi. Ma il criterio per decidere che cosa è giusto sta fuori: nell’ordine vero del mondo, che la ragione impara a riconoscere.</p>
+  <p>Un esempio: hai voglia di restare a letto, ma sai che devi alzarti e andare al lavoro. Una parte di te tira da una parte (la voglia di dormire), un’altra dall’altra (il dovere) e c’è una parte che deve decidere: la ragione. Ma perché alzarsi è «giusto»? Per Platone non lo decidi tu e non dipende da quello che hai voglia di fare: è scritto nell’ordine del mondo, dove ognuno ha un compito da svolgere e vivere bene significa svolgerlo. La ragione non inventa questa regola: la riconosce, come si riconosce che due più due fa quattro.</p>
+  <p class="prima">Rispetto a prima: la divisione tra le parti si sposta dentro.</p>
+  <div class="gauge" role="img" aria-label="Più fuori che dentro"><span class="m" style="left:25%"></span></div>
+  <div class="gl"><span>fuori</span><span>dentro</span></div>
+</section>
+<!-- 3 -->
+<section class="tappa" id="t3" data-i="3">
+  <h2><span class="num">3</span> Il fuori si cerca dentro</h2>
+  <p class="when">Agostino · IV–V secolo d.C.</p>
+  <p class="formula">Cerchi qualcosa che sta fuori di te e ti orienta (Dio) e lo cerchi dentro di te.</p>
+  <p>Per Agostino c’è qualcosa di più grande di noi che dà un senso e una direzione alla vita: Dio. Non lo inventiamo noi e non coincide con i nostri pensieri: sta fuori e sopra di noi. Prima di lui, chi cercava ciò che orienta la vita lo cercava fuori, negli dèi o nell’ordine del mondo. Agostino cambia strada: per trovare Dio bisogna guardare dentro di sé.</p>
+  <p>Lui scrive che Dio è <em>«più intimo del mio intimo e più alto del mio punto più alto»</em>: dentro di me e sopra di me insieme. E consiglia: <em>«Non uscire fuori, rientra in te stesso: nell’uomo interiore abita la verità.»</em> Non vuol dire che la verità sia nostra. Vuol dire che ciò che ci supera si trova guardando dentro.</p>
+  <p class="prima">Rispetto a prima: in Omero la voce arrivava da sola. Qui la cerchi tu, guardando dentro. Ciò che ti orienta resta fuori e sopra di te: cambia la strada per raggiungerlo.</p>
+  <div class="gauge" role="img" aria-label="Circa a metà"><span class="m" style="left:55%"></span></div>
+  <div class="gl"><span>fuori</span><span>dentro</span></div>
+</section>
+
+<!-- 4 -->
+<section class="tappa" id="t4" data-i="4">
+  <h2><span class="num">4</span> Il dentro si esplora</h2>
+  <p class="when">Montaigne · XVI secolo</p>
+  <p class="formula">Il dentro non è un posto con delle risposte: è un paese strano da conoscere.</p>
+  <p>Montaigne vive durante le guerre di religione. Cattolici e protestanti sono sicuri di avere ragione e si uccidono per questo: ognuno porta le sue ragioni e nessuno riesce a convincere l’altro. Montaigne ne ricava un dubbio: forse la ragione e le grandi certezze non bastano a dire che cosa è vero. A 38 anni si ritira in una torre. Se non può fidarsi delle certezze degli altri, resta una cosa che può osservare con onestà: sé stesso. Scopre che la mente non sta ferma: produce «chimere e mostri fantastici». Decide di scrivere per vedere che cosa succede e nascono i <em>Saggi</em>: parla di sé, di quando cambia idea e di quando si contraddice. <em>«Io stesso sono la materia del mio libro.»</em></p>
+  <p class="prima">Rispetto a prima: in Agostino si entra per trovare Dio. Qui non c’è niente di più alto da trovare: il dentro si esplora perché, quando le certezze di fuori crollano, è l’unica cosa che si può osservare direttamente.</p>
+  <div class="gauge" role="img" aria-label="Più dentro che fuori"><span class="m" style="left:70%"></span></div>
+  <div class="gl"><span>fuori</span><span>dentro</span></div>
+</section>
+<!-- 5 -->
+<section class="tappa" id="t5" data-i="5">
+  <h2><span class="num">5</span> Il dentro si controlla</h2>
+  <p class="when">Descartes · XVII secolo</p>
+  <p class="formula">Il dentro è una stanza di controllo: la mente comanda, il corpo ubbidisce.</p>
+  <p>Inverno 1619, in Germania. Descartes, chiuso in una stanza con una stufa, si chiede: di che cosa posso essere davvero certo? Comincia a dubitare di tutto. Dei sensi, perché a volte ci ingannano (un bastone nell’acqua sembra spezzato). Del mondo, perché forse sta sognando e non se ne accorge. Alla fine trova una cosa che non può mettere in dubbio: sta dubitando, quindi sta pensando, quindi esiste. <em>Penso, dunque sono.</em></p>
+  <p>Anche Montaigne dubitava, ma stava bene nel dubbio. Descartes dubita per uscirne. Ora ha un punto fermo: la mente che pensa è l’unica cosa di cui è certo. Il corpo e i sensi sono quelli che lo hanno ingannato e le emozioni confondono il giudizio. Da qui la conclusione: se vuoi arrivare a verità sicure e vivere bene, deve guidare la mente. Accetti come vero solo ciò che vedi con chiarezza e tieni sotto controllo impulsi ed emozioni. Per lui l’io è la mente che governa corpo e passioni. Esplorarsi (Montaigne) e controllarsi (Descartes) sono i due volti dell’io moderno. Convivono, ma tirano in direzioni diverse.</p>
+  <p class="prima">Rispetto a prima: non si tratta più di guardarsi dentro, ma di dare ordini.</p>
+  <div class="gauge" role="img" aria-label="Molto dentro"><span class="m" style="left:85%"></span></div>
+  <div class="gl"><span>fuori</span><span>dentro</span></div>
+</section>
+<!-- 6 -->
+<section class="tappa" id="t6" data-i="6">
+  <h2><span class="num">6</span> Il dentro è la sorgente</h2>
+  <p class="when">Rousseau, Herder, i romantici · fine ’700 e ’800</p>
+  <p class="formula">La voce giusta è dentro di te ed è solo tua.</p>
+  <p>Rousseau apre le sue <em>Confessioni</em> con una frase che nessuno avrebbe scritto prima: <em>«Non sono fatto come nessuno di quelli che ho visto.»</em> Prima di allora ciò che contava di una persona era il posto che occupava (la famiglia, il ruolo, la religione), non quanto fosse diversa dagli altri. Herder aggiunge che ogni persona ha una propria misura e che va seguita. Per i romantici dentro ognuno c’è una voce autentica e vivere bene significa ascoltarla ed esprimerla, con l’arte e la sincerità. Da qui viene il «sii te stesso», il bisogno di far capire agli altri la propria originalità e il desiderio di essere diversi da tutti gli altri.</p>
+  <p class="prima">Rispetto a prima: la voce che per Omero stava negli dèi torna dentro e questa volta porta il nostro nome.</p>
+  <div class="gauge" role="img" aria-label="Quasi tutto dentro"><span class="m" style="left:95%"></span></div>
+  <div class="gl"><span>fuori</span><span>dentro</span></div>
+</section>
+<!-- 7 -->
+<section class="tappa" id="t7" data-i="7">
+  <h2><span class="num">7</span> E se la voce non fosse tutta mia?</h2>
+  <p class="when">Marx, Nietzsche, Freud · circa 1850–1930</p>
+  <p class="formula">Dentro di te ci sono voci che non hai scelto e non sempre le riconosci.</p>
+  <p>Nell’Ottocento, dopo i romantici, qualcuno comincia a dubitare. Se dentro di me c’è una voce solo mia, perché penso quasi le stesse cose delle persone con cui sono cresciuto? E perché a volte faccio cose che non volevo fare? Tre pensatori rispondono in tre modi.</p>
+  <h3 class="sosp">Marx: la voce arriva dalla società in cui vivi.</h3>
+  <p>Scrive: <em>non è la coscienza a determinare la vita, ma la vita a determinare la coscienza.</em> Cioè molte idee che ci sembrano naturali dipendono da come viviamo. «Ognuno ha quello che si merita», «il tempo è denaro», «la proprietà è un diritto naturale»: chi sta bene tende a trovarle evidenti, chi lavora tanto e non ce la fa le vede in modo diverso. Marx chiama ideologia le idee che sembrano naturali e valgono per tutti, ma che in realtà fanno comodo a chi sta in alto.</p>
+  <h3 class="sosp">Nietzsche: la voce arriva dalla storia.</h3>
+  <p>Sostiene che la «voce della coscienza», quella che ti fa sentire in colpa, non è nata con noi: dipende dai secoli che ci hanno preceduto. Il senso di colpa sembra una cosa naturale, ma è storica. Per secoli chi violava una regola veniva punito davanti a tutti e a forza di punizioni le persone hanno imparato a punirsi da sole, dentro. Pensa a quando provi vergogna per una cosa che nessuno ha visto: nessuno ti guarda, eppure ti senti in colpa. È la punizione degli altri, rimasta dentro. Aggiunge che anche i pensieri arrivano quando vogliono loro: <em>«esso» pensa, quando vuole, non quando «io» voglio.</em></p>
+  <h3 class="sosp">Freud: la voce arriva da una parte di te che non conosci.</h3>
+  <p>Chiama quella parte inconscio: il luogo dove restano desideri, paure e ricordi che non vogliamo vedere, ma che continuano a influenzarci. Si vede nei sogni e nei lapsus: un presidente di assemblea deve aprire la seduta e dice «dichiaro chiusa la seduta». Voleva dire il contrario, ma una parte di lui non vedeva l’ora di andarsene. Per questo Freud dice che l’io <em>non è padrone in casa propria.</em> Aggiunge un’ultima scoperta, che riguarda anche noi: dentro ognuno c’è il super-io, la voce dei genitori e delle regole che abbiamo ascoltato da piccoli. Suona come la nostra, ma viene da fuori.</p>
+  <p>Mettendo insieme i tre: la voce che senti tua può arrivare da fuori senza che tu lo sappia (Marx, Nietzsche) o da dentro, ma da una parte di te che non controlli (Freud). È di nuovo la scena di Achille e Atena, con un’altra faccia.</p>
+  <p class="prima">Rispetto a prima: con i romantici la voce interna era la più autentica. Ora non ci si può più fidare ciecamente.</p>
+  <div class="gauge" role="img" aria-label="Dentro, ma incrinato"><span class="m" style="left:60%"></span></div>
+  <div class="gl"><span>fuori</span><span>dentro</span></div>
+</section>
+<!-- 8 -->
+<section class="tappa" id="t8" data-i="8">
+  <h2><span class="num">8</span> Il dentro si costruisce</h2>
+  <p class="when">Foucault · circa 1960–1985</p>
+  <p class="formula">Il dentro non è qualcosa che c’è e basta: viene costruito.</p>
+  <p>Finora ci siamo chiesti se la voce sta dentro o fuori. Il filosofo Michel Foucault cambia domanda: il dentro non c’è già fatto. Qualcuno o qualcosa lo costruisce, in due modi.</p>
+  <h3 class="sosp">Da fuori</h3>
+  <p>Le pratiche e i poteri (la scuola, la famiglia, le regole, i modi di vivere) ci insegnano come comportarci, che cosa provare, chi essere. A scuola impari a stare seduto, ad aspettare il tuo turno, a essere valutato: abitudini che poi senti tue.</p>
+  <h3 class="sosp">Da noi stessi</h3>
+  <p>L’io è anche qualcosa su cui puoi lavorare. Gli antichi facevano esercizi spirituali: tenere un taccuino, fare ogni sera il bilancio della giornata, immaginare le difficoltà prima che arrivino. L’imperatore Marco Aurelio scriveva appunti solo per sé, ogni giorno. Oggi, in forme diverse, lo fanno un diario, la meditazione, la terapia: parlare con qualcuno per capirsi meglio e cambiare. In tutti i casi il dentro non è già dato: si costruisce con il lavoro su di sé.</p>
+  <p class="prima">Rispetto a prima: non si chiede più «la voce è mia o no?», ma «chi l’ha costruita e che cosa faccio io per costruirla?».</p>
+  <div class="gauge" role="img" aria-label="Metà e metà"><span class="m" style="left:45%"></span></div>
+  <div class="gl"><span>fuori</span><span>dentro</span></div>
+</section>
+<!-- 9 -->
+<section class="tappa" id="t9" data-i="9">
+  <h2><span class="num">9</span> Oggi: nessuno ti dice da dove deve venire la voce</h2>
+  <p class="formula">Devi decidere tu da dove viene la voce che ti orienta e devi anche essere te stesso e migliorarti.</p>
+  <p>Una giornata qualunque. Ti svegli e guardi il telefono: qualcuno ha commentato una tua foto, un video ti dice come dovresti allenarti, un amico ti scrive di uscire. A scuola un insegnante ti dice di impegnarti di più. In giro ripetono tutti le stesse frasi. Nel frattempo ti chiedi che cosa vuoi fare davvero e senti che dovresti saperlo già.</p>
+  <p>Quante voci hai sentito? E quali di queste le senti tue?</p>
+  <p>Ci sono tre idee e le ha messe in fila una parte della filosofia contemporanea.</p>
+  <h3 class="sosp">Manca un’autorità finale.</h3>
+  <p>Per Omero decidevano gli dèi, per Agostino Dio, per Platone l’ordine del mondo, per Descartes la ragione. Oggi nessuno è d’accordo su chi debba dire qual è la voce giusta. Hai più libertà di scegliere, ma devi scegliere da solo e nessuno ti garantisce che tu abbia scelto bene. Il filosofo Charles Taylor la mette così: la domanda «quale autorità mi orienta?» oggi resta senza una risposta comune.</p>
+  <h3 class="sosp">Le due strade della storia sono diventate due richieste.</h3>
+  <p>Essere se stessi, che per Montaigne e per i romantici era una scoperta, oggi è quasi un dovere: devi avere una passione, sapere chi sei, essere autentico. Controllarsi, che per Descartes era una tecnica, oggi è un compito continuo: lavorare su di sé, diventare la migliore versione di quello che sei, scavando dentro di sé per correggere le cose che di noi non ci piacciono. Le due richieste si scontrano e ne esce un paradosso: come fai a essere fedele a te stesso se devi lavorare per cambiarti? Che rapporto è? Il sociologo Alain Ehrenberg ha dato un nome a questa situazione, «la fatica di essere se stessi»: quando devi essere te stesso e allo stesso tempo migliorarti, essere te stesso diventa un lavoro e un lavoro stanca.</p>
+  <h3 class="sosp">Le voci da fuori ci sono ancora, ma si vedono meno.</h3>
+  <p>Famiglia, lingua, gruppo di amici, scuola, lavoro, pubblicità, schermi: tutti parlano dentro di te. Come per Achille, non sempre sai da dove arrivi la voce e quella che senti più tua può essere stata messa lì da qualcun altro. Ne parlano anche i testi che abbiamo letto la prima lezione.</p>
+  <p>Non abbiamo lasciato alle spalle nessuna delle tappe precedenti. Nella testa di una persona di oggi convivono la voce che ordina (Omero), la ricerca dentro di sé (Agostino), il controllo (Descartes), il «sii te stesso» (i romantici), il dubbio di non conoscersi (Freud) e il lavoro su di sé (Foucault).</p>
+  <p class="prima">Rispetto a prima: in tutte le tappe precedenti c’era un’autorità, o almeno una direzione chiara. Oggi manca una risposta comune.</p>
+  <div class="gauge" role="img" aria-label="Due segni: la sento dentro, ma arriva da fuori"><span class="m" style="left:85%"></span><span class="m o" style="left:20%"></span></div>
+  <div class="gl"><span>fuori</span><span>dentro</span></div>
+  <div class="gl" style="margin-top:4px"><span>○ da dove arriva</span><span>● come la sento</span></div>
+</section>
+
+<!-- ============ DOMANDE ============ -->
+<section class="finale" id="domande">
+  <h2>Esercizio</h2>
+
+  <div id="form-area">
+  <form id="f" novalidate>
+    <h3>Prima di rispondere</h3>
+    <p>Hai visto che per Achille il pensiero arriva con la faccia di una dea. Anche tu ogni giorno decidi in mezzo a più voci, solo che di solito non ci fai caso: la decisione ti sembra venire fuori da sola. Prova a rallentare una scelta e a guardare che cosa succede dentro e intorno.</p>
+
+    <h3>La situazione</h3>
+    <div class="situazione">
+      <p style="margin-top:0">È sabato sera. Una settimana fa hai promesso a un amico di aiutarlo a fare il trasloco: ha chiesto solo a te, perché gli altri sono via. Oggi ti arriva un invito a una festa a cui volevi andare da tempo e ci saranno anche persone che ti interessano. Se salti il trasloco, l’amico se la caverà, ma forse ci resterà male. Se salti la festa, non ci sarà un’altra occasione così.</p>
+      <p>Nella tua testa si sentono più voci. Poi c’è una cosa che non è una voce: una sensazione nello stomaco, che non sai ancora che cosa voglia dire.</p>
+    </div>
+
+    <h3 class="step">1. Che cosa decidi di fare?</h3>
+    <div class="seg" role="radiogroup" aria-label="Che cosa decidi di fare?">
+      <input type="radio" name="dec" id="dec-f" value="Vado alla festa"><label for="dec-f">Vado alla festa</label>
+      <input type="radio" name="dec" id="dec-t" value="Aiuto l’amico col trasloco"><label for="dec-t">Aiuto l’amico col trasloco</label>
+      <input type="radio" name="dec" id="dec-x" value="Cerco una terza strada"><label for="dec-x">Cerco una terza strada</label>
+    </div>
+
+    <h3 class="step">2. Dai un nome a ogni voce</h3>
+    <p class="hintline">Scrivi solo un nome breve (per esempio «il desiderio») e scegli da dove pensi che venga: da dentro di te, da fuori, oppure non lo sai.</p>
+    <div class="riga voce" role="radiogroup" aria-labelledby="c1">
+      <p class="voce-cit" id="c1">«Vai, te la sei meritata.»</p>
+      <div class="nome"><label for="n1">Nome della voce</label><input type="text" id="n1" maxlength="40" autocomplete="off"></div>
+      <div class="seg"><input type="radio" name="p1" id="p1-d" value="d"><label for="p1-d">Da dentro</label><input type="radio" name="p1" id="p1-n" value="n"><label for="p1-n">Non so</label><input type="radio" name="p1" id="p1-f" value="f"><label for="p1-f">Da fuori</label></div>
+    </div>
+    <div class="riga voce" role="radiogroup" aria-labelledby="c2">
+      <p class="voce-cit" id="c2">«Hai dato la tua parola.»</p>
+      <div class="nome"><label for="n2">Nome della voce</label><input type="text" id="n2" maxlength="40" autocomplete="off"></div>
+      <div class="seg"><input type="radio" name="p2" id="p2-d" value="d"><label for="p2-d">Da dentro</label><input type="radio" name="p2" id="p2-n" value="n"><label for="p2-n">Non so</label><input type="radio" name="p2" id="p2-f" value="f"><label for="p2-f">Da fuori</label></div>
+    </div>
+    <div class="riga voce" role="radiogroup" aria-labelledby="c3">
+      <p class="voce-cit" id="c3">«Se non ci sei, penseranno che sei il solito che sparisce.»</p>
+      <div class="nome"><label for="n3">Nome della voce</label><input type="text" id="n3" maxlength="40" autocomplete="off"></div>
+      <div class="seg"><input type="radio" name="p3" id="p3-d" value="d"><label for="p3-d">Da dentro</label><input type="radio" name="p3" id="p3-n" value="n"><label for="p3-n">Non so</label><input type="radio" name="p3" id="p3-f" value="f"><label for="p3-f">Da fuori</label></div>
+    </div>
+    <div class="riga voce" role="radiogroup" aria-labelledby="c4">
+      <p class="voce-cit" id="c4">«Tanto per lui non fa differenza.»</p>
+      <div class="nome"><label for="n4">Nome della voce</label><input type="text" id="n4" maxlength="40" autocomplete="off"></div>
+      <div class="seg"><input type="radio" name="p4" id="p4-d" value="d"><label for="p4-d">Da dentro</label><input type="radio" name="p4" id="p4-n" value="n"><label for="p4-n">Non so</label><input type="radio" name="p4" id="p4-f" value="f"><label for="p4-f">Da fuori</label></div>
+    </div>
+    <div class="riga voce" role="radiogroup" aria-labelledby="c5">
+      <p class="voce-cit" id="c5">La sensazione nello stomaco</p>
+      <div class="nome"><label for="n5">Nome della voce</label><input type="text" id="n5" maxlength="40" autocomplete="off"></div>
+      <div class="seg"><input type="radio" name="p5" id="p5-d" value="d"><label for="p5-d">Da dentro</label><input type="radio" name="p5" id="p5-n" value="n"><label for="p5-n">Non so</label><input type="radio" name="p5" id="p5-f" value="f"><label for="p5-f">Da fuori</label></div>
+    </div>
+
+    <h3 class="step">3. Qual è la voce che hai ascoltato di più e perché?</h3>
+    <label for="q3">La tua risposta</label>
+    <textarea id="q3" maxlength="800"></textarea>
+
+    <h3 class="step">4. Immagina di ripensare a questa sera tra qualche anno. Quale di queste voci, ascoltata, ti avrebbe fatto stare meglio con te stesso?</h3>
+    <label for="q4">La tua risposta</label>
+    <textarea id="q4" maxlength="800"></textarea>
+    <div class="hp" aria-hidden="true"><label for="site">Non compilare</label><input type="text" id="site" tabindex="-1" autocomplete="off"></div>
+    <p class="small">Non scrivere il tuo cognome. Le risposte vengono salvate in un Modulo Google del docente, insieme alla tua mappa della prova della nascita.</p>
+    <button class="send" type="submit" id="btn">Invia la risposta</button>
+    <p id="msg" role="status" aria-live="polite"></p>
+  </form>
+  </div>
+</section>
+
+</div>
+
+<script>
+(function () {
+  /* ================= CONFIGURAZIONE DELL'INVIO =================
+     1) Crea un Modulo Google. Domande per il sito (non si chiede più il gruppo):
+          - «Risposta» (paragrafo)   <- riceve sempre il testo completo di tutte le risposte
+        Domande facoltative (se le aggiungi, ogni parte arriva anche in una colonna sua):
+          - «Decisione» (risposta breve)
+          - «Voci»      (paragrafo)   nome, dentro/fuori di ogni voce
+          - «Perche»    (paragrafo)   risposta alla domanda 3
+          - «Futuro»    (paragrafo)   risposta alla domanda 4
+          - «Mappa»     (paragrafo)   prova della nascita
+          - «Fonti»     (paragrafo)   ordine delle fonti (primo esercizio)
+        Impostazioni: nessun accesso richiesto, NON attivare «Limita a una risposta».
+     2) Menu ⋮ in alto a destra → «Ottieni link precompilato».
+        In ogni domanda scrivi il segnaposto in maiuscolo: RISPOSTA, e (se ci sono)
+        DECISIONE, VOCI, PERCHE, FUTURO, MAPPA, FONTI.
+        Premi «Ottieni link», poi «Copia link» e incollalo qui sotto.
+     3) Le risposte arrivano in Risposte → «Collega a Fogli» → File → Scarica → .xlsx            */
+  var PREFILLED_LINK = "";
+  /* ============================================================ */
+
+  /* ---------- grafico e scroll ---------- */
+  var pts = [[60,45],[140,81],[220,135],[300,162],[380,189],[460,207],[540,144],[620,117],[700,189]];
+  var names = ["Omero","Platone","Agostino","Montaigne","Descartes","Romantici","Sospetto","Foucault","Oggi"];
+  var sections = [].slice.call(document.querySelectorAll('.tappa'));
+  var dots = [].slice.call(document.querySelectorAll('.dot'));
+  var prog = document.getElementById('prog');
+  var cap = document.getElementById('cap');
+
+  function setActive(i) {
+    sections.forEach(function (s, k) { s.classList.toggle('on', k === i - 1); });
+    dots.forEach(function (d) { d.classList.toggle('active', +d.getAttribute('data-i') === i); });
+    prog.setAttribute('points', pts.slice(0, i).map(function (p) { return p.join(','); }).join(' '));
+    cap.textContent = 'Tappa ' + i + ' · ' + names[i - 1];
+  }
+  setActive(1);
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) setActive(+e.target.getAttribute('data-i')); });
+    }, { rootMargin: '-35% 0px -55% 0px' });
+    sections.forEach(function (s) { io.observe(s); });
+  }
+
+
+  /* ---------- primo esercizio: ordine delle fonti ---------- */
+  var listaFonti = document.getElementById('fonti');
+  var fontiOk = document.getElementById('fonti-ok');
+  var fontiMsg = document.getElementById('fonti-msg');
+  var fontiConf = false;
+  (function mescola() {
+    var li = [].slice.call(listaFonti.children);
+    for (var i = li.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = li[i]; li[i] = li[j]; li[j] = t;
+    }
+    li.forEach(function (e) { listaFonti.appendChild(e); });
+  })();
+  function aggiornaFrecce() {
+    var li = [].slice.call(listaFonti.children);
+    li.forEach(function (e, i) {
+      e.querySelector('.su').disabled = (i === 0);
+      e.querySelector('.giu').disabled = (i === li.length - 1);
+    });
+  }
+  function testoFonte(e) {
+    var inp = e.querySelector('input');
+    if (inp) { var v = inp.value.trim(); return v ? 'altro: ' + v : 'altro'; }
+    return e.querySelector('.ft').textContent;
+  }
+  listaFonti.addEventListener('click', function (ev) {
+    var b = ev.target.closest('button');
+    if (!b) return;
+    var li = b.closest('li');
+    if (b.classList.contains('su') && li.previousElementSibling) listaFonti.insertBefore(li, li.previousElementSibling);
+    if (b.classList.contains('giu') && li.nextElementSibling) listaFonti.insertBefore(li.nextElementSibling, li);
+    aggiornaFrecce();
+    var nuovo = li.querySelector(b.classList.contains('su') ? '.su' : '.giu');
+    if (nuovo && !nuovo.disabled) nuovo.focus();
+    fontiConf = false; fontiMsg.textContent = ''; fontiOk.textContent = 'Confermo l’ordine';
+  });
+  fontiOk.addEventListener('click', function () {
+    fontiConf = true;
+    var li = [].slice.call(listaFonti.children);
+    fontiMsg.textContent = 'Ordine confermato. Più fuori di te: ' + testoFonte(li[0]) + '. Più dentro di te: ' + testoFonte(li[li.length - 1]) + '.';
+    fontiOk.textContent = 'Ordine confermato';
+  });
+  aggiornaFrecce();
+  function fontiTesto() {
+    if (!fontiConf) return 'esercizio non fatto';
+    return [].slice.call(listaFonti.children).map(testoFonte).join(' > ') + ' (dalla più fuori alla più dentro)';
+  }
+
+  /* ---------- prova della nascita ---------- */
+  var VOCI = [
+    { k: 'fam', t: 'la musica che mi piace' },
+    { k: 'pos', t: 'ciò che considero giusto e sbagliato' },
+    { k: 'lin', t: 'l’idea che ho di me' },
+    { k: 'pas', t: 'il mio carattere' },
+    { k: 'sgu', t: 'ciò che voglio fare da grande' },
+    { k: 'fut', t: 'le parole e le frasi che uso' },
+    { k: 'val', t: 'le cose di cui ho paura' },
+    { k: 'alt', t: 'altro' }
+  ];
+  var prova = document.getElementById('prova');
+  var vedi = document.getElementById('vedi');
+  var manca = document.getElementById('manca');
+  var risultato = document.getElementById('risultato');
+  var mappa = null;
+
+  function scelta(k) {
+    var el = document.querySelector('input[name="' + k + '"]:checked');
+    return el ? el.value : null;
+  }
+  function risposte() {
+    var n = 0;
+    for (var i = 0; i < 7; i++) { if (scelta(VOCI[i].k)) n++; }
+    return n;
+  }
+  function aggiornaStato() {
+    var n = risposte();
+    vedi.disabled = n < 7;
+    manca.textContent = n < 7 ? 'Mancano ' + (7 - n) + ' risposte (tranne «altro»).' : 'Pronto: premi il pulsante.';
+  }
+  prova.addEventListener('change', aggiornaStato);
+  aggiornaStato();
+
+  function etichetta(v) {
+    if (v.k !== 'alt') return v.t;
+    var t = document.getElementById('altro').value.trim();
+    return t ? 'altro: ' + t : 'altro';
+  }
+  function costruisciMappa() {
+    var res = { c: [], n: [], r: [] };
+    VOCI.forEach(function (v) {
+      var s = scelta(v.k);
+      if (s) res[s].push(etichetta(v));
+    });
+    return res;
+  }
+  function riempi(id, lista) {
+    var box = document.getElementById(id);
+    while (box.firstChild) box.removeChild(box.firstChild);
+    if (!lista.length) {
+      var p = document.createElement('p');
+      p.className = 'vuoto';
+      p.textContent = 'nessuna voce';
+      box.appendChild(p);
+      return;
+    }
+    var ul = document.createElement('ul');
+    lista.forEach(function (t) {
+      var li = document.createElement('li');
+      li.textContent = t;
+      ul.appendChild(li);
+    });
+    box.appendChild(ul);
+  }
+  prova.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if (risposte() < 7) return;
+    mappa = costruisciMappa();
+    riempi('m-c', mappa.c);
+    riempi('m-n', mappa.n);
+    riempi('m-r', mappa.r);
+    risultato.hidden = false;
+    vedi.textContent = 'Aggiorna la mappa';
+    risultato.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+  function mappaTesto() {
+    if (!mappa) return 'prova non fatta';
+    return 'resterebbe: ' + (mappa.r.join('; ') || '-') +
+      ' | non so: ' + (mappa.n.join('; ') || '-') +
+      ' | cambierebbe: ' + (mappa.c.join('; ') || '-');
+  }
+
+  /* ---------- invio della risposta ---------- */
+  var TOKENS = ['GRUPPO','RISPOSTA','DECISIONE','VOCI','PERCHE','FUTURO','MAPPA','FONTI'];
+  function parseLink(link) {
+    try {
+      var u = new URL(link);
+      var m = u.pathname.match(/\/forms\/d\/e\/([^\/]+)/);
+      if (!m) return null;
+      var keys = {};
+      u.searchParams.forEach(function (v, k) {
+        if (k.indexOf('entry.') === 0 && TOKENS.indexOf(v) !== -1) keys[v] = k;
+      });
+      if (!keys.RISPOSTA) return null;
+      return { url: 'https://docs.google.com/forms/d/e/' + m[1] + '/formResponse', keys: keys };
+    } catch (e) { return null; }
+  }
+
+  var POS = { d: 'dentro', n: 'non so', f: 'fuori' };
+  function raccogli() {
+    var dec = document.querySelector('input[name="dec"]:checked');
+    var voci = [], mancanti = false;
+    for (var i = 1; i <= 5; i++) {
+      var nome = document.getElementById('n' + i).value.trim();
+      var pos = document.querySelector('input[name="p' + i + '"]:checked');
+      if (nome.length < 2 || !pos) mancanti = true;
+      if (nome || pos) voci.push(nome + ' (' + (pos ? POS[pos.value] : 'non indicato') + ')');
+    }
+    return {
+      dec: dec ? dec.value : '',
+      voci: voci,
+      mancanti: mancanti,
+      q3: document.getElementById('q3').value.trim(),
+      q4: document.getElementById('q4').value.trim()
+    };
+  }
+
+  var form = document.getElementById('f');
+  var msg = document.getElementById('msg');
+  var btn = document.getElementById('btn');
+  var area = document.getElementById('form-area');
+
+  function err(t) { msg.className = 'err'; msg.textContent = t; }
+
+  function thanks() {
+    area.innerHTML = '<div class="ok"><strong>Grazie, risposta inviata.</strong></div>' +
+      '<button class="again" type="button" id="again">Scrivi un’altra risposta</button>';
+    document.getElementById('again').addEventListener('click', function () { window.location.hash = 'domande'; window.location.reload(); });
+  }
+
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    msg.className = ''; msg.textContent = '';
+    if (document.getElementById('site').value) { thanks(); return; }
+    var d = raccogli();
+    var g = '';
+    if (!d.dec) { err('Scegli che cosa decidi di fare (domanda 1).'); return; }
+    if (d.mancanti) { err('Domanda 2: dai un nome a tutte le cinque voci (compresa la sensazione nello stomaco) e scegli per ognuna dentro, fuori o non so.'); return; }
+    if (d.q3.length < 40) { err('Domanda 3: scrivi almeno due frasi.'); return; }
+    if (d.q4.length < 20) { err('Domanda 4: scrivi almeno una frase.'); return; }
+    var cfg = parseLink(PREFILLED_LINK);
+    if (!cfg) { err('Invio non ancora configurato: la risposta non è stata inviata.'); return; }
+    btn.disabled = true;
+    var vociTxt = d.voci.join('; ');
+    var completo = 'DECISIONE: ' + d.dec +
+      '\nVOCI: ' + vociTxt +
+      '\nPERCHE: ' + d.q3 +
+      '\nFUTURO: ' + d.q4 +
+      '\nFONTI: ' + fontiTesto();
+    var valori = { GRUPPO: g, RISPOSTA: completo, DECISIONE: d.dec, VOCI: vociTxt, PERCHE: d.q3, FUTURO: d.q4, MAPPA: mappaTesto(), FONTI: fontiTesto() };
+    var body = new URLSearchParams();
+    Object.keys(cfg.keys).forEach(function (t) { body.set(cfg.keys[t], valori[t]); });
+    fetch(cfg.url, { method: 'POST', mode: 'no-cors', body: body })
+      .then(thanks)
+      .catch(function () {
+        btn.disabled = false;
+        err('Non sono riuscito a inviare. Controlla la connessione e riprova: il testo è ancora qui.');
+      });
+  });
+})();
+</script>
+</body>
+</html>

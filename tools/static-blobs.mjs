@@ -17,11 +17,11 @@ const SCENE = {
   t1: { stato: 'B0', valore: 5, cluster: [136, 136], orbita: [0, 0] },
   t2: { stato: 'B1', valore: 25, cluster: [128, 148], orbita: [-6, 6] },
   t3: { stato: 'B3', valore: 55, cluster: [300, 80], orbita: [0, 0] },
-  t4: { stato: 'B2', valore: 70, cluster: [330, 478], orbita: [6, 4] },
+  t4: { stato: 'B2', valore: 70, cluster: [155, 445], orbita: [6, 4] },
   t5: { stato: 'B4', valore: 85, cluster: [150, 150], orbita: [-4, 8] },
   t6: { stato: 'B3', valore: 95, cluster: [300, 522], orbita: [0, 0], puntoNelVuoto: true },
   t7: { stato: 'B5', valore: 60, cluster: [150, 142], orbita: [4, -6] },
-  t8: { stato: 'B2', specchia: true, valore: 45, cluster: [270, 478], orbita: [-6, 4] },
+  t8: { stato: 'B2', specchia: true, valore: 45, cluster: [445, 445], orbita: [-6, 4] },
   t9: { stato: 'B4', valore: 85, vuoto: 20, cluster: [160, 460], orbita: [6, 2] },
   finale: { stato: 'B0', valore: null, cluster: [464, 136], orbita: [0, 0] },
 };
@@ -77,22 +77,21 @@ function scena(id, cfg, scuro) {
   return s + '</svg>';
 }
 
-/** Hero: simbolo LOGO grande, orbita lilla sottile e punto lilla (mockup home). */
+/** Hero: stato HERO (tre lobi a V più un disco separato, mockup home P1), orbita lilla sottile e punto lilla. */
 function hero() {
-  const stato = STATES.LOGO;
-  const T = 'translate(60 60) scale(0.8)';
+  const stato = STATES.HERO;
+  const T = 'translate(30 30) scale(0.9)';
   const shapes = blobShapes(stato);
   const clip = shapes.circles.filter((k) => +k.r > 0).map((k) => `<circle cx="${k.cx}" cy="${k.cy}" r="${k.r}"/>`).join('')
     + shapes.necks.filter(Boolean).map((d) => `<path d="${d}"/>`).join('');
-  const ang = (-55 * Math.PI) / 180;
+  const ang = (-63 * Math.PI) / 180;
   let s = SVG_OPEN('stage-svg hero-svg');
   s += `<defs>${blobDefs('b-hero', 'light', { grain: true })}<clipPath id="b-hero-c" transform="${T}">${clip}</clipPath></defs>`;
-  s += '<circle class="s-orbita-lilla" cx="300" cy="300" r="285"/>';
-  s += grappolo([82, 300]);
+  s += '<circle class="s-orbita-lilla" cx="300" cy="300" r="272"/>';
   s += `<g class="s-sotto">${guide({ cross: true })}</g>`;
   s += `<g class="blob" transform="${T}">${blobMarkup(stato, { id: 'b-hero', variant: 'light', grain: true })}</g>`;
   s += `<g class="s-on" clip-path="url(#b-hero-c)">${guide({ cross: true })}</g>`;
-  s += `<circle class="dot" cx="${n1(300 + 285 * Math.cos(ang))}" cy="${n1(300 + 285 * Math.sin(ang))}" r="11"/>`;
+  s += `<circle class="dot" cx="${n1(300 + 272 * Math.cos(ang))}" cy="${n1(300 + 272 * Math.sin(ang))}" r="11"/>`;
   return s + '</svg>';
 }
 

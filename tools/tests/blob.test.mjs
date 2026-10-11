@@ -17,7 +17,7 @@ test('ogni stato ha sempre quattro cerchi e il viewBox 600', () => {
     assert.equal(s.circles.length, 4, nome);
     for (const k of s.circles) assert.ok(k.x >= 0 && k.x <= 600 && k.y >= 0 && k.y <= 600 && k.r >= 0, nome);
   }
-  assert.deepEqual(Object.keys(STATES), ['B0', 'B1', 'B2', 'B3', 'B4', 'B5', 'LOGO']);
+  assert.deepEqual(Object.keys(STATES), ['B0', 'B1', 'B2', 'B3', 'B4', 'B5', 'HERO', 'LOGO']);
 });
 
 test('lerpState agli estremi coincide con gli stati e nel mezzo resta finito', () => {

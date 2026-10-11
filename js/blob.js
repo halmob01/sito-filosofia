@@ -32,25 +32,30 @@ export const STATES = {
     circles: [c(212, 322, 126), c(438, 256, 88), c(438, 256, 0), c(212, 322, 0)],
     links: [[0, 1]], k: 0.62,
   },
-  // B2: tre lobi asimmetrici ma bilanciati, in una catena ad arco aperto
+  // B2: tre lobi quasi uguali disposti a L, asimmetrico ma bilanciato; colli corti e concavi (riferimento 06, in alto a sinistra)
   B2: {
-    circles: [c(150, 345, 102), c(320, 255, 84), c(459, 335, 62), c(320, 255, 0)],
-    links: [[0, 1], [1, 2]], k: 0.7,
+    circles: [c(163, 252, 92), c(380, 232, 100), c(360, 446, 88), c(380, 232, 0)],
+    links: [[0, 1], [1, 2]], k: 0.55,
   },
   // B3: quattro lobi agli angoli di un quadrato, collegati solo tra vicini: foro centrale netto e circolare
   B3: {
     circles: [c(175, 175, 92), c(425, 175, 92), c(175, 425, 92), c(425, 425, 92)],
     links: [[0, 1], [1, 3], [3, 2], [2, 0]], k: 0.92,
   },
-  // B4: nodo compatto e allungato, quattro lobi molto fusi
+  // B4: nodo allargato e compatto, tre lobi simili in fila (leggermente arcuata) con strozzature concave visibili
   B4: {
-    circles: [c(172, 322, 96), c(278, 284, 112), c(400, 304, 96), c(472, 250, 52)],
-    links: [[0, 1], [1, 2], [2, 3]], k: 0.8,
+    circles: [c(148, 322, 74), c(300, 280, 82), c(452, 322, 74), c(300, 280, 0)],
+    links: [[0, 1], [1, 2]], k: 0.45,
   },
   // B5: il sistema si separa in tre elementi; i collegamenti restano dichiarati ma oltre la soglia il collo sparisce
   B5: {
     circles: [c(176, 336, 112), c(448, 226, 76), c(378, 458, 44), c(176, 336, 0)],
     links: [[0, 1], [0, 2], [1, 2]], k: 0.4,
+  },
+  // HERO: tre lobi connessi a V asimmetrica (hub e due bracci) più un disco separato, come nel mockup home P1
+  HERO: {
+    circles: [c(290, 300, 78), c(175, 175, 98), c(200, 440, 82), c(470, 195, 62)],
+    links: [[0, 1], [0, 2]], k: 0.6,
   },
   // LOGO: il simbolo del brand (quattro lobi più larghi, foro piccolo)
   LOGO: {
@@ -199,33 +204,45 @@ export function blobMarkup(state, opts = {}) {
 /* ---------- DOM ---------- */
 const NS = 'http://www.w3.org/2000/svg';
 
+/* Insieme di 4 cerchi e 6 colli dentro un nodo qualsiasi (anche un <clipPath>, che non ammette gruppi). */
+export function createShapes(parent) {
+  const doc = parent.ownerDocument;
+  return {
+    circles: [0, 1, 2, 3].map(() => parent.appendChild(doc.createElementNS(NS, 'circle'))),
+    necks: PAIRS.map(() => parent.appendChild(doc.createElementNS(NS, 'path'))),
+  };
+}
+
+/* Scrive le forme calcolate da blobShapes nei nodi (cerchi con r = 0 e colli assenti restano vuoti). */
+export function renderShapes(set, sh) {
+  sh.circles.forEach((k, i) => {
+    const el = set.circles[i];
+    el.setAttribute('cx', k.cx); el.setAttribute('cy', k.cy); el.setAttribute('r', k.r);
+  });
+  sh.necks.forEach((d, i) => set.necks[i].setAttribute('d', d));
+}
+
 /* Crea i nodi SVG dentro svgGroup (un <g>). Il riempimento (defs) deve già esistere: vedi blobDefs.
+   Se il gruppo contiene già un blob statico, lo svuota e lo ricostruisce con la stessa struttura.
    opts: { fillId, variant, flat, grain } — fillId è l'id passato a blobDefs. */
 export function createBlob(svgGroup, opts = {}) {
   const doc = svgGroup.ownerDocument;
   const o = { id: opts.fillId, variant: opts.variant, flat: opts.flat, grain: opts.grain };
+  svgGroup.replaceChildren();
   const blob = { group: svgGroup, layers: [] };
   for (const l of layers(o)) {
     const g = doc.createElementNS(NS, 'g');
     g.setAttribute('class', l.cls);
     for (const [k, v] of Object.entries(l.attrs)) g.setAttribute(k, v);
-    const circles = [0, 1, 2, 3].map(() => g.appendChild(doc.createElementNS(NS, 'circle')));
-    const necks = PAIRS.map(() => g.appendChild(doc.createElementNS(NS, 'path')));
     svgGroup.appendChild(g);
-    blob.layers.push({ circles, necks });
+    blob.layers.push(createShapes(g));
   }
   return blob;
 }
 
-/* Scrive lo stato nei nodi (cerchi con r = 0 e colli assenti restano vuoti, senza spazio nel disegno). */
+/* Scrive lo stato nei nodi di tutti gli strati. */
 export function renderBlob(blob, state) {
   const sh = blobShapes(state);
-  for (const L of blob.layers) {
-    sh.circles.forEach((k, i) => {
-      const el = L.circles[i];
-      el.setAttribute('cx', k.cx); el.setAttribute('cy', k.cy); el.setAttribute('r', k.r);
-    });
-    sh.necks.forEach((d, i) => L.necks[i].setAttribute('d', d));
-  }
+  for (const L of blob.layers) renderShapes(L, sh);
   return blob;
 }

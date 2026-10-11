@@ -318,13 +318,21 @@ button.send { margin-top: 28px; }
   font-variant-numeric: oldstyle-nums proportional-nums;
   font-kerning: normal;
 }
-/* restano in Geist */
+/* pulsanti, controlli e campi da completare: Garamond come il resto (richiesta del docente) */
 .esercizio button, .form-sec button,
-.seg label, .prova-titolo .kicker, .assemappa, input[type=text] {
+.seg label, input[type=text] {
+  font-family: var(--f-libro);
+  font-variant-numeric: normal;
+  letter-spacing: 0;
+}
+.esercizio button, .form-sec button, .seg label { font-size: 18px; font-weight: 500; }
+.fonti button { font-size: 20px; }
+input[type=text] { font-size: 18px; }
+/* restano in Geist solo le etichette maiuscole e l'asse */
+.prova-titolo .kicker, .assemappa {
   font-family: var(--f-sans);
   font-variant-numeric: normal;
 }
-input[type=text] { font-size: 16px; }
 
 /* titoli e istruzioni */
 .prova-titolo .tit {
@@ -399,7 +407,7 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] { box-shadow: inset 0 
 
 .ok { font-size: 22px; line-height: 1.3; padding: 22px 24px 22px 56px; }
 .ok strong { font-weight: 500; }
-button.again { font-size: 16px; }
+button.again { font-size: 18px; }
 
 /* invio in corso: nessun testo nuovo, solo una linea lilla che scorre sul pulsante */
 button.send { position: relative; overflow: hidden; }
@@ -412,4 +420,18 @@ form[aria-busy="true"] button.send[disabled] { opacity: 0.6; }
 @keyframes invio { from { transform: translateX(0); } to { transform: translateX(150%); } }
 @media (prefers-reduced-motion: reduce) {
   form[aria-busy="true"] button.send::after { animation: none; width: 100%; }
+}
+
+/* pulsanti della navigazione (Mappa, Chiudi) uniformati al Garamond */
+.barra-mappa, .pannello-chiudi { font-family: var(--f-libro); font-size: 18px; font-weight: 500; letter-spacing: 0; }
+
+/* su telefono il Garamond dei pill è più largo: colonne a misura del testo, «Resterebbe uguale» su una riga */
+@media (max-width: 559px) {
+  #prova .riga .seg { grid-template-columns: auto auto 1fr; }
+  .riga .seg label { font-size: 17px; padding: 6px 10px; white-space: nowrap; }
+  #prova .riga .seg { gap: 6px; }
+}
+@media (max-width: 379px) {
+  #prova .riga .seg { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .riga .seg label { white-space: normal; font-size: 16px; padding: 6px 6px; }
 }

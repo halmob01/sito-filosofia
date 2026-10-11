@@ -45,7 +45,7 @@ test('i font self-hosted sono quelli usati (non quelli di sistema)', async () =>
   await ctx.close();
 });
 
-test('prosa in EB Garamond «come un libro», formule e controlli in Geist', async () => {
+test('prosa in EB Garamond «come un libro», formule in Geist, controlli in Garamond', async () => {
   for (const w of [390, 1440]) {
     const { page, ctx } = await t.pagina({ width: w });
     const r = await page.evaluate(async () => {
@@ -65,7 +65,8 @@ test('prosa in EB Garamond «come un libro», formule e controlli in Geist', asy
     assert.ok(r.caricato, 'EB Garamond non caricato');
     for (const k of ['corpo', 'hero', 'ponte', 'blocco']) assert.match(r[k], /^"?EB Garamond/, k);
     assert.match(r.prima[0], /^"?EB Garamond/); assert.equal(r.prima[1], 'italic');
-    for (const k of ['formula', 'sosp', 'hint', 'seg']) assert.match(r[k], /^"?Geist/, k);
+    for (const k of ['formula', 'sosp', 'hint']) assert.match(r[k], /^"?Geist/, k);
+    assert.match(r.seg, /^"?EB Garamond/, 'seg');
     assert.match(r.istr, /^"?EB Garamond/, 'istruzioni degli esercizi');
     assert.equal(r.size, w < 1200 ? '20px' : '22px');
     assert.equal(r.align, w < 600 ? 'left' : 'justify');

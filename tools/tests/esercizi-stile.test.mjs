@@ -7,15 +7,15 @@ let t;
 before(async () => { t = await avvia(); });
 after(async () => { await t.chiudi(); });
 
-test('il testo degli esercizi è in Garamond; pulsanti, pill, metadati e campi a riga singola restano in Geist', async () => {
+test('il testo, i pulsanti e i campi degli esercizi sono in Garamond; restano in Geist solo le etichette maiuscole', async () => {
   for (const w of [390, 1440]) {
     const { page, ctx } = await t.pagina({ width: w });
     const f = await page.evaluate(() => {
       const ff = (s) => getComputedStyle(document.querySelector(s)).fontFamily;
       return {
         garamond: ['.es1 .tit', '.es1 .istruzioni', '.fonti .ft', '.estremo', '.es2 .nome', '.col .sub', '#risultato h3', '#manca',
-          '#domande .blocco-lilla h3', 'h3.step', '#f .hintline', '.voce-cit', '#f label[for=q3]', '#q3', '.small', '#msg'].map((s) => [s, ff(s)]),
-        geist: ['#fonti-ok', '#vedi', '.seg label', '.kicker', '.fonti .su', '#btn', '#n1', '#fonte-altro'].map((s) => [s, ff(s)]),
+          '#domande .blocco-lilla h3', 'h3.step', '#f .hintline', '.voce-cit', '#f label[for=q3]', '#q3', '.small', '#msg', '#fonti-ok', '#vedi', '.seg label', '.fonti .su', '#btn', '#n1', '#fonte-altro'].map((s) => [s, ff(s)]),
+        geist: ['.kicker'].map((s) => [s, ff(s)]),
         mono: getComputedStyle(document.querySelector('.fonti li'), '::before').fontFamily,
         dimTextarea: parseFloat(getComputedStyle(document.querySelector('#q3')).fontSize),
       };

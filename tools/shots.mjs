@@ -1,4 +1,4 @@
-// Screenshot di revisione. Uso: node shots.mjs <cartella-di-uscita> [full|viste|f2|tutto]
+// Screenshot di revisione. Uso: node shots.mjs <cartella-di-uscita> [full|viste|f2|f3|f3video|tutto]
 import fs from 'node:fs';
 import path from 'node:path';
 import { startServer, launch } from './lib.mjs';
@@ -75,6 +75,60 @@ if (modo === 'f2') {
     if (tag === 'desktop') await vista(page, 'esercizio-finale-desktop', '#domande .form-sec');
     await page.context().close();
   }
+}
+if (modo === 'f3') {
+  // F3: fotogrammi dell'apertura della tappa 2 (con animazioni attive) a 1440x900 e a 390x844
+  const nuova = async (w, h) => {
+    const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 1, reducedMotion: 'no-preference' });
+    const page = await ctx.newPage();
+    await page.goto(srv.url + '/index.html', { waitUntil: 'load' });
+    await page.evaluate(() => document.fonts.ready);
+    await page.addStyleTag({ content: 'html{scroll-behavior:auto !important}' });
+    return page;
+  };
+  {
+    const page = await nuova(1440, 900);
+    const g = await page.evaluate(() => { const r = document.querySelector('#t2 .scena').getBoundingClientRect(); return { top: r.top + scrollY, h: r.height }; });
+    for (const p of [0, 20, 40, 60, 80, 100]) {
+      await page.evaluate((y) => window.scrollTo(0, y), g.top + (p / 100) * (g.h - 900));
+      await page.waitForTimeout(1800);
+      await page.screenshot({ path: path.join(out, `t2-desktop-${String(p).padStart(3, '0')}.png`) });
+    }
+    await page.context().close();
+  }
+  {
+    const page = await nuova(390, 844);
+    const top = await page.evaluate(() => document.querySelector('#t2 .stage').getBoundingClientRect().top + scrollY);
+    await page.evaluate((y) => window.scrollTo(0, y), top - 844 + 40);    // lo stage è appena sotto il bordo: ancora lo stato di partenza
+    await page.waitForTimeout(150);
+    await page.screenshot({ path: path.join(out, 't2-m390-1-prima.png') });
+    await page.evaluate((y) => window.scrollTo(0, y), top - 844 + 250);   // lo stage entra: il morph parte
+    await page.waitForTimeout(330);
+    await page.screenshot({ path: path.join(out, 't2-m390-2-durante.png') });
+    await page.waitForTimeout(900);
+    await page.screenshot({ path: path.join(out, 't2-m390-3-dopo.png') });
+    await page.context().close();
+  }
+}
+if (modo === 'f3video') {
+  // F3: video (webm) dello scroll attraverso l'apertura della tappa 2 a 1440x900; poi: ffmpeg -i f3.webm f3.mp4
+  const dir = path.join(out, 'video-tmp');
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'no-preference', recordVideo: { dir, size: { width: 960, height: 600 } } });
+  const page = await ctx.newPage();
+  await page.goto(srv.url + '/index.html', { waitUntil: 'load' });
+  await page.evaluate(() => document.fonts.ready);
+  await page.addStyleTag({ content: 'html{scroll-behavior:auto !important}' });
+  const g = await page.evaluate(() => { const r = document.querySelector('#t2 .scena').getBoundingClientRect(); return { top: r.top + scrollY, h: r.height }; });
+  await page.evaluate((y) => window.scrollTo(0, y), g.top - 500);
+  await page.waitForTimeout(800);
+  await page.mouse.move(700, 450);
+  const tot = g.h - 900 + 700;
+  for (let d = 0; d < tot; d += 4) { await page.mouse.wheel(0, 4); await page.waitForTimeout(14); }
+  await page.waitForTimeout(1200);
+  await ctx.close();
+  const f = fs.readdirSync(dir).find((x) => x.endsWith('.webm'));
+  fs.renameSync(path.join(dir, f), path.join(out, 'f3-t2-scroll.webm'));
+  fs.rmdirSync(dir);
 }
 await browser.close();
 await srv.close();

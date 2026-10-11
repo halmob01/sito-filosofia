@@ -180,3 +180,9 @@
 @media (min-width: 1200px) {
   .scena-finale .stage-svg { width: min(100%, 440px); }
 }
+
+/* ---------- F3: apertura della tappa 2 alta ~180vh con contenitore sticky (solo desktop con motion) ----------
+   La classe scena-alta la mette lo script in testa e main.js la toglie se GSAP non c'è. Sticky di CSS, non il pin di GSAP.
+   overflow: clip (e non hidden) perché hidden farebbe da contenitore di scroll e romperebbe lo sticky. */
+html.scena-alta #t2 .scena { height: 180vh; height: 180svh; overflow: clip; }
+html.scena-alta #t2 .scena-grid { position: sticky; top: 0; height: 100vh; height: 100svh; min-height: 0; }

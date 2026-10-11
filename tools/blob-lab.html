@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laboratorio dei blob (strumento di sviluppo)</title>
+<style>
+  :root { --paper:#F7F7F6; --ink:#0A0A0A; --night:#080808; --lilac:#B799F7; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px/1.4 system-ui, sans-serif; background: var(--paper); color: var(--ink); }
+  h1 { font-size: 20px; margin: 0; padding: 20px 24px 4px; }
+  h2 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; margin: 0; padding: 18px 24px 10px; }
+  .nota { padding: 0 24px 8px; color: #666; max-width: 80ch; }
+  .riga { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0; border-top: 1px solid rgba(10,10,10,.18); }
+  .riga.quattro { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .riga.tre { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .tile { position: relative; padding: 8px; border-left: 1px solid rgba(127,127,127,.25); }
+  .tile:first-child { border-left: 0; }
+  .tile b { position: absolute; left: 12px; top: 10px; font: 600 12px/1 ui-monospace, monospace; }
+  .tile svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .chiaro { background: var(--paper); color: var(--ink); }
+  .scuro { background: var(--night); color: #fff; }
+  .scuro .riga { border-color: rgba(255,255,255,.25); }
+  .guida { stroke: currentColor; stroke-opacity: .25; stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .interp { display: grid; grid-template-columns: 1fr 1fr; }
+  .controlli { display: flex; flex-wrap: wrap; gap: 14px 20px; align-items: center; padding: 14px 24px; border-top: 1px solid rgba(10,10,10,.18); }
+  .controlli select, .controlli input[type=range] { font: inherit; }
+  .controlli input[type=range] { width: min(480px, 90vw); }
+  output { font: 600 13px ui-monospace, monospace; min-width: 4ch; }
+  @media (max-width: 900px) { .riga { grid-template-columns: repeat(4, minmax(0, 1fr)); } .interp { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<h1>Laboratorio dei blob</h1>
+<p class="nota">Strumento di sviluppo (non serve al deploy). Gli stati B0–B5 e LOGO di <code>js/blob.js</code>, su chiaro e su scuro, più un cursore che interpola tra due stati. Tutto è disegnato dal modulo con <code>createBlob</code> e <code>renderBlob</code>.</p>
+
+<section class="chiaro"><h2>Su chiaro</h2><div class="riga" id="riga-chiaro"></div></section>
+<section class="scuro"><h2>Su scuro (scelta: grigio scuro vellutato con bordo appena più chiaro)</h2><div class="riga" id="riga-scuro"></div></section>
+<section class="scuro"><h2>Varianti per lo scuro a confronto: A vellutato con bordo (scelta), B grigio freddo chiaro, C off-white</h2><div class="riga tre" id="riga-varianti"></div></section>
+
+<section>
+  <h2>Interpolazione</h2>
+  <div class="controlli">
+    <label>da <select id="da"></select></label>
+    <label>a <select id="a"></select></label>
+    <input type="range" id="t" min="0" max="1" step="0.001" value="0" aria-label="Interpolazione">
+    <output id="tv">0.00</output>
+  </div>
+  <div class="interp">
+    <div class="chiaro tile"><svg viewBox="0 0 600 600" id="i-chiaro"></svg></div>
+    <div class="scuro tile"><svg viewBox="0 0 600 600" id="i-scuro"></svg></div>
+  </div>
+</section>
+
+<script type="module">
+import { STATES, createBlob, renderBlob, lerpState, blobDefs } from '../js/blob.js';
+
+const NS = 'http://www.w3.org/2000/svg';
+const nomi = Object.keys(STATES);
+let n = 0;
+
+/** Costruisce un <svg> con defs, qualche guida e il blob. Restituisce { svg, blob }. */
+function scheda(parent, nome, variante, { etichetta = nome, grain = true } = {}) {
+  const id = 'lab' + (n++);
+  const tile = document.createElement('div');
+  tile.className = 'tile';
+  tile.innerHTML = `<b>${etichetta}</b>`;
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', '0 0 600 600');
+  svg.innerHTML = `<defs>${blobDefs(id, variante, { grain })}</defs>`
+    + '<line class="guida" x1="300" y1="0" x2="300" y2="600"/><line class="guida" x1="0" y1="300" x2="600" y2="300"/>';
+  const g = document.createElementNS(NS, 'g');
+  svg.appendChild(g);
+  const blob = createBlob(g, { fillId: id, variant: variante, grain });
+  if (nome) renderBlob(blob, STATES[nome]);
+  tile.appendChild(svg);
+  parent.appendChild(tile);
+  return { svg, blob };
+}
+
+for (const k of nomi) scheda(document.getElementById('riga-chiaro'), k, 'light');
+for (const k of nomi) scheda(document.getElementById('riga-scuro'), k, 'dark');
+
+const rv = document.getElementById('riga-varianti');
+// tre righe di tre varianti: B3, B2, B4
+for (const k of ['B3', 'B2', 'B4']) {
+  for (const [v, l] of [['dark', 'A'], ['darkCool', 'B'], ['darkPaper', 'C']]) scheda(rv, k, v, { etichetta: `${k} · ${l}` });
+}
+
+// interpolazione
+const da = document.getElementById('da'), a = document.getElementById('a'), t = document.getElementById('t'), tv = document.getElementById('tv');
+for (const sel of [da, a]) for (const k of nomi) sel.add(new Option(k, k));
+da.value = 'B1'; a.value = 'B3';
+const viste = [
+  { ...(() => { const id = 'ic'; const svg = document.getElementById('i-chiaro'); svg.innerHTML = `<defs>${blobDefs(id, 'light', { grain: true })}</defs><line class="guida" x1="300" y1="0" x2="300" y2="600"/><line class="guida" x1="0" y1="300" x2="600" y2="300"/>`; const g = document.createElementNS(NS, 'g'); svg.appendChild(g); return { blob: createBlob(g, { fillId: id, variant: 'light', grain: true }) }; })() },
+  { ...(() => { const id = 'is'; const svg = document.getElementById('i-scuro'); svg.innerHTML = `<defs>${blobDefs(id, 'dark', { grain: true })}</defs><line class="guida" x1="300" y1="0" x2="300" y2="600"/><line class="guida" x1="0" y1="300" x2="600" y2="300"/>`; const g = document.createElementNS(NS, 'g'); svg.appendChild(g); return { blob: createBlob(g, { fillId: id, variant: 'dark', grain: true }) }; })() },
+];
+function aggiorna() {
+  const s = lerpState(STATES[da.value], STATES[a.value], +t.value);
+  for (const v of viste) renderBlob(v.blob, s);
+  tv.textContent = (+t.value).toFixed(2);
+}
+for (const el of [da, a, t]) el.addEventListener('input', aggiorna);
+aggiorna();
+window.__lab = { STATES, lerpState };
+</script>
+</body>
+</html>

@@ -69,8 +69,16 @@
 .s-guida { stroke: var(--fg); stroke-opacity: 0.4; stroke-width: 1; }
 .s-asse { stroke: var(--fg); stroke-width: 1; }
 .s-tick line { stroke: var(--fg); stroke-width: 1; }
-.dot { fill: var(--lilac-strong); stroke: var(--dot-stroke, var(--ink)); stroke-width: 1.5; }
+.dot { fill: var(--lilac-strong); stroke: var(--bg); stroke-width: 2.5; }
 .dot-vuoto { fill: none; stroke: var(--lilac-strong); stroke-width: 3; }
+
+/* blob: forme opache; il bordo (su scuro) e la grana sono livelli dello stesso gruppo */
+.blob { pointer-events: none; }
+.b-grain { display: none; }                       /* grana statica, solo desktop */
+@media (min-width: 1200px) { .b-grain { display: inline; } }
+/* su chiaro le guide che attraversano il blob sono color carta: copia ritagliata sulla sagoma */
+.s-on line { stroke: var(--bg); stroke-opacity: 0.5; }
+.s-on .s-tick line { stroke: var(--bg); }
 
 @media (min-width: 768px) {
   .stage { width: min(100%, 440px); justify-self: end; margin-top: 20px; }
@@ -121,6 +129,7 @@
   --fg: #fff;
 }
 .rings-bg .s-rings circle { stroke: #fff; stroke-opacity: 0.1; stroke-width: 0.8; }
+.rings-bg .s-orbita { stroke-opacity: 0.22; }
 
 .ponte-testo p { font-size: var(--fs-lead); line-height: 1.55; margin-bottom: 1.2em; }
 .ponte-testo p:last-child { margin-bottom: 0; }

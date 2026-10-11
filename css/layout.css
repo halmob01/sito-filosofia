@@ -28,7 +28,7 @@ main { display: block; overflow-x: clip; }
   min-height: 44px;
   text-decoration: none;
 }
-.logo { flex: none; width: 32px; height: 32px; fill: var(--ink); }
+.logo { flex: none; width: 32px; height: 32px; color: var(--ink); }
 .wordmark {
   font-weight: 600;
   font-size: 15px;

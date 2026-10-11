@@ -1,0 +1,928 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Dentro o fuori? Da dove viene ciò che ci orienta</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/anton-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/geist-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/geist-latin-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/scenes.css">
+</head>
+<body>
+
+<header class="site-header surf-light" data-ui>
+  <div class="header-in">
+    <a class="brand" href="#apertura">
+      <svg class="logo" viewBox="0 0 100 100" width="32" height="32" aria-hidden="true" focusable="false">
+        <circle cx="25" cy="25" r="19"/><circle cx="75" cy="25" r="19"/>
+        <circle cx="25" cy="75" r="19"/><circle cx="75" cy="75" r="19"/>
+        <path d="M41.7 16Q50 21 58.3 16L58.3 34Q50 29 41.7 34Z"/>
+        <path d="M41.7 66Q50 71 58.3 66L58.3 84Q50 79 41.7 84Z"/>
+        <path d="M16 41.7Q21 50 16 58.3L34 58.3Q29 50 34 41.7Z"/>
+        <path d="M66 41.7Q71 50 66 58.3L84 58.3Q79 50 84 41.7Z"/>
+      </svg>
+      <span class="wordmark">Storia<br>dell’interiorità</span>
+    </a>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ APERTURA E PROVA ============ -->
+<section id="apertura">
+
+  <div class="hero surf-light">
+    <div class="grid hero-grid">
+      <h1 class="display">Da dove vengono le voci che sentite vostre?</h1>
+      <div class="hero-stage" aria-hidden="true">
+        <svg class="stage-svg hero-svg" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+      <g class="s-rings">
+      <circle cx="300" cy="300" r="40"/>
+      <circle cx="300" cy="300" r="64"/>
+      <circle cx="300" cy="300" r="88"/>
+      <circle cx="300" cy="300" r="112"/>
+      <circle cx="300" cy="300" r="136"/>
+      <circle cx="300" cy="300" r="160"/>
+      <circle cx="300" cy="300" r="184"/>
+      <circle cx="300" cy="300" r="208"/>
+      <circle cx="300" cy="300" r="232"/>
+      </g>
+      <circle class="s-orbita-lilla" cx="300" cy="300" r="238"/>
+      <line class="s-guida" x1="300" y1="0" x2="300" y2="600"/>
+      <line class="s-guida" x1="0" y1="300" x2="600" y2="300"/>
+      <circle class="dot" cx="426.1" cy="98.2" r="9"/>
+    </svg>
+      </div>
+      <p class="hero-lead">Nel lavoro di gruppo avete messo in ordine otto voci e poi avete spiegato agli altri perché una sta sopra e un’altra sotto. Quelle in alto sono le voci più importanti, le più vostre, quelle che vi aiutano a orientarvi, cioè a capire che cosa è importante e che cosa non lo è, che cosa è giusto fare e che cosa non lo è, in base alla vostra identità, a chi siete voi.</p>
+    </div>
+  </div>
+
+  <div class="esercizio es1 surf-light">
+    <div class="grid">
+      <div class="es-intro">
+        <p class="prova-titolo"><span class="kicker">Primo esercizio</span><span class="vh">: </span><span class="tit">le voci della tua identità</span></p>
+        <p class="istruzioni">Da qui in poi lavori da solo. Queste voci formano la tua identità e ti orientano. Mettile in ordine con le frecce: in alto quelle che ti orientano più da fuori di te, in basso quelle che ti orientano più da dentro di te.</p>
+      </div>
+      <div class="es-modulo">
+        <div class="asse-wrap">
+          <p class="estremo">↑ più fuori di me</p>
+          <ol class="fonti" id="fonti">
+      <li data-k="fam"><span class="ft">la mia famiglia</span><span class="fb"><button type="button" class="su" aria-label="Sposta su: la mia famiglia">↑</button><button type="button" class="giu" aria-label="Sposta giù: la mia famiglia">↓</button></span></li>
+      <li data-k="pos"><span class="ft">il posto o la zona da cui vengo</span><span class="fb"><button type="button" class="su" aria-label="Sposta su: il posto o la zona da cui vengo">↑</button><button type="button" class="giu" aria-label="Sposta giù: il posto o la zona da cui vengo">↓</button></span></li>
+      <li data-k="lin"><span class="ft">la lingua o le lingue che parlo</span><span class="fb"><button type="button" class="su" aria-label="Sposta su: la lingua o le lingue che parlo">↑</button><button type="button" class="giu" aria-label="Sposta giù: la lingua o le lingue che parlo">↓</button></span></li>
+      <li data-k="pas"><span class="ft">il mio passato, le cose che ho vissuto</span><span class="fb"><button type="button" class="su" aria-label="Sposta su: il mio passato, le cose che ho vissuto">↑</button><button type="button" class="giu" aria-label="Sposta giù: il mio passato, le cose che ho vissuto">↓</button></span></li>
+      <li data-k="sgu"><span class="ft">lo sguardo degli altri, quello che pensano di me</span><span class="fb"><button type="button" class="su" aria-label="Sposta su: lo sguardo degli altri, quello che pensano di me">↑</button><button type="button" class="giu" aria-label="Sposta giù: lo sguardo degli altri, quello che pensano di me">↓</button></span></li>
+      <li data-k="fut"><span class="ft">il progetto che ho per il futuro</span><span class="fb"><button type="button" class="su" aria-label="Sposta su: il progetto che ho per il futuro">↑</button><button type="button" class="giu" aria-label="Sposta giù: il progetto che ho per il futuro">↓</button></span></li>
+      <li data-k="val"><span class="ft">i miei valori</span><span class="fb"><button type="button" class="su" aria-label="Sposta su: i miei valori">↑</button><button type="button" class="giu" aria-label="Sposta giù: i miei valori">↓</button></span></li>
+      <li data-k="alt"><span class="ft"><label for="fonte-altro" class="lbl-altro">altro (scegli tu quale):</label> <input type="text" id="fonte-altro" maxlength="40" autocomplete="off"></span><span class="fb"><button type="button" class="su" aria-label="Sposta su: altro">↑</button><button type="button" class="giu" aria-label="Sposta giù: altro">↓</button></span></li>
+  </ol>
+          <p class="estremo">↓ più dentro di me</p>
+        </div>
+        <button type="button" class="vedi" id="fonti-ok">Confermo l’ordine</button>
+        <p class="manca" id="fonti-msg" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="esercizio es2 surf-light">
+    <div class="grid">
+      <div class="es-intro">
+        <p class="prova-titolo"><span class="kicker">Secondo esercizio</span><span class="vh">: </span><span class="tit">la prova della nascita</span></p>
+        <p class="istruzioni">Immagina di essere cresciuto in un altro posto e in un’altra famiglia. Per ognuna di queste cose che senti tue rispondi: resterebbe uguale? Se cambierebbe, forse viene più da fuori. Se resterebbe uguale, forse viene più da dentro. È una prova, non una regola.</p>
+      </div>
+      <div class="es-modulo">
+        <form id="prova" novalidate>
+    <div class="riga" role="radiogroup" aria-labelledby="n-fam">
+      <div class="nome" id="n-fam">la musica che mi piace</div>
+      <div class="seg">
+        <input type="radio" name="fam" id="fam-c" value="c"><label for="fam-c">Cambierebbe</label>
+        <input type="radio" name="fam" id="fam-n" value="n"><label for="fam-n">Non so</label>
+        <input type="radio" name="fam" id="fam-r" value="r"><label for="fam-r">Resterebbe uguale</label>
+      </div>
+    </div>
+    <div class="riga" role="radiogroup" aria-labelledby="n-pos">
+      <div class="nome" id="n-pos">ciò che considero giusto e sbagliato</div>
+      <div class="seg">
+        <input type="radio" name="pos" id="pos-c" value="c"><label for="pos-c">Cambierebbe</label>
+        <input type="radio" name="pos" id="pos-n" value="n"><label for="pos-n">Non so</label>
+        <input type="radio" name="pos" id="pos-r" value="r"><label for="pos-r">Resterebbe uguale</label>
+      </div>
+    </div>
+    <div class="riga" role="radiogroup" aria-labelledby="n-lin">
+      <div class="nome" id="n-lin">l’idea che ho di me</div>
+      <div class="seg">
+        <input type="radio" name="lin" id="lin-c" value="c"><label for="lin-c">Cambierebbe</label>
+        <input type="radio" name="lin" id="lin-n" value="n"><label for="lin-n">Non so</label>
+        <input type="radio" name="lin" id="lin-r" value="r"><label for="lin-r">Resterebbe uguale</label>
+      </div>
+    </div>
+    <div class="riga" role="radiogroup" aria-labelledby="n-pas">
+      <div class="nome" id="n-pas">il mio carattere (per esempio se sono timido o impulsivo)</div>
+      <div class="seg">
+        <input type="radio" name="pas" id="pas-c" value="c"><label for="pas-c">Cambierebbe</label>
+        <input type="radio" name="pas" id="pas-n" value="n"><label for="pas-n">Non so</label>
+        <input type="radio" name="pas" id="pas-r" value="r"><label for="pas-r">Resterebbe uguale</label>
+      </div>
+    </div>
+    <div class="riga" role="radiogroup" aria-labelledby="n-sgu">
+      <div class="nome" id="n-sgu">ciò che voglio fare da grande</div>
+      <div class="seg">
+        <input type="radio" name="sgu" id="sgu-c" value="c"><label for="sgu-c">Cambierebbe</label>
+        <input type="radio" name="sgu" id="sgu-n" value="n"><label for="sgu-n">Non so</label>
+        <input type="radio" name="sgu" id="sgu-r" value="r"><label for="sgu-r">Resterebbe uguale</label>
+      </div>
+    </div>
+    <div class="riga" role="radiogroup" aria-labelledby="n-fut">
+      <div class="nome" id="n-fut">le parole e le frasi che uso</div>
+      <div class="seg">
+        <input type="radio" name="fut" id="fut-c" value="c"><label for="fut-c">Cambierebbe</label>
+        <input type="radio" name="fut" id="fut-n" value="n"><label for="fut-n">Non so</label>
+        <input type="radio" name="fut" id="fut-r" value="r"><label for="fut-r">Resterebbe uguale</label>
+      </div>
+    </div>
+    <div class="riga" role="radiogroup" aria-labelledby="n-val">
+      <div class="nome" id="n-val">le cose di cui ho paura</div>
+      <div class="seg">
+        <input type="radio" name="val" id="val-c" value="c"><label for="val-c">Cambierebbe</label>
+        <input type="radio" name="val" id="val-n" value="n"><label for="val-n">Non so</label>
+        <input type="radio" name="val" id="val-r" value="r"><label for="val-r">Resterebbe uguale</label>
+      </div>
+    </div>
+    <div class="riga" role="radiogroup" aria-labelledby="n-alt">
+      <div class="nome" id="n-alt"><label for="altro">altro (facoltativo: scrivi quale)</label><input type="text" id="altro" maxlength="40" autocomplete="off"></div>
+      <div class="seg">
+        <input type="radio" name="alt" id="alt-c" value="c"><label for="alt-c">Cambierebbe</label>
+        <input type="radio" name="alt" id="alt-n" value="n"><label for="alt-n">Non so</label>
+        <input type="radio" name="alt" id="alt-r" value="r"><label for="alt-r">Resterebbe uguale</label>
+      </div>
+    </div>
+    <button type="submit" class="vedi" id="vedi" disabled>Vedi dove cadono</button>
+    <p class="manca" id="manca" aria-live="polite">Rispondi per tutte le voci, tranne «altro».</p>
+  </form>
+
+        <div id="risultato" hidden>
+    <h3>La tua mappa</h3>
+    <div class="mappa">
+      <div class="col"><h4>Più fuori di me</h4><p class="sub">cambierebbe</p><div id="m-c"></div></div>
+      <div class="col"><h4>Il confine è incerto</h4><p class="sub">non so</p><div id="m-n"></div></div>
+      <div class="col"><h4>Più dentro di me</h4><p class="sub">resterebbe uguale</p><div id="m-r"></div></div>
+    </div>
+    <div class="assemappa" aria-hidden="true"><span>fuori</span><span>dentro</span></div>
+  </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ponte-sec surf-dark">
+    <svg class="rings-bg" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+      <g class="s-rings">
+      <circle cx="300" cy="300" r="60"/>
+      <circle cx="300" cy="300" r="94"/>
+      <circle cx="300" cy="300" r="128"/>
+      <circle cx="300" cy="300" r="162"/>
+      <circle cx="300" cy="300" r="196"/>
+      <circle cx="300" cy="300" r="230"/>
+      <circle cx="300" cy="300" r="264"/>
+      <circle cx="300" cy="300" r="298"/>
+      <circle cx="300" cy="300" r="332"/>
+      <circle cx="300" cy="300" r="366"/>
+      <circle cx="300" cy="300" r="400"/>
+      <circle cx="300" cy="300" r="434"/>
+      <circle cx="300" cy="300" r="468"/>
+      <circle cx="300" cy="300" r="502"/>
+      </g>
+    </svg>
+    <div class="grid ponte-grid">
+      <div class="ponte-testo">
+        <p class="ponte">Le cose che costruiscono la tua identità possono stare dentro o fuori di te: per il nostro discorso non cambia. Quello che conta è che la tua identità ti orienta: ti parla e ti dice che cosa è giusto e che cosa è sbagliato. Siamo abituati a pensare che questa voce agisca da dentro. Ma non è proprio così.</p>
+        <p>Dare per scontato che ci sia un dentro separato dal fuori ci sembra naturale, ma è un modo di pensare che ha una storia ed è cambiato più volte. Per capire da dove viene la voce che ti orienta, vediamo come lo hanno pensato altri prima di noi.</p>
+        <p>In ogni tappa ci chiediamo una cosa sola: dove sta la voce che ti dice che cosa fare e che cosa vale? Dentro di te o fuori? La risposta cambia. Non è un percorso dal peggio al meglio: è un confine che si sposta.</p>
+        <p class="hintline">Scorri la pagina: la linea qui sotto ti dice a che punto sei. Puoi anche toccare un numero per andare a quella tappa.</p>
+      </div>
+      <div class="grafico" data-ui>
+        <div class="plot">
+          <div class="axis" aria-hidden="true"><span>fuori<i class="x"> di me</i></span><span>dentro<i class="x"> di me</i></span></div>
+          <svg viewBox="0 0 830 250" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <line class="g-bordo" x1="0" y1="36" x2="830" y2="36"/>
+            <line class="g-bordo" x1="0" y1="216" x2="830" y2="216"/>
+            <line class="g-mezzo" x1="0" y1="126" x2="830" y2="126"/>
+            <polyline class="g-linea" points="41.5,45 134.9,81 228.3,135 321.6,162 415.0,189 508.4,207 601.8,144 695.1,117 788.5,189" vector-effect="non-scaling-stroke"/>
+            <polyline class="g-tratto" points="695.1,117 788.5,72" vector-effect="non-scaling-stroke"/>
+          </svg>
+          <a class="nodo" data-i="1" href="#t1" aria-label="Tappa 1: Omero" style="left:5.00%;top:18.00%"><span class="n">1</span></a>
+          <a class="nodo" data-i="2" href="#t2" aria-label="Tappa 2: Platone" style="left:16.25%;top:32.40%"><span class="n">2</span></a>
+          <a class="nodo" data-i="3" href="#t3" aria-label="Tappa 3: Agostino" style="left:27.51%;top:54.00%"><span class="n">3</span></a>
+          <a class="nodo" data-i="4" href="#t4" aria-label="Tappa 4: Montaigne" style="left:38.75%;top:64.80%"><span class="n">4</span></a>
+          <a class="nodo" data-i="5" href="#t5" aria-label="Tappa 5: Descartes" style="left:50.00%;top:75.60%"><span class="n">5</span></a>
+          <a class="nodo" data-i="6" href="#t6" aria-label="Tappa 6: i romantici" style="left:61.25%;top:82.80%"><span class="n">6</span></a>
+          <a class="nodo" data-i="7" href="#t7" aria-label="Tappa 7: il sospetto" style="left:72.51%;top:57.60%"><span class="n">7</span></a>
+          <a class="nodo" data-i="8" href="#t8" aria-label="Tappa 8: Foucault" style="left:83.75%;top:46.80%"><span class="n">8</span></a>
+          <a class="nodo" data-i="9" href="#t9" aria-label="Tappa 9: oggi, come la sento" style="left:95.00%;top:75.60%"><span class="n">9</span></a>
+          <a class="nodo vuoto" data-i="9" href="#t9" aria-label="Tappa 9: oggi, da dove arriva" style="left:95.00%;top:28.80%"><span class="n">9</span></a>
+          <span class="nm" aria-hidden="true" style="left:5.00%">Omero</span>
+          <span class="nm" aria-hidden="true" style="left:16.25%">Platone</span>
+          <span class="nm" aria-hidden="true" style="left:27.51%">Agostino</span>
+          <span class="nm" aria-hidden="true" style="left:38.75%">Montaigne</span>
+          <span class="nm" aria-hidden="true" style="left:50.00%">Descartes</span>
+          <span class="nm" aria-hidden="true" style="left:61.25%">Romantici</span>
+          <span class="nm" aria-hidden="true" style="left:72.51%">Sospetto</span>
+          <span class="nm" aria-hidden="true" style="left:83.75%">Foucault</span>
+          <span class="nm" aria-hidden="true" style="left:95.00%">Oggi</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- 1 -->
+<section class="tappa" id="t1" data-i="1">
+  <header class="scena surf-dark">
+    <div class="grid scena-grid">
+      <span class="num-grande" aria-hidden="true">01</span>
+      <h2 class="scena-titolo"><span class="num vh">1</span> Il dentro è fuori</h2>
+      <p class="when">Omero · circa VIII secolo a.C.</p>
+      <p class="formula">La voce nasce dentro la testa, ma viene vissuta come la voce di un dio.</p>
+      <div class="stage" aria-hidden="true">
+        <svg class="stage-svg" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+      <g class="s-rings">
+      <circle cx="300" cy="300" r="34"/>
+      <circle cx="300" cy="300" r="53"/>
+      <circle cx="300" cy="300" r="72"/>
+      <circle cx="300" cy="300" r="91"/>
+      <circle cx="300" cy="300" r="110"/>
+      <circle cx="300" cy="300" r="129"/>
+      <circle cx="300" cy="300" r="148"/>
+      <circle cx="300" cy="300" r="167"/>
+      <circle cx="300" cy="300" r="186"/>
+      <circle cx="300" cy="300" r="205"/>
+      <circle cx="300" cy="300" r="224"/>
+      <circle cx="300" cy="300" r="243"/>
+      <circle cx="300" cy="300" r="262"/>
+      </g>
+      <circle class="s-orbita" cx="300" cy="300" r="268"/>
+      <line class="s-guida" x1="300" y1="0" x2="300" y2="600"/>
+      <line class="s-guida" x1="24" y1="0" x2="24" y2="600"/>
+      <line class="s-asse" x1="24" y1="300" x2="300" y2="300"/>
+      <g class="s-tick">
+      <line x1="24.0" y1="291" x2="24.0" y2="309"/>
+      <line x1="51.6" y1="295" x2="51.6" y2="305"/>
+      <line x1="79.2" y1="295" x2="79.2" y2="305"/>
+      <line x1="106.8" y1="295" x2="106.8" y2="305"/>
+      <line x1="134.4" y1="295" x2="134.4" y2="305"/>
+      <line x1="162.0" y1="291" x2="162.0" y2="309"/>
+      <line x1="189.6" y1="295" x2="189.6" y2="305"/>
+      <line x1="217.2" y1="295" x2="217.2" y2="305"/>
+      <line x1="244.8" y1="295" x2="244.8" y2="305"/>
+      <line x1="272.4" y1="295" x2="272.4" y2="305"/>
+      <line x1="300.0" y1="291" x2="300.0" y2="309"/>
+      </g>
+      <circle class="dot" cx="37.8" cy="300" r="9"/>
+      </svg>
+      </div>
+    </div>
+  </header>
+  <div class="lettura surf-light">
+    <div class="grid lettura-grid">
+      <div class="indice" aria-hidden="true"><span class="ind-n">01</span><span class="ind-quando">Omero · circa VIII secolo a.C.</span></div>
+      <div class="corpo">
+        <p>Achille è furioso: Agamennone gli ha tolto la sua schiava davanti a tutto l’esercito. Mette la mano sulla spada. Il poema dice che sta ancora ragionando, indeciso tra sguainare e trattenersi. A questo punto compare Atena, lo afferra per i capelli e gli dice di fermarsi. Nessun altro la vede. Achille obbedisce.</p>
+        <p>Un uomo di oggi direbbe «ci ho pensato un attimo e mi sono fermato». Per Achille, invece, la voce che lo guida non viene da dentro: ha la faccia di una dea. Anche Agamennone, quando riconosce di avere sbagliato, dice: <em>non sono stato io, è stata la Follia mandata da Zeus.</em></p>
+        <p>Lo psicologo Julian Jaynes ha proposto una spiegazione: la coscienza ha una storia. Noi abbiamo imparato a riconoscere come nostra la voce che sentiamo dentro la testa mentre pensiamo. Secondo Jaynes la società di Omero non lo faceva ancora: dentro la testa si sentivano voci che le persone non riconoscevano come proprie e le attribuivano a un dio. Ecco gli dèi: una voce interna vissuta come esterna. È un’ipotesi molto discussa e molti studiosi la rifiutano, ma l’immagine è efficace: il fuori sta dentro la testa.</p>
+        <p class="nota">I greci avevano già parole come cuore, respiro, anima. Quello che manca è l’abitudine di dire «questo pensiero è mio».</p>
+      </div>
+
+      <div class="indicatore">
+        <div aria-label="Quasi tutto fuori" class="gauge" role="img"><span class="m" style="left:5%"></span></div>
+        <div class="gl"><span>fuori</span><span>dentro</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 2 -->
+<section class="tappa" id="t2" data-i="2">
+  <header class="scena surf-light">
+    <div class="grid scena-grid">
+      <span class="num-grande" aria-hidden="true">02</span>
+      <h2 class="scena-titolo"><span class="num vh">2</span> Il dentro si divide</h2>
+      <p class="when">Platone · IV secolo a.C.</p>
+      <p class="formula">C’è una lotta dentro di te, ma ciò che è giusto sta ancora fuori.</p>
+      <div class="stage" aria-hidden="true">
+        <svg class="stage-svg" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+      <g class="s-rings">
+      <circle cx="300" cy="300" r="34"/>
+      <circle cx="300" cy="300" r="53"/>
+      <circle cx="300" cy="300" r="72"/>
+      <circle cx="300" cy="300" r="91"/>
+      <circle cx="300" cy="300" r="110"/>
+      <circle cx="300" cy="300" r="129"/>
+      <circle cx="300" cy="300" r="148"/>
+      <circle cx="300" cy="300" r="167"/>
+      <circle cx="300" cy="300" r="186"/>
+      <circle cx="300" cy="300" r="205"/>
+      <circle cx="300" cy="300" r="224"/>
+      <circle cx="300" cy="300" r="243"/>
+      <circle cx="300" cy="300" r="262"/>
+      </g>
+      <circle class="s-orbita" cx="300" cy="300" r="268"/>
+      <line class="s-guida" x1="300" y1="0" x2="300" y2="600"/>
+      <line class="s-guida" x1="24" y1="0" x2="24" y2="600"/>
+      <line class="s-asse" x1="24" y1="300" x2="300" y2="300"/>
+      <g class="s-tick">
+      <line x1="24.0" y1="291" x2="24.0" y2="309"/>
+      <line x1="51.6" y1="295" x2="51.6" y2="305"/>
+      <line x1="79.2" y1="295" x2="79.2" y2="305"/>
+      <line x1="106.8" y1="295" x2="106.8" y2="305"/>
+      <line x1="134.4" y1="295" x2="134.4" y2="305"/>
+      <line x1="162.0" y1="291" x2="162.0" y2="309"/>
+      <line x1="189.6" y1="295" x2="189.6" y2="305"/>
+      <line x1="217.2" y1="295" x2="217.2" y2="305"/>
+      <line x1="244.8" y1="295" x2="244.8" y2="305"/>
+      <line x1="272.4" y1="295" x2="272.4" y2="305"/>
+      <line x1="300.0" y1="291" x2="300.0" y2="309"/>
+      </g>
+      <circle class="dot" cx="93.0" cy="300" r="9"/>
+      </svg>
+      </div>
+    </div>
+  </header>
+  <div class="lettura surf-light">
+    <div class="grid lettura-grid">
+      <div class="indice" aria-hidden="true"><span class="ind-n">02</span><span class="ind-quando">Platone · IV secolo a.C.</span></div>
+      <div class="corpo">
+        <p>Socrate dice di sentire, fin da bambino, una voce che lo ferma quando sta per sbagliare. La chiama segno divino: come in Omero, la voce viene da un dio. Ma c’è una differenza. Il dio non parla più davanti a tutti: parla dentro, a una sola persona e Socrate la usa per decidere che cosa fare. Il suo allievo Platone fa un passo in più: per lui non serve un dio che ti fermi, perché la lotta tra ciò che vuoi e ciò che devi fare è già dentro di te. L’anima è come un carro con due cavalli, uno docile e uno ribelle. Chi guida il carro, cioè la ragione, deve tenerli insieme.</p>
+        <p>Rispetto a Omero, la lotta ora si svolge dentro di noi e non più tra dèi. Ma il criterio per decidere che cosa è giusto sta fuori: nell’ordine vero del mondo, che la ragione impara a riconoscere.</p>
+        <p>Un esempio: hai voglia di restare a letto, ma sai che devi alzarti e andare al lavoro. Una parte di te tira da una parte (la voglia di dormire), un’altra dall’altra (il dovere) e c’è una parte che deve decidere: la ragione. Ma perché alzarsi è «giusto»? Per Platone non lo decidi tu e non dipende da quello che hai voglia di fare: è scritto nell’ordine del mondo, dove ognuno ha un compito da svolgere e vivere bene significa svolgerlo. La ragione non inventa questa regola: la riconosce, come si riconosce che due più due fa quattro.</p>
+      </div>
+      <p class="prima">Rispetto a prima: la divisione tra le parti si sposta dentro.</p>
+      <div class="indicatore">
+        <div aria-label="Più fuori che dentro" class="gauge" role="img"><span class="m" style="left:25%"></span></div>
+        <div class="gl"><span>fuori</span><span>dentro</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 3 -->
+<section class="tappa" id="t3" data-i="3">
+  <header class="scena surf-dark">
+    <div class="grid scena-grid">
+      <span class="num-grande" aria-hidden="true">03</span>
+      <h2 class="scena-titolo"><span class="num vh">3</span> Il fuori si cerca dentro</h2>
+      <p class="when">Agostino · IV–V secolo d.C.</p>
+      <p class="formula">Cerchi qualcosa che sta fuori di te e ti orienta (Dio) e lo cerchi dentro di te.</p>
+      <div class="stage" aria-hidden="true">
+        <svg class="stage-svg" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+      <g class="s-rings">
+      <circle cx="300" cy="300" r="34"/>
+      <circle cx="300" cy="300" r="53"/>
+      <circle cx="300" cy="300" r="72"/>
+      <circle cx="300" cy="300" r="91"/>
+      <circle cx="300" cy="300" r="110"/>
+      <circle cx="300" cy="300" r="129"/>
+      <circle cx="300" cy="300" r="148"/>
+      <circle cx="300" cy="300" r="167"/>
+      <circle cx="300" cy="300" r="186"/>
+      <circle cx="300" cy="300" r="205"/>
+      <circle cx="300" cy="300" r="224"/>
+      <circle cx="300" cy="300" r="243"/>
+      <circle cx="300" cy="300" r="262"/>
+      </g>
+      <circle class="s-orbita" cx="300" cy="300" r="268"/>
+      <line class="s-guida" x1="300" y1="0" x2="300" y2="600"/>
+      <line class="s-guida" x1="24" y1="0" x2="24" y2="600"/>
+      <line class="s-asse" x1="24" y1="300" x2="300" y2="300"/>
+      <g class="s-tick">
+      <line x1="24.0" y1="291" x2="24.0" y2="309"/>
+      <line x1="51.6" y1="295" x2="51.6" y2="305"/>
+      <line x1="79.2" y1="295" x2="79.2" y2="305"/>
+      <line x1="106.8" y1="295" x2="106.8" y2="305"/>
+      <line x1="134.4" y1="295" x2="134.4" y2="305"/>
+      <line x1="162.0" y1="291" x2="162.0" y2="309"/>
+      <line x1="189.6" y1="295" x2="189.6" y2="305"/>
+      <line x1="217.2" y1="295" x2="217.2" y2="305"/>
+      <line x1="244.8" y1="295" x2="244.8" y2="305"/>
+      <line x1="272.4" y1="295" x2="272.4" y2="305"/>
+      <line x1="300.0" y1="291" x2="300.0" y2="309"/>
+      </g>
+      <circle class="dot" cx="175.8" cy="300" r="9"/>
+      </svg>
+      </div>
+    </div>
+  </header>
+  <div class="lettura surf-light">
+    <div class="grid lettura-grid">
+      <div class="indice" aria-hidden="true"><span class="ind-n">03</span><span class="ind-quando">Agostino · IV–V secolo d.C.</span></div>
+      <div class="corpo">
+        <p>Per Agostino c’è qualcosa di più grande di noi che dà un senso e una direzione alla vita: Dio. Non lo inventiamo noi e non coincide con i nostri pensieri: sta fuori e sopra di noi. Prima di lui, chi cercava ciò che orienta la vita lo cercava fuori, negli dèi o nell’ordine del mondo. Agostino cambia strada: per trovare Dio bisogna guardare dentro di sé.</p>
+        <p>Lui scrive che Dio è <em>«più intimo del mio intimo e più alto del mio punto più alto»</em>: dentro di me e sopra di me insieme. E consiglia: <em>«Non uscire fuori, rientra in te stesso: nell’uomo interiore abita la verità.»</em> Non vuol dire che la verità sia nostra. Vuol dire che ciò che ci supera si trova guardando dentro.</p>
+      </div>
+      <p class="prima">Rispetto a prima: in Omero la voce arrivava da sola. Qui la cerchi tu, guardando dentro. Ciò che ti orienta resta fuori e sopra di te: cambia la strada per raggiungerlo.</p>
+      <div class="indicatore">
+        <div aria-label="Circa a metà" class="gauge" role="img"><span class="m" style="left:55%"></span></div>
+        <div class="gl"><span>fuori</span><span>dentro</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 4 -->
+<section class="tappa" id="t4" data-i="4">
+  <header class="scena surf-light">
+    <div class="grid scena-grid">
+      <span class="num-grande" aria-hidden="true">04</span>
+      <h2 class="scena-titolo"><span class="num vh">4</span> Il dentro si esplora</h2>
+      <p class="when">Montaigne · XVI secolo</p>
+      <p class="formula">Il dentro non è un posto con delle risposte: è un paese strano da conoscere.</p>
+      <div class="stage" aria-hidden="true">
+        <svg class="stage-svg" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+      <g class="s-rings">
+      <circle cx="300" cy="300" r="34"/>
+      <circle cx="300" cy="300" r="53"/>
+      <circle cx="300" cy="300" r="72"/>
+      <circle cx="300" cy="300" r="91"/>
+      <circle cx="300" cy="300" r="110"/>
+      <circle cx="300" cy="300" r="129"/>
+      <circle cx="300" cy="300" r="148"/>
+      <circle cx="300" cy="300" r="167"/>
+      <circle cx="300" cy="300" r="186"/>
+      <circle cx="300" cy="300" r="205"/>
+      <circle cx="300" cy="300" r="224"/>
+      <circle cx="300" cy="300" r="243"/>
+      <circle cx="300" cy="300" r="262"/>
+      </g>
+      <circle class="s-orbita" cx="300" cy="300" r="268"/>
+      <line class="s-guida" x1="300" y1="0" x2="300" y2="600"/>
+      <line class="s-guida" x1="24" y1="0" x2="24" y2="600"/>
+      <line class="s-asse" x1="24" y1="300" x2="300" y2="300"/>
+      <g class="s-tick">
+      <line x1="24.0" y1="291" x2="24.0" y2="309"/>
+      <line x1="51.6" y1="295" x2="51.6" y2="305"/>
+      <line x1="79.2" y1="295" x2="79.2" y2="305"/>
+      <line x1="106.8" y1="295" x2="106.8" y2="305"/>
+      <line x1="134.4" y1="295" x2="134.4" y2="305"/>
+      <line x1="162.0" y1="291" x2="162.0" y2="309"/>
+      <line x1="189.6" y1="295" x2="189.6" y2="305"/>
+      <line x1="217.2" y1="295" x2="217.2" y2="305"/>
+      <line x1="244.8" y1="295" x2="244.8" y2="305"/>
+      <line x1="272.4" y1="295" x2="272.4" y2="305"/>
+      <line x1="300.0" y1="291" x2="300.0" y2="309"/>
+      </g>
+      <circle class="dot" cx="217.2" cy="300" r="9"/>
+      </svg>
+      </div>
+    </div>
+  </header>
+  <div class="lettura surf-light">
+    <div class="grid lettura-grid">
+      <div class="indice" aria-hidden="true"><span class="ind-n">04</span><span class="ind-quando">Montaigne · XVI secolo</span></div>
+      <div class="corpo">
+        <p>Montaigne vive durante le guerre di religione. Cattolici e protestanti sono sicuri di avere ragione e si uccidono per questo: ognuno porta le sue ragioni e nessuno riesce a convincere l’altro. Montaigne ne ricava un dubbio: forse la ragione e le grandi certezze non bastano a dire che cosa è vero. A 38 anni si ritira in una torre. Se non può fidarsi delle certezze degli altri, resta una cosa che può osservare con onestà: sé stesso. Scopre che la mente non sta ferma: produce «chimere e mostri fantastici». Decide di scrivere per vedere che cosa succede e nascono i <em>Saggi</em>: parla di sé, di quando cambia idea e di quando si contraddice. <em>«Io stesso sono la materia del mio libro.»</em></p>
+      </div>
+      <p class="prima">Rispetto a prima: in Agostino si entra per trovare Dio. Qui non c’è niente di più alto da trovare: il dentro si esplora perché, quando le certezze di fuori crollano, è l’unica cosa che si può osservare direttamente.</p>
+      <div class="indicatore">
+        <div aria-label="Più dentro che fuori" class="gauge" role="img"><span class="m" style="left:70%"></span></div>
+        <div class="gl"><span>fuori</span><span>dentro</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 5 -->
+<section class="tappa" id="t5" data-i="5">
+  <header class="scena surf-light">
+    <div class="grid scena-grid">
+      <span class="num-grande" aria-hidden="true">05</span>
+      <h2 class="scena-titolo"><span class="num vh">5</span> Il dentro si controlla</h2>
+      <p class="when">Descartes · XVII secolo</p>
+      <p class="formula">Il dentro è una stanza di controllo: la mente comanda, il corpo ubbidisce.</p>
+      <div class="stage" aria-hidden="true">
+        <svg class="stage-svg" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+      <g class="s-rings">
+      <circle cx="300" cy="300" r="34"/>
+      <circle cx="300" cy="300" r="53"/>
+      <circle cx="300" cy="300" r="72"/>
+      <circle cx="300" cy="300" r="91"/>
+      <circle cx="300" cy="300" r="110"/>
+      <circle cx="300" cy="300" r="129"/>
+      <circle cx="300" cy="300" r="148"/>
+      <circle cx="300" cy="300" r="167"/>
+      <circle cx="300" cy="300" r="186"/>
+      <circle cx="300" cy="300" r="205"/>
+      <circle cx="300" cy="300" r="224"/>
+      <circle cx="300" cy="300" r="243"/>
+      <circle cx="300" cy="300" r="262"/>
+      </g>
+      <circle class="s-orbita" cx="300" cy="300" r="268"/>
+      <line class="s-guida" x1="300" y1="0" x2="300" y2="600"/>
+      <line class="s-guida" x1="24" y1="0" x2="24" y2="600"/>
+      <line class="s-asse" x1="24" y1="300" x2="300" y2="300"/>
+      <g class="s-tick">
+      <line x1="24.0" y1="291" x2="24.0" y2="309"/>
+      <line x1="51.6" y1="295" x2="51.6" y2="305"/>
+      <line x1="79.2" y1="295" x2="79.2" y2="305"/>
+      <line x1="106.8" y1="295" x2="106.8" y2="305"/>
+      <line x1="134.4" y1="295" x2="134.4" y2="305"/>
+      <line x1="162.0" y1="291" x2="162.0" y2="309"/>
+      <line x1="189.6" y1="295" x2="189.6" y2="305"/>
+      <line x1="217.2" y1="295" x2="217.2" y2="305"/>
+      <line x1="244.8" y1="295" x2="244.8" y2="305"/>
+      <line x1="272.4" y1="295" x2="272.4" y2="305"/>
+      <line x1="300.0" y1="291" x2="300.0" y2="309"/>
+      </g>
+      <circle class="dot" cx="258.6" cy="300" r="9"/>
+      </svg>
+      </div>
+    </div>
+  </header>
+  <div class="lettura surf-light">
+    <div class="grid lettura-grid">
+      <div class="indice" aria-hidden="true"><span class="ind-n">05</span><span class="ind-quando">Descartes · XVII secolo</span></div>
+      <div class="corpo">
+        <p>Inverno 1619, in Germania. Descartes, chiuso in una stanza con una stufa, si chiede: di che cosa posso essere davvero certo? Comincia a dubitare di tutto. Dei sensi, perché a volte ci ingannano (un bastone nell’acqua sembra spezzato). Del mondo, perché forse sta sognando e non se ne accorge. Alla fine trova una cosa che non può mettere in dubbio: sta dubitando, quindi sta pensando, quindi esiste. <em>Penso, dunque sono.</em></p>
+        <p>Anche Montaigne dubitava, ma stava bene nel dubbio. Descartes dubita per uscirne. Ora ha un punto fermo: la mente che pensa è l’unica cosa di cui è certo. Il corpo e i sensi sono quelli che lo hanno ingannato e le emozioni confondono il giudizio. Da qui la conclusione: se vuoi arrivare a verità sicure e vivere bene, deve guidare la mente. Accetti come vero solo ciò che vedi con chiarezza e tieni sotto controllo impulsi ed emozioni. Per lui l’io è la mente che governa corpo e passioni. Esplorarsi (Montaigne) e controllarsi (Descartes) sono i due volti dell’io moderno. Convivono, ma tirano in direzioni diverse.</p>
+      </div>
+      <p class="prima">Rispetto a prima: non si tratta più di guardarsi dentro, ma di dare ordini.</p>
+      <div class="indicatore">
+        <div aria-label="Molto dentro" class="gauge" role="img"><span class="m" style="left:85%"></span></div>
+        <div class="gl"><span>fuori</span><span>dentro</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 6 -->
+<section class="tappa" id="t6" data-i="6">
+  <header class="scena surf-dark">
+    <div class="grid scena-grid">
+      <span class="num-grande" aria-hidden="true">06</span>
+      <h2 class="scena-titolo"><span class="num vh">6</span> Il dentro è la sorgente</h2>
+      <p class="when">Rousseau, Herder, i romantici · fine ’700 e ’800</p>
+      <p class="formula">La voce giusta è dentro di te ed è solo tua.</p>
+      <div class="stage" aria-hidden="true">
+        <svg class="stage-svg" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+      <g class="s-rings">
+      <circle cx="300" cy="300" r="34"/>
+      <circle cx="300" cy="300" r="53"/>
+      <circle cx="300" cy="300" r="72"/>
+      <circle cx="300" cy="300" r="91"/>
+      <circle cx="300" cy="300" r="110"/>
+      <circle cx="300" cy="300" r="129"/>
+      <circle cx="300" cy="300" r="148"/>
+      <circle cx="300" cy="300" r="167"/>
+      <circle cx="300" cy="300" r="186"/>
+      <circle cx="300" cy="300" r="205"/>
+      <circle cx="300" cy="300" r="224"/>
+      <circle cx="300" cy="300" r="243"/>
+      <circle cx="300" cy="300" r="262"/>
+      </g>
+      <circle class="s-orbita" cx="300" cy="300" r="268"/>
+      <line class="s-guida" x1="300" y1="0" x2="300" y2="600"/>
+      <line class="s-guida" x1="24" y1="0" x2="24" y2="600"/>
+      <line class="s-asse" x1="24" y1="300" x2="300" y2="300"/>
+      <g class="s-tick">
+      <line x1="24.0" y1="291" x2="24.0" y2="309"/>
+      <line x1="51.6" y1="295" x2="51.6" y2="305"/>
+      <line x1="79.2" y1="295" x2="79.2" y2="305"/>
+      <line x1="106.8" y1="295" x2="106.8" y2="305"/>
+      <line x1="134.4" y1="295" x2="134.4" y2="305"/>
+      <line x1="162.0" y1="291" x2="162.0" y2="309"/>
+      <line x1="189.6" y1="295" x2="189.6" y2="305"/>
+      <line x1="217.2" y1="295" x2="217.2" y2="305"/>
+      <line x1="244.8" y1="295" x2="244.8" y2="305"/>
+      <line x1="272.4" y1="295" x2="272.4" y2="305"/>
+      <line x1="300.0" y1="291" x2="300.0" y2="309"/>
+      </g>
+      <circle class="dot" cx="286.2" cy="300" r="9"/>
+      </svg>
+      </div>
+    </div>
+  </header>
+  <div class="lettura surf-light">
+    <div class="grid lettura-grid">
+      <div class="indice" aria-hidden="true"><span class="ind-n">06</span><span class="ind-quando">Rousseau, Herder, i romantici · fine ’700 e ’800</span></div>
+      <div class="corpo">
+        <p>Rousseau apre le sue <em>Confessioni</em> con una frase che nessuno avrebbe scritto prima: <em>«Non sono fatto come nessuno di quelli che ho visto.»</em> Prima di allora ciò che contava di una persona era il posto che occupava (la famiglia, il ruolo, la religione), non quanto fosse diversa dagli altri. Herder aggiunge che ogni persona ha una propria misura e che va seguita. Per i romantici dentro ognuno c’è una voce autentica e vivere bene significa ascoltarla ed esprimerla, con l’arte e la sincerità. Da qui viene il «sii te stesso», il bisogno di far capire agli altri la propria originalità e il desiderio di essere diversi da tutti gli altri.</p>
+      </div>
+      <p class="prima">Rispetto a prima: la voce che per Omero stava negli dèi torna dentro e questa volta porta il nostro nome.</p>
+      <div class="indicatore">
+        <div aria-label="Quasi tutto dentro" class="gauge" role="img"><span class="m" style="left:95%"></span></div>
+        <div class="gl"><span>fuori</span><span>dentro</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 7 -->
+<section class="tappa" id="t7" data-i="7">
+  <header class="scena surf-dark">
+    <div class="grid scena-grid">
+      <span class="num-grande" aria-hidden="true">07</span>
+      <h2 class="scena-titolo titolo-lungo"><span class="num vh">7</span> E se la voce non fosse tutta mia?</h2>
+      <p class="when">Marx, Nietzsche, Freud · circa 1850–1930</p>
+      <p class="formula">Dentro di te ci sono voci che non hai scelto e non sempre le riconosci.</p>
+      <div class="stage" aria-hidden="true">
+        <svg class="stage-svg" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+      <g class="s-rings">
+      <circle cx="300" cy="300" r="34"/>
+      <circle cx="300" cy="300" r="53"/>
+      <circle cx="300" cy="300" r="72"/>
+      <circle cx="300" cy="300" r="91"/>
+      <circle cx="300" cy="300" r="110"/>
+      <circle cx="300" cy="300" r="129"/>
+      <circle cx="300" cy="300" r="148"/>
+      <circle cx="300" cy="300" r="167"/>
+      <circle cx="300" cy="300" r="186"/>
+      <circle cx="300" cy="300" r="205"/>
+      <circle cx="300" cy="300" r="224"/>
+      <circle cx="300" cy="300" r="243"/>
+      <circle cx="300" cy="300" r="262"/>
+      </g>
+      <circle class="s-orbita" cx="300" cy="300" r="268"/>
+      <line class="s-guida" x1="300" y1="0" x2="300" y2="600"/>
+      <line class="s-guida" x1="24" y1="0" x2="24" y2="600"/>
+      <line class="s-asse" x1="24" y1="300" x2="300" y2="300"/>
+      <g class="s-tick">
+      <line x1="24.0" y1="291" x2="24.0" y2="309"/>
+      <line x1="51.6" y1="295" x2="51.6" y2="305"/>
+      <line x1="79.2" y1="295" x2="79.2" y2="305"/>
+      <line x1="106.8" y1="295" x2="106.8" y2="305"/>
+      <line x1="134.4" y1="295" x2="134.4" y2="305"/>
+      <line x1="162.0" y1="291" x2="162.0" y2="309"/>
+      <line x1="189.6" y1="295" x2="189.6" y2="305"/>
+      <line x1="217.2" y1="295" x2="217.2" y2="305"/>
+      <line x1="244.8" y1="295" x2="244.8" y2="305"/>
+      <line x1="272.4" y1="295" x2="272.4" y2="305"/>
+      <line x1="300.0" y1="291" x2="300.0" y2="309"/>
+      </g>
+      <circle class="dot" cx="189.6" cy="300" r="9"/>
+      </svg>
+      </div>
+    </div>
+  </header>
+  <div class="lettura surf-light">
+    <div class="grid lettura-grid">
+      <div class="indice" aria-hidden="true"><span class="ind-n">07</span><span class="ind-quando">Marx, Nietzsche, Freud · circa 1850–1930</span></div>
+      <div class="corpo">
+        <p>Nell’Ottocento, dopo i romantici, qualcuno comincia a dubitare. Se dentro di me c’è una voce solo mia, perché penso quasi le stesse cose delle persone con cui sono cresciuto? E perché a volte faccio cose che non volevo fare? Tre pensatori rispondono in tre modi.</p>
+        <h3 class="sosp">Marx: la voce arriva dalla società in cui vivi.</h3>
+        <p>Scrive: <em>non è la coscienza a determinare la vita, ma la vita a determinare la coscienza.</em> Cioè molte idee che ci sembrano naturali dipendono da come viviamo. «Ognuno ha quello che si merita», «il tempo è denaro», «la proprietà è un diritto naturale»: chi sta bene tende a trovarle evidenti, chi lavora tanto e non ce la fa le vede in modo diverso. Marx chiama ideologia le idee che sembrano naturali e valgono per tutti, ma che in realtà fanno comodo a chi sta in alto.</p>
+        <h3 class="sosp">Nietzsche: la voce arriva dalla storia.</h3>
+        <p>Sostiene che la «voce della coscienza», quella che ti fa sentire in colpa, non è nata con noi: dipende dai secoli che ci hanno preceduto. Il senso di colpa sembra una cosa naturale, ma è storica. Per secoli chi violava una regola veniva punito davanti a tutti e a forza di punizioni le persone hanno imparato a punirsi da sole, dentro. Pensa a quando provi vergogna per una cosa che nessuno ha visto: nessuno ti guarda, eppure ti senti in colpa. È la punizione degli altri, rimasta dentro. Aggiunge che anche i pensieri arrivano quando vogliono loro: <em>«esso» pensa, quando vuole, non quando «io» voglio.</em></p>
+        <h3 class="sosp">Freud: la voce arriva da una parte di te che non conosci.</h3>
+        <p>Chiama quella parte inconscio: il luogo dove restano desideri, paure e ricordi che non vogliamo vedere, ma che continuano a influenzarci. Si vede nei sogni e nei lapsus: un presidente di assemblea deve aprire la seduta e dice «dichiaro chiusa la seduta». Voleva dire il contrario, ma una parte di lui non vedeva l’ora di andarsene. Per questo Freud dice che l’io <em>non è padrone in casa propria.</em> Aggiunge un’ultima scoperta, che riguarda anche noi: dentro ognuno c’è il super-io, la voce dei genitori e delle regole che abbiamo ascoltato da piccoli. Suona come la nostra, ma viene da fuori.</p>
+        <p>Mettendo insieme i tre: la voce che senti tua può arrivare da fuori senza che tu lo sappia (Marx, Nietzsche) o da dentro, ma da una parte di te che non controlli (Freud). È di nuovo la scena di Achille e Atena, con un’altra faccia.</p>
+      </div>
+      <p class="prima">Rispetto a prima: con i romantici la voce interna era la più autentica. Ora non ci si può più fidare ciecamente.</p>
+      <div class="indicatore">
+        <div aria-label="Dentro, ma incrinato" class="gauge" role="img"><span class="m" style="left:60%"></span></div>
+        <div class="gl"><span>fuori</span><span>dentro</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 8 -->
+<section class="tappa" id="t8" data-i="8">
+  <header class="scena surf-light">
+    <div class="grid scena-grid">
+      <span class="num-grande" aria-hidden="true">08</span>
+      <h2 class="scena-titolo"><span class="num vh">8</span> Il dentro si costruisce</h2>
+      <p class="when">Foucault · circa 1960–1985</p>
+      <p class="formula">Il dentro non è qualcosa che c’è e basta: viene costruito.</p>
+      <div class="stage" aria-hidden="true">
+        <svg class="stage-svg" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+      <g class="s-rings">
+      <circle cx="300" cy="300" r="34"/>
+      <circle cx="300" cy="300" r="53"/>
+      <circle cx="300" cy="300" r="72"/>
+      <circle cx="300" cy="300" r="91"/>
+      <circle cx="300" cy="300" r="110"/>
+      <circle cx="300" cy="300" r="129"/>
+      <circle cx="300" cy="300" r="148"/>
+      <circle cx="300" cy="300" r="167"/>
+      <circle cx="300" cy="300" r="186"/>
+      <circle cx="300" cy="300" r="205"/>
+      <circle cx="300" cy="300" r="224"/>
+      <circle cx="300" cy="300" r="243"/>
+      <circle cx="300" cy="300" r="262"/>
+      </g>
+      <circle class="s-orbita" cx="300" cy="300" r="268"/>
+      <line class="s-guida" x1="300" y1="0" x2="300" y2="600"/>
+      <line class="s-guida" x1="24" y1="0" x2="24" y2="600"/>
+      <line class="s-asse" x1="24" y1="300" x2="300" y2="300"/>
+      <g class="s-tick">
+      <line x1="24.0" y1="291" x2="24.0" y2="309"/>
+      <line x1="51.6" y1="295" x2="51.6" y2="305"/>
+      <line x1="79.2" y1="295" x2="79.2" y2="305"/>
+      <line x1="106.8" y1="295" x2="106.8" y2="305"/>
+      <line x1="134.4" y1="295" x2="134.4" y2="305"/>
+      <line x1="162.0" y1="291" x2="162.0" y2="309"/>
+      <line x1="189.6" y1="295" x2="189.6" y2="305"/>
+      <line x1="217.2" y1="295" x2="217.2" y2="305"/>
+      <line x1="244.8" y1="295" x2="244.8" y2="305"/>
+      <line x1="272.4" y1="295" x2="272.4" y2="305"/>
+      <line x1="300.0" y1="291" x2="300.0" y2="309"/>
+      </g>
+      <circle class="dot" cx="148.2" cy="300" r="9"/>
+      </svg>
+      </div>
+    </div>
+  </header>
+  <div class="lettura surf-light">
+    <div class="grid lettura-grid">
+      <div class="indice" aria-hidden="true"><span class="ind-n">08</span><span class="ind-quando">Foucault · circa 1960–1985</span></div>
+      <div class="corpo">
+        <p>Finora ci siamo chiesti se la voce sta dentro o fuori. Il filosofo Michel Foucault cambia domanda: il dentro non c’è già fatto. Qualcuno o qualcosa lo costruisce, in due modi.</p>
+        <h3 class="sosp">Da fuori</h3>
+        <p>Le pratiche e i poteri (la scuola, la famiglia, le regole, i modi di vivere) ci insegnano come comportarci, che cosa provare, chi essere. A scuola impari a stare seduto, ad aspettare il tuo turno, a essere valutato: abitudini che poi senti tue.</p>
+        <h3 class="sosp">Da noi stessi</h3>
+        <p>L’io è anche qualcosa su cui puoi lavorare. Gli antichi facevano esercizi spirituali: tenere un taccuino, fare ogni sera il bilancio della giornata, immaginare le difficoltà prima che arrivino. L’imperatore Marco Aurelio scriveva appunti solo per sé, ogni giorno. Oggi, in forme diverse, lo fanno un diario, la meditazione, la terapia: parlare con qualcuno per capirsi meglio e cambiare. In tutti i casi il dentro non è già dato: si costruisce con il lavoro su di sé.</p>
+      </div>
+      <p class="prima">Rispetto a prima: non si chiede più «la voce è mia o no?», ma «chi l’ha costruita e che cosa faccio io per costruirla?».</p>
+      <div class="indicatore">
+        <div aria-label="Metà e metà" class="gauge" role="img"><span class="m" style="left:45%"></span></div>
+        <div class="gl"><span>fuori</span><span>dentro</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 9 -->
+<section class="tappa" id="t9" data-i="9">
+  <header class="scena surf-dark">
+    <div class="grid scena-grid">
+      <span class="num-grande" aria-hidden="true">09</span>
+      <h2 class="scena-titolo titolo-lungo"><span class="num vh">9</span> Oggi: nessuno ti dice da dove deve venire la voce</h2>
+      <p class="formula">Devi decidere tu da dove viene la voce che ti orienta e devi anche essere te stesso e migliorarti.</p>
+      <div class="stage" aria-hidden="true">
+        <svg class="stage-svg" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+      <g class="s-rings">
+      <circle cx="300" cy="300" r="34"/>
+      <circle cx="300" cy="300" r="53"/>
+      <circle cx="300" cy="300" r="72"/>
+      <circle cx="300" cy="300" r="91"/>
+      <circle cx="300" cy="300" r="110"/>
+      <circle cx="300" cy="300" r="129"/>
+      <circle cx="300" cy="300" r="148"/>
+      <circle cx="300" cy="300" r="167"/>
+      <circle cx="300" cy="300" r="186"/>
+      <circle cx="300" cy="300" r="205"/>
+      <circle cx="300" cy="300" r="224"/>
+      <circle cx="300" cy="300" r="243"/>
+      <circle cx="300" cy="300" r="262"/>
+      </g>
+      <circle class="s-orbita" cx="300" cy="300" r="268"/>
+      <line class="s-guida" x1="300" y1="0" x2="300" y2="600"/>
+      <line class="s-guida" x1="24" y1="0" x2="24" y2="600"/>
+      <line class="s-asse" x1="24" y1="300" x2="300" y2="300"/>
+      <g class="s-tick">
+      <line x1="24.0" y1="291" x2="24.0" y2="309"/>
+      <line x1="51.6" y1="295" x2="51.6" y2="305"/>
+      <line x1="79.2" y1="295" x2="79.2" y2="305"/>
+      <line x1="106.8" y1="295" x2="106.8" y2="305"/>
+      <line x1="134.4" y1="295" x2="134.4" y2="305"/>
+      <line x1="162.0" y1="291" x2="162.0" y2="309"/>
+      <line x1="189.6" y1="295" x2="189.6" y2="305"/>
+      <line x1="217.2" y1="295" x2="217.2" y2="305"/>
+      <line x1="244.8" y1="295" x2="244.8" y2="305"/>
+      <line x1="272.4" y1="295" x2="272.4" y2="305"/>
+      <line x1="300.0" y1="291" x2="300.0" y2="309"/>
+      </g>
+      <circle class="dot" cx="258.6" cy="300" r="9"/>
+      <circle class="dot-vuoto" cx="79.2" cy="300" r="8"/>
+      </svg>
+      </div>
+    </div>
+  </header>
+  <div class="lettura surf-light">
+    <div class="grid lettura-grid">
+      <div class="indice" aria-hidden="true"><span class="ind-n">09</span></div>
+      <div class="corpo">
+        <p>Una giornata qualunque. Ti svegli e guardi il telefono: qualcuno ha commentato una tua foto, un video ti dice come dovresti allenarti, un amico ti scrive di uscire. A scuola un insegnante ti dice di impegnarti di più. In giro ripetono tutti le stesse frasi. Nel frattempo ti chiedi che cosa vuoi fare davvero e senti che dovresti saperlo già.</p>
+        <p>Quante voci hai sentito? E quali di queste le senti tue?</p>
+        <p>Ci sono tre idee e le ha messe in fila una parte della filosofia contemporanea.</p>
+        <h3 class="sosp">Manca un’autorità finale.</h3>
+        <p>Per Omero decidevano gli dèi, per Agostino Dio, per Platone l’ordine del mondo, per Descartes la ragione. Oggi nessuno è d’accordo su chi debba dire qual è la voce giusta. Hai più libertà di scegliere, ma devi scegliere da solo e nessuno ti garantisce che tu abbia scelto bene. Il filosofo Charles Taylor la mette così: la domanda «quale autorità mi orienta?» oggi resta senza una risposta comune.</p>
+        <h3 class="sosp">Le due strade della storia sono diventate due richieste.</h3>
+        <p>Essere se stessi, che per Montaigne e per i romantici era una scoperta, oggi è quasi un dovere: devi avere una passione, sapere chi sei, essere autentico. Controllarsi, che per Descartes era una tecnica, oggi è un compito continuo: lavorare su di sé, diventare la migliore versione di quello che sei, scavando dentro di sé per correggere le cose che di noi non ci piacciono. Le due richieste si scontrano e ne esce un paradosso: come fai a essere fedele a te stesso se devi lavorare per cambiarti? Che rapporto è? Il sociologo Alain Ehrenberg ha dato un nome a questa situazione, «la fatica di essere se stessi»: quando devi essere te stesso e allo stesso tempo migliorarti, essere te stesso diventa un lavoro e un lavoro stanca.</p>
+        <h3 class="sosp">Le voci da fuori ci sono ancora, ma si vedono meno.</h3>
+        <p>Famiglia, lingua, gruppo di amici, scuola, lavoro, pubblicità, schermi: tutti parlano dentro di te. Come per Achille, non sempre sai da dove arrivi la voce e quella che senti più tua può essere stata messa lì da qualcun altro. Ne parlano anche i testi che abbiamo letto la prima lezione.</p>
+        <p>Non abbiamo lasciato alle spalle nessuna delle tappe precedenti. Nella testa di una persona di oggi convivono la voce che ordina (Omero), la ricerca dentro di sé (Agostino), il controllo (Descartes), il «sii te stesso» (i romantici), il dubbio di non conoscersi (Freud) e il lavoro su di sé (Foucault).</p>
+      </div>
+      <p class="prima">Rispetto a prima: in tutte le tappe precedenti c’era un’autorità, o almeno una direzione chiara. Oggi manca una risposta comune.</p>
+      <div class="indicatore">
+        <div aria-label="Due segni: la sento dentro, ma arriva da fuori" class="gauge" role="img"><span class="m" style="left:85%"></span><span class="m o" style="left:20%"></span></div>
+        <div class="gl"><span>fuori</span><span>dentro</span></div>
+        <div class="gl" style="margin-top:4px"><span>○ da dove arriva</span><span>● come la sento</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DOMANDE ============ -->
+<section class="finale" id="domande">
+  <header class="scena scena-finale surf-light">
+    <div class="grid scena-grid">
+      <h2 class="scena-titolo">Esercizio</h2>
+      <div class="stage" aria-hidden="true">
+        <svg class="stage-svg" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+          <g class="s-rings">
+          <circle cx="300" cy="300" r="34"/>
+      <circle cx="300" cy="300" r="53"/>
+      <circle cx="300" cy="300" r="72"/>
+      <circle cx="300" cy="300" r="91"/>
+      <circle cx="300" cy="300" r="110"/>
+      <circle cx="300" cy="300" r="129"/>
+      <circle cx="300" cy="300" r="148"/>
+      <circle cx="300" cy="300" r="167"/>
+      <circle cx="300" cy="300" r="186"/>
+      <circle cx="300" cy="300" r="205"/>
+      <circle cx="300" cy="300" r="224"/>
+      <circle cx="300" cy="300" r="243"/>
+      <circle cx="300" cy="300" r="262"/>
+          </g>
+          <circle class="s-orbita" cx="300" cy="300" r="268"/>
+          <line class="s-guida" x1="300" y1="0" x2="300" y2="600"/>
+          <line class="s-asse" x1="24" y1="300" x2="300" y2="300"/>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <div class="form-sec surf-light">
+    <div class="grid">
+      <div id="form-area">
+  <form id="f" novalidate>
+    <div class="blocco blocco-lilla">
+      <h3>Prima di rispondere</h3>
+      <p>Hai visto che per Achille il pensiero arriva con la faccia di una dea. Anche tu ogni giorno decidi in mezzo a più voci, solo che di solito non ci fai caso: la decisione ti sembra venire fuori da sola. Prova a rallentare una scelta e a guardare che cosa succede dentro e intorno.</p>
+    </div>
+
+    <div class="blocco blocco-lilla">
+      <h3>La situazione</h3>
+      <div class="situazione">
+        <p>È sabato sera. Una settimana fa hai promesso a un amico di aiutarlo a fare il trasloco: ha chiesto solo a te, perché gli altri sono via. Oggi ti arriva un invito a una festa a cui volevi andare da tempo e ci saranno anche persone che ti interessano. Se salti il trasloco, l’amico se la caverà, ma forse ci resterà male. Se salti la festa, non ci sarà un’altra occasione così.</p>
+        <p>Nella tua testa si sentono più voci. Poi c’è una cosa che non è una voce: una sensazione nello stomaco, che non sai ancora che cosa voglia dire.</p>
+      </div>
+    </div>
+
+    <h3 class="step"><span class="step-n">1.</span> Che cosa decidi di fare?</h3>
+    <div class="seg" role="radiogroup" aria-label="Che cosa decidi di fare?">
+      <input type="radio" name="dec" id="dec-f" value="Vado alla festa"><label for="dec-f">Vado alla festa</label>
+      <input type="radio" name="dec" id="dec-t" value="Aiuto l’amico col trasloco"><label for="dec-t">Aiuto l’amico col trasloco</label>
+      <input type="radio" name="dec" id="dec-x" value="Cerco una terza strada"><label for="dec-x">Cerco una terza strada</label>
+    </div>
+
+    <h3 class="step"><span class="step-n">2.</span> Dai un nome a ogni voce</h3>
+    <p class="hintline">Scrivi solo un nome breve (per esempio «il desiderio») e scegli da dove pensi che venga: da dentro di te, da fuori, oppure non lo sai.</p>
+    <div class="riga voce" role="radiogroup" aria-labelledby="c1">
+      <p class="voce-cit" id="c1">«Vai, te la sei meritata.»</p>
+      <div class="nome"><label for="n1">Nome della voce</label><input type="text" id="n1" maxlength="40" autocomplete="off"></div>
+      <div class="seg"><input type="radio" name="p1" id="p1-d" value="d"><label for="p1-d">Da dentro</label><input type="radio" name="p1" id="p1-n" value="n"><label for="p1-n">Non so</label><input type="radio" name="p1" id="p1-f" value="f"><label for="p1-f">Da fuori</label></div>
+    </div>
+    <div class="riga voce" role="radiogroup" aria-labelledby="c2">
+      <p class="voce-cit" id="c2">«Hai dato la tua parola.»</p>
+      <div class="nome"><label for="n2">Nome della voce</label><input type="text" id="n2" maxlength="40" autocomplete="off"></div>
+      <div class="seg"><input type="radio" name="p2" id="p2-d" value="d"><label for="p2-d">Da dentro</label><input type="radio" name="p2" id="p2-n" value="n"><label for="p2-n">Non so</label><input type="radio" name="p2" id="p2-f" value="f"><label for="p2-f">Da fuori</label></div>
+    </div>
+    <div class="riga voce" role="radiogroup" aria-labelledby="c3">
+      <p class="voce-cit" id="c3">«Se non ci sei, penseranno che sei il solito che sparisce.»</p>
+      <div class="nome"><label for="n3">Nome della voce</label><input type="text" id="n3" maxlength="40" autocomplete="off"></div>
+      <div class="seg"><input type="radio" name="p3" id="p3-d" value="d"><label for="p3-d">Da dentro</label><input type="radio" name="p3" id="p3-n" value="n"><label for="p3-n">Non so</label><input type="radio" name="p3" id="p3-f" value="f"><label for="p3-f">Da fuori</label></div>
+    </div>
+    <div class="riga voce" role="radiogroup" aria-labelledby="c4">
+      <p class="voce-cit" id="c4">«Tanto per lui non fa differenza.»</p>
+      <div class="nome"><label for="n4">Nome della voce</label><input type="text" id="n4" maxlength="40" autocomplete="off"></div>
+      <div class="seg"><input type="radio" name="p4" id="p4-d" value="d"><label for="p4-d">Da dentro</label><input type="radio" name="p4" id="p4-n" value="n"><label for="p4-n">Non so</label><input type="radio" name="p4" id="p4-f" value="f"><label for="p4-f">Da fuori</label></div>
+    </div>
+    <div class="riga voce" role="radiogroup" aria-labelledby="c5">
+      <p class="voce-cit" id="c5">La sensazione nello stomaco</p>
+      <div class="nome"><label for="n5">Nome della voce</label><input type="text" id="n5" maxlength="40" autocomplete="off"></div>
+      <div class="seg"><input type="radio" name="p5" id="p5-d" value="d"><label for="p5-d">Da dentro</label><input type="radio" name="p5" id="p5-n" value="n"><label for="p5-n">Non so</label><input type="radio" name="p5" id="p5-f" value="f"><label for="p5-f">Da fuori</label></div>
+    </div>
+
+    <h3 class="step"><span class="step-n">3.</span> Qual è la voce che hai ascoltato di più e perché?</h3>
+    <label for="q3">La tua risposta</label>
+    <textarea id="q3" maxlength="800"></textarea>
+
+    <h3 class="step"><span class="step-n">4.</span> Immagina di ripensare a questa sera tra qualche anno. Quale di queste voci, ascoltata, ti avrebbe fatto stare meglio con te stesso?</h3>
+    <label for="q4">La tua risposta</label>
+    <textarea id="q4" maxlength="800"></textarea>
+    <div class="hp" aria-hidden="true"><label for="site">Non compilare</label><input type="text" id="site" tabindex="-1" autocomplete="off"></div>
+    <p class="small">Non scrivere il tuo cognome. Le risposte vengono salvate in un Modulo Google del docente, insieme alla tua mappa della prova della nascita.</p>
+    <button class="send" type="submit" id="btn">Invia la risposta</button>
+    <p id="msg" role="status" aria-live="polite"></p>
+  </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script src="config.js" defer></script>
+<script src="js/esercizi.js" defer></script>
+<script src="js/form.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+/* Token del brief (§2 della specifica visiva), scala tipografica e spaziature. */
+:root {
+  /* colori */
+  --paper: #F7F7F6;
+  --white: #FFFFFF;
+  --ink: #0A0A0A;
+  --night: #080808;
+  --muted: #666666;
+  --muted-dark: #A8A8A8;       /* testo secondario su fondo scuro (contrasto > 8:1) */
+  --line-light: rgba(10, 10, 10, 0.18);
+  --line-dark: rgba(255, 255, 255, 0.25);
+  --line-strong: #6B6B6B;      /* bordo dei controlli (almeno 3:1 sullo sfondo) */
+  --lilac: #D8CCFF;
+  --lilac-strong: #B799F7;
+  --lilac-wash: #F2EEFF;
+  --err: #9B1C1C;
+  --radius-control: 999px;
+  --radius-card: 8px;
+
+  /* caratteri */
+  --f-display: "Anton", Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif;
+  --f-sans: "Geist", "Geist Fallback", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* griglia: 4 colonne su mobile, 8 su tablet, 12 su desktop */
+  --cols: 4;
+  --gap: 14px;
+  --m: 20px;                   /* margine laterale */
+  --max: 1720px;
+
+  /* ritmo verticale */
+  --space-section: clamp(64px, 12vw, 100px);
+
+  /* tipografia */
+  --fs-read: clamp(17px, 16.2px + 0.2vw, 19px);
+  --lh-read: 1.62;
+  --fs-lead: clamp(18px, 17px + 0.25vw, 20px);
+  --fs-meta: 13px;
+  --fs-display-hero: clamp(62px, 15vw, 102px);
+  --fs-display-scena: clamp(54px, 12vw, 80px);
+  --fs-numero: clamp(96px, 24vw, 180px);
+  --fs-formula: clamp(22px, 5.6vw, 30px);
+  --fs-sub: clamp(22px, 5.6vw, 26px);
+}
+
+@media (max-width: 359px) {
+  :root { --m: 16px; }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --cols: 8;
+    --gap: 20px;
+    --m: clamp(28px, 4vw, 72px);
+    --fs-formula: clamp(24px, 3vw, 30px);
+  }
+}
+
+@media (min-width: 1200px) {
+  :root {
+    --cols: 12;
+    --gap: 24px;
+    --space-section: clamp(96px, 9vw, 140px);
+    --fs-display-hero: clamp(92px, 10.5vw, 184px);
+    --fs-display-scena: clamp(66px, 7vw, 116px);
+    --fs-numero: clamp(120px, 20vw, 300px);
+    --fs-formula: clamp(24px, 2.2vw, 32px);
+    --fs-sub: clamp(22px, 1.8vw, 26px);
+  }
+}
+
+/* superfici: la scelta chiaro/scuro è di composizione, non di argomento */
+.surf-light {
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --line: var(--line-light);
+  --soft: var(--muted);
+  --focus: var(--ink);
+  --dot-stroke: var(--ink);
+  background: var(--bg);
+  color: var(--fg);
+}
+.surf-dark {
+  --bg: var(--night);
+  --fg: #FFFFFF;
+  --line: var(--line-dark);
+  --soft: var(--muted-dark);
+  --focus: #FFFFFF;
+  --dot-stroke: transparent;
+  background: var(--bg);
+  color: var(--fg);
+}

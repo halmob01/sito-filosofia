@@ -24,12 +24,15 @@
   font-family: var(--f-display);
   font-weight: 400;
   font-size: var(--fs-display-scena);
-  line-height: 1.1;   /* abbastanza alto da non far toccare gli accenti delle maiuscole (È) alla riga sopra */
+  line-height: 1.04;
   letter-spacing: 0;
   text-transform: uppercase;
   text-wrap: balance;
 }
 .scena-titolo.titolo-lungo { font-size: clamp(46px, 10vw, 70px); }
+/* Anton ha accenti alti: con la È maiuscola serve più interlinea, altrimenti l'accento tocca la riga sopra.
+   Solo i titoli che contengono una è (tappe 1 e 6), così gli altri restano compatti. */
+.scena-titolo.ha-accento { line-height: 1.26; }
 .when {
   order: 3;
   display: flex; align-items: center; gap: 14px;

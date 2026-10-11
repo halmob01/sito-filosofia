@@ -47,7 +47,7 @@ main { display: block; overflow-x: clip; }
   grid-column: 1 / -1;
   font-size: var(--fs-lead);
   line-height: 1.58;
-  max-width: 60ch;
+  max-width: var(--measure);
 }
 .hero-stage { grid-column: 1 / -1; order: 3; }
 .hero-stage .stage-svg { width: min(100%, 300px); margin-top: 24px; }
@@ -86,7 +86,7 @@ main { display: block; overflow-x: clip; }
 /* ---------- ponte verso la storia ---------- */
 .ponte-sec { position: relative; overflow: hidden; }
 .ponte-grid { position: relative; padding-block: var(--space-section); row-gap: 56px; }
-.ponte-testo { grid-column: 1 / -1; max-width: 62ch; }
+.ponte-testo { grid-column: 1 / -1; max-width: var(--measure); }
 .grafico { grid-column: 1 / -1; }
 @media (min-width: 768px) {
   .ponte-testo { grid-column: 1 / span 7; }
@@ -122,7 +122,7 @@ main { display: block; overflow-x: clip; }
 /* ---------- esercizio finale ---------- */
 .form-sec { border-top: 1px solid var(--line-light); }
 .form-sec > .grid { padding-block: var(--space-section); }
-#form-area { grid-column: 1 / -1; min-width: 0; }
+#form-area { grid-column: 1 / -1; min-width: 0; max-width: 66ch; }
 @media (min-width: 768px) { #form-area { grid-column: 1 / span 7; } }
 @media (min-width: 1200px) { #form-area { grid-column: 3 / span 8; } }
 

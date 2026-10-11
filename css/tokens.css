@@ -32,6 +32,8 @@
   --space-section: clamp(64px, 12vw, 100px);
 
   /* tipografia */
+  /* misura di lettura: ch di Geist è largo (lo zero), quindi 54ch dà circa 72 caratteri reali per riga */
+  --measure: 54ch;
   --fs-read: clamp(17px, 16.2px + 0.2vw, 19px);
   --lh-read: 1.62;
   --fs-lead: clamp(18px, 17px + 0.25vw, 20px);

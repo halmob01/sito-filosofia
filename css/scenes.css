@@ -170,7 +170,7 @@
 }
 .nm {
   position: absolute; top: calc(100% + 10px); transform: translateX(-50%);
-  font-size: 12px; font-weight: 500; color: var(--muted-dark); white-space: nowrap; display: none;
+  font-size: 15px; font-weight: 500; color: var(--muted-dark); white-space: nowrap; display: none;
 }
 @media (min-width: 700px) {
   .nm, .axis .x { display: block; }

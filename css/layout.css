@@ -170,7 +170,7 @@ main { display: block; overflow-x: clip; }
     display: grid; grid-template-columns: 20px minmax(0, 1fr) 44px; align-items: center; column-gap: 6px;
     height: 100%; min-height: 44px;
     text-decoration: none; color: var(--soft);
-    font-size: 13px; font-weight: 500; line-height: 1.1;
+    font-size: 15px; font-weight: 500; line-height: 1.1;
   }
   .rail-n { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.04em; }
   .rail-nome { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -208,7 +208,7 @@ main { display: block; overflow-x: clip; }
     height: var(--barra);
     padding-inline: max(var(--m), env(safe-area-inset-left, 0px)) max(calc(var(--m) - 10px), env(safe-area-inset-right, 0px));
   }
-  .barra-dove { margin: 0; font-size: 14px; font-weight: 500; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .barra-dove { margin: 0; font-size: 17px; font-weight: 500; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .barra-n { font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.02em; }
   /* area di tocco di 44px, pill disegnata più bassa per stare nella barra da 48px */
   .barra-mappa {
@@ -240,7 +240,7 @@ main { display: block; overflow-x: clip; }
 .pannello-grafico .plot { margin: 0 0 96px; max-width: 760px; aspect-ratio: 4 / 3; }
 .pannello .nodo { width: 40px; }
 /* nel pannello i nomi brevi stanno in verticale sotto ogni nodo (a 390px non c'è posto in orizzontale) */
-.pannello .nm { display: block; writing-mode: vertical-rl; font-size: 13px; color: #fff; }
+.pannello .nm { display: block; writing-mode: vertical-rl; font-size: 15px; color: #fff; }
 @media (min-width: 700px) {
   .pannello-grafico .plot { aspect-ratio: 830 / 380; margin-bottom: 40px; }
   .pannello .nm { writing-mode: horizontal-tb; }

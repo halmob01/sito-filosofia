@@ -43,7 +43,7 @@
   --fs-read: clamp(17px, 16.2px + 0.2vw, 19px);
   --lh-read: 1.62;
   --fs-lead: clamp(18px, 17px + 0.25vw, 20px);
-  --fs-meta: 13px;
+  --fs-meta: 15px;
   --fs-display-hero: clamp(62px, 15vw, 102px);
   --fs-display-scena: clamp(54px, 12vw, 80px);
   --fs-numero: clamp(96px, 24vw, 180px);

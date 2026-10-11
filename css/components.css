@@ -328,11 +328,8 @@ button.send { margin-top: 28px; }
 .esercizio button, .form-sec button, .seg label { font-size: 18px; font-weight: 500; }
 .fonti button { font-size: 20px; }
 input[type=text] { font-size: 18px; }
-/* restano in Geist solo le etichette maiuscole e l'asse */
-.prova-titolo .kicker, .assemappa {
-  font-family: var(--f-sans);
-  font-variant-numeric: normal;
-}
+/* tutto in Garamond: restano diversi solo Anton (titoli) e Geist Mono (numeri) */
+.prova-titolo .kicker, .assemappa { font-variant-numeric: normal; }
 
 /* titoli e istruzioni */
 .prova-titolo .tit {

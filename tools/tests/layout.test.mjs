@@ -30,22 +30,20 @@ test('i font self-hosted sono quelli usati (non quelli di sistema)', async () =>
     await document.fonts.ready;
     return {
       anton: document.fonts.check('400 40px Anton'),
-      geist400: document.fonts.check('400 16px Geist'),
-      geist600: document.fonts.check('600 16px Geist'),
       mono: document.fonts.check('500 13px "Geist Mono"'),
       caricati: [...document.fonts].filter((f) => f.status === 'loaded').map((f) => `${f.family} ${f.weight} ${f.style}`),
       h1: getComputedStyle(document.querySelector('h1')).fontFamily,
     };
   });
-  assert.ok(r.anton && r.geist400 && r.geist600 && r.mono, JSON.stringify(r));
+  assert.ok(r.anton && r.mono, JSON.stringify(r));
   assert.ok(r.caricati.some((x) => x.startsWith('Anton')));
-  assert.ok(r.caricati.some((x) => x.startsWith('Geist 400 normal')));
-  assert.ok(r.caricati.some((x) => x.startsWith('Geist 600')));
+  assert.ok(r.caricati.some((x) => x.startsWith('EB Garamond 400')));
+  assert.ok(!r.caricati.some((x) => /^Geist (?!Mono)/.test(x)), 'Geist non più usato: ' + r.caricati.join(', '));
   assert.match(r.h1, /^"?Anton/);
   await ctx.close();
 });
 
-test('prosa in EB Garamond «come un libro», formule in Geist, controlli in Garamond', async () => {
+test('prosa in EB Garamond «come un libro», formule e controlli in Garamond', async () => {
   for (const w of [390, 1440]) {
     const { page, ctx } = await t.pagina({ width: w });
     const r = await page.evaluate(async () => {
@@ -65,7 +63,7 @@ test('prosa in EB Garamond «come un libro», formule in Geist, controlli in Gar
     assert.ok(r.caricato, 'EB Garamond non caricato');
     for (const k of ['corpo', 'hero', 'ponte', 'blocco']) assert.match(r[k], /^"?EB Garamond/, k);
     assert.match(r.prima[0], /^"?EB Garamond/); assert.equal(r.prima[1], 'italic');
-    for (const k of ['formula', 'sosp', 'hint']) assert.match(r[k], /^"?Geist/, k);
+    for (const k of ['formula', 'sosp', 'hint']) assert.match(r[k], /^"?EB Garamond/, k);
     assert.match(r.seg, /^"?EB Garamond/, 'seg');
     assert.match(r.istr, /^"?EB Garamond/, 'istruzioni degli esercizi');
     assert.equal(r.size, w < 1200 ? '20px' : '22px');

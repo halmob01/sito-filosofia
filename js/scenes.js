@@ -8,7 +8,7 @@
    - tablet e mobile: nessuna altezza extra, un solo morph di 0.6s quando la scena entra;
    - reduced motion: nessun ScrollTrigger, altezza naturale, stato finale statico;
    - i colli si ricalcolano solo mentre la scena è in viewport (onToggle). */
-import { STATES, createBlob, createShapes, renderShapes, lerpState, blobShapes } from './blob.js';
+import { STATES, createBlob, createShapes, renderShapes, lerpState, blobShapes, seedTransition } from './blob.js';
 
 const AX0 = 24, AX1 = 300;                       // asse fuori→dentro dello stage
 const xDi = (v) => AX0 + (AX1 - AX0) * v / 100;
@@ -67,9 +67,14 @@ function ripristina(gsap, n, cfg) {
 function desktop(gsap, ST, n, cfg, root) {
   const html = document.documentElement;
   html.classList.add('scena-alta');
-  const mid = shift(lerpState(cfg.da, cfg.a, 0.55), cfg.scarto[0], cfg.scarto[1]);
+  const [S0, S1] = seedTransition(cfg.da, cfg.a);
+  const mid = shift(lerpState(S0, S1, 0.55), cfg.scarto[0], cfg.scarto[1]);
   const P = { m: 0 };                                            // 0..1: da → intermedio; 1..2: intermedio → finale
-  const stato = () => (P.m <= 1 ? lerpState(cfg.da, mid, P.m) : lerpState(mid, cfg.a, P.m - 1));
+  const stato = () => {
+    if (P.m <= 0) return cfg.da;
+    if (P.m >= 2) return cfg.a;
+    return P.m <= 1 ? lerpState(S0, mid, P.m) : lerpState(mid, S1, P.m - 1);
+  };
   let visibile = false;
   const disegna = () => { if (visibile) n.draw(stato()); };
 
@@ -120,13 +125,14 @@ function mobile(gsap, ST, n, cfg) {
   const dentro = stage.getBoundingClientRect().top < window.innerHeight * 0.8;
   if (dentro) return () => {};                                   // già vista o già superata: resta lo stato finale
   const P = { t: 0 };
+  const [S0, S1] = seedTransition(cfg.da, cfg.a);
   n.draw(cfg.da);
   if (n.dot) n.dot.setAttribute('cx', xDi(cfg.v0));
   let tw = null;
   const st = ST.create({
     trigger: stage, start: 'top 80%', once: true,
     onEnter: () => {
-      tw = gsap.to(P, { t: 1, duration: 0.6, ease: 'power2.inOut', onUpdate: () => n.draw(lerpState(cfg.da, cfg.a, P.t)) });
+      tw = gsap.to(P, { t: 1, duration: 0.6, ease: 'power2.inOut', onUpdate: () => n.draw(P.t >= 1 ? cfg.a : lerpState(S0, S1, P.t)) });
       if (n.dot) gsap.to(n.dot, { attr: { cx: n.dotFinale }, duration: 0.6, ease: 'power2.inOut' });
     },
   });

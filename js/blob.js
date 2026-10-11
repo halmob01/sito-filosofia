@@ -246,3 +246,28 @@ export function renderBlob(blob, state) {
   for (const L of blob.layers) renderShapes(L, sh);
   return blob;
 }
+
+/* ---------- semi per le transizioni ----------
+   Un cerchio che compare (r = 0 nello stato di partenza) non nasce dal nulla: parte già con il 38% del raggio
+   finale, nascosto dentro il lobo più grande, e scivola fuori; così si legge subito come un secondo nucleo.
+   Allo stesso modo un cerchio che sparisce rientra nel lobo più grande. Gli stati restituiti si usano solo
+   durante la transizione: agli estremi si disegnano gli stati originali (identici all'SVG statico). */
+function semina(base, verso) {
+  const vis = base.circles.filter((k) => k.r >= 0.5);
+  if (!vis.length) return base;
+  const host = vis.reduce((m, k) => (k.r > m.r ? k : m));
+  return {
+    ...base,
+    circles: base.circles.map((k, i) => {
+      const t = verso.circles[i];
+      if (k.r >= 0.5 || t.r < 0.5) return k;
+      const r = 0.38 * t.r;
+      const dx = t.x - host.x, dy = t.y - host.y, d = Math.hypot(dx, dy) || 1;
+      const off = Math.max(0, host.r - r - 4);
+      return { x: host.x + (dx / d) * off, y: host.y + (dy / d) * off, r };
+    }),
+  };
+}
+export function seedTransition(da, a) {
+  return [semina(da, a), semina(a, da)];
+}

@@ -84,7 +84,8 @@ test('mobile 390 e tablet 768: nessuna altezza extra e morph finale all\'ingress
     const prima = await forme(page);
     // prima di entrare nella vista il blob è nello stato di partenza (B0, un solo disco)
     assert.equal(prima.split('|').filter((x) => x.startsWith('c,')).length, 1);
-    await page.evaluate((y) => window.scrollTo(0, y), g.top - 300);
+    const st = await page.evaluate(() => document.querySelector('#t2 .stage').getBoundingClientRect().top + scrollY);
+    await page.evaluate((y) => window.scrollTo(0, y), st - 300);
     await page.waitForTimeout(1200);
     const dopo = await forme(page);
     const { page: p2, ctx: c2 } = await t.pagina({ width: w, height: 844, reducedMotion: 'reduce' });

@@ -20,5 +20,5 @@
    3) Le risposte arrivano in Risposte → «Collega a Fogli» → File → Scarica → .xlsx
    ============================================================ */
 window.SITE_CONFIG = {
-  prefilledLink: ""
+  prefilledLink: "https://docs.google.com/forms/d/e/1FAIpQLSfVxbS80w_dOwEtXJbq5sJ0lRlbFVmxFSn-4O9fVKzACViDAQ/viewform?usp=pp_url&entry.1034672225=RISPOSTA&entry.142736870=DECISIONE&entry.1338080340=VOCI&entry.360883186=PERCHE&entry.1856321522=FUTURO&entry.1440804720=MAPPA&entry.528680062=FONTI"
 };

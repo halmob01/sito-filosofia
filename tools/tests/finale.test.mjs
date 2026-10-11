@@ -60,7 +60,7 @@ test('validazioni nell\'ordine: decisione, voci, domanda 3, domanda 4', async ()
 });
 
 test('con il link vuoto compare «Invio non ancora configurato» e non parte nessuna richiesta', async () => {
-  const { page, ctx } = await t.pagina();
+  const { page, ctx } = await t.pagina({ link: '' });
   const richieste = await intercetta(page);
   await compilaFinale(page);
   await page.click('#btn');

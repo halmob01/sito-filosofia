@@ -45,6 +45,35 @@ test('i font self-hosted sono quelli usati (non quelli di sistema)', async () =>
   await ctx.close();
 });
 
+test('prosa in EB Garamond «come un libro», formule e controlli in Geist', async () => {
+  for (const w of [390, 1440]) {
+    const { page, ctx } = await t.pagina({ width: w });
+    const r = await page.evaluate(async () => {
+      await document.fonts.ready;
+      const cs = (s) => getComputedStyle(document.querySelector(s));
+      return {
+        caricato: document.fonts.check('400 20px "EB Garamond"') && [...document.fonts].some((f) => f.family.includes('EB Garamond') && f.status === 'loaded'),
+        corpo: cs('#t2 .corpo p').fontFamily, hero: cs('.hero-lead').fontFamily, ponte: cs('.ponte-testo p').fontFamily,
+        prima: [cs('.prima').fontFamily, cs('.prima').fontStyle], blocco: cs('.blocco-lilla p').fontFamily,
+        formula: cs('.formula').fontFamily, sosp: cs('.corpo h3.sosp').fontFamily, hint: cs('.ponte-testo .hintline').fontFamily,
+        istr: cs('.istruzioni').fontFamily, seg: cs('.seg label').fontFamily,
+        size: cs('#t2 .corpo p').fontSize, align: cs('#t2 .corpo p').textAlign,
+        rientro1: cs('#t2 .corpo p:first-child').textIndent, rientro2: cs('#t2 .corpo p:nth-child(2)').textIndent,
+        margine: cs('#t2 .corpo p').marginBottom, num: cs('#t2 .corpo p').fontVariantNumeric, lang: document.documentElement.lang,
+      };
+    });
+    assert.ok(r.caricato, 'EB Garamond non caricato');
+    for (const k of ['corpo', 'hero', 'ponte', 'blocco']) assert.match(r[k], /^"?EB Garamond/, k);
+    assert.match(r.prima[0], /^"?EB Garamond/); assert.equal(r.prima[1], 'italic');
+    for (const k of ['formula', 'sosp', 'hint', 'istr', 'seg']) assert.match(r[k], /^"?Geist/, k);
+    assert.equal(r.size, w < 1200 ? '20px' : '22px');
+    assert.equal(r.align, w < 600 ? 'left' : 'justify');
+    assert.equal(r.rientro1, '0px'); assert.notEqual(r.rientro2, '0px'); assert.equal(r.margine, '0px');
+    assert.match(r.num, /oldstyle-nums/); assert.equal(r.lang, 'it');
+    await ctx.close();
+  }
+});
+
 test('senza JavaScript tutto il testo di lettura è visibile', async () => {
   const { page, ctx } = await t.pagina({ width: 390, js: false });
   const r = await page.evaluate(() => {
@@ -64,7 +93,7 @@ test('senza JavaScript tutto il testo di lettura è visibile', async () => {
   await ctx.close();
 });
 
-test('lettura mobile: corpo 17-19px e colonna comoda a 390px', async () => {
+test('lettura mobile: Garamond 20px, interlinea da libro e colonna comoda a 390px', async () => {
   const { page, ctx } = await t.pagina({ width: 390 });
   const r = await page.evaluate(() => {
     const p = document.querySelector('#t2 .corpo p');
@@ -72,8 +101,9 @@ test('lettura mobile: corpo 17-19px e colonna comoda a 390px', async () => {
     const w = p.getBoundingClientRect().width;
     return { fs: parseFloat(cs.fontSize), lh: parseFloat(cs.lineHeight) / parseFloat(cs.fontSize), w };
   });
-  assert.ok(r.fs >= 17 && r.fs <= 19, 'corpo ' + r.fs);
-  assert.ok(r.lh >= 1.55 && r.lh <= 1.68, 'interlinea ' + r.lh);
+  // il docente ha scelto il Garamond a 20px (più piccolo a vista del Geist): vale più del brief (17–19px sans)
+  assert.equal(r.fs, 20, 'corpo ' + r.fs);
+  assert.ok(r.lh >= 1.42 && r.lh <= 1.55, 'interlinea ' + r.lh);
   assert.ok(r.w >= 340 && r.w <= 360, 'larghezza colonna ' + r.w);
   await ctx.close();
 });

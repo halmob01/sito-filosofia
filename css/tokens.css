@@ -20,6 +20,7 @@
   /* caratteri */
   --f-display: "Anton", Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif;
   --f-sans: "Geist", "Geist Fallback", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --f-libro: "EB Garamond", "EB Garamond Fallback", Garamond, "Times New Roman", serif;
   --f-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   /* griglia: 4 colonne su mobile, 8 su tablet, 12 su desktop */
@@ -34,6 +35,11 @@
   /* tipografia */
   /* misura di lettura: ch di Geist è largo (lo zero), quindi 54ch dà circa 72 caratteri reali per riga */
   --measure: 54ch;
+  /* misura del testo «libro» in Garamond: 27.5em ≈ 66–70 caratteri reali per riga (carattere medio 0,375em) */
+  --measure-libro: 27.5em;
+  --fs-libro: 20px;
+  --col-libro: calc(27.5 * var(--fs-libro));   /* larghezza in px della colonna libro, per allinearci assi e note */
+  --lh-libro: 1.48;
   --fs-read: clamp(17px, 16.2px + 0.2vw, 19px);
   --lh-read: 1.62;
   --fs-lead: clamp(18px, 17px + 0.25vw, 20px);
@@ -68,6 +74,7 @@
     --fs-numero: clamp(120px, 20vw, 300px);
     --fs-formula: clamp(24px, 2.2vw, 32px);
     --fs-sub: clamp(22px, 1.8vw, 26px);
+    --fs-libro: 22px;
   }
 }
 

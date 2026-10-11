@@ -194,7 +194,7 @@ label { display: block; font-weight: 600; font-size: 15px; line-height: 1.3; mar
 .ind-quando { font-size: var(--fs-meta); font-weight: 500; line-height: 1.35; color: var(--muted); }
 
 /* ---------- indicatore fuori/dentro: asse da 1px, tick ogni 10, punto lilla ---------- */
-.indicatore { max-width: var(--measure); }
+.indicatore { max-width: var(--col-libro); }
 .gauge {
   position: relative; height: 1px; margin: 44px 0 14px;
   background: var(--ink);
@@ -270,3 +270,35 @@ button.send { margin-top: 28px; }
   border-radius: 50%; background: var(--lilac-strong); border: 1px solid var(--ink);
 }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* ---------- prosa «come un libro» (EB Garamond) ----------
+   Solo i testi da leggere: paragrafi delle tappe, A-2 dell'hero, ponte, «Rispetto a prima», nota della tappa 1,
+   riquadri dell'esercizio finale. Restano Geist formule, metadati, sottotitoli, istruzioni, controlli, etichette.
+   Paragrafi senza spazio tra loro e con il rientro dal secondo in poi; il primo dopo un titolo non rientra. */
+.hero-lead, .ponte-testo p:not(.hintline), .corpo p, .prima, .blocco-lilla p {
+  font-family: var(--f-libro);
+  font-weight: 400;
+  font-size: var(--fs-libro);
+  line-height: var(--lh-libro);
+  letter-spacing: 0;
+  font-variant-numeric: oldstyle-nums proportional-nums;
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  text-align: left;
+  max-width: var(--measure-libro);
+}
+.corpo p, .ponte-testo p:not(.hintline), .blocco-lilla p { margin: 0; }
+.corpo p:last-child { margin-bottom: 0; }
+.corpo p + p:not(.nota), .ponte-testo p + p:not(.hintline), .blocco-lilla p + p { text-indent: 1.4em; margin-top: 0; }
+.ponte-testo .hintline { margin-top: 1.6em; }
+/* giustificato solo dove la riga è abbastanza lunga: sotto i 600px Chromium non sillaba e farebbe buchi */
+@media (min-width: 600px) {
+  .hero-lead, .ponte-testo p:not(.hintline), .corpo p:not(.nota), .blocco-lilla p { text-align: justify; }
+}
+/* note: stesso carattere, un passo sotto */
+.corpo .nota { font-size: calc(var(--fs-libro) - 2px); line-height: 1.45; margin-top: 1.6em; max-width: var(--measure-libro); }
+.prima { font-style: italic; font-size: calc(var(--fs-libro) - 2px); line-height: 1.42; }
+.blocco-lilla { font-size: var(--fs-libro); max-width: calc(var(--measure-libro) + 64px); }
+.blocco-lilla p { max-width: none; }

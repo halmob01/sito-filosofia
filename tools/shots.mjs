@@ -1,4 +1,4 @@
-// Screenshot di revisione. Uso: node shots.mjs <cartella-di-uscita> [full|viste|f2|f3|f3video|tutto]
+// Screenshot di revisione. Uso: node shots.mjs <cartella-di-uscita> [full|viste|f2|f3|f3video|f4|f4video|tutto]
 import fs from 'node:fs';
 import path from 'node:path';
 import { startServer, launch } from './lib.mjs';
@@ -129,6 +129,102 @@ if (modo === 'f3video') {
   const f = fs.readdirSync(dir).find((x) => x.endsWith('.webm'));
   fs.renameSync(path.join(dir, f), path.join(out, 'f3-t2-scroll.webm'));
   fs.rmdirSync(dir);
+}
+
+/* ---------- F4: lettura, ponte, rail, barra e pannello Mappa, transizioni, esercizio 1, video ---------- */
+async function paginaMotion(w, h, extra = {}) {
+  const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 1, reducedMotion: 'no-preference', ...extra });
+  const page = await ctx.newPage();
+  await page.goto(srv.url + '/index.html', { waitUntil: 'load' });
+  await page.evaluate(() => document.fonts.ready);
+  await page.addStyleTag({ content: 'html{scroll-behavior:auto !important}' });
+  return page;
+}
+const geomScena = (page, sel) => page.evaluate((s) => { const r = document.querySelector(s).getBoundingClientRect(); return { top: r.top + scrollY, h: r.height }; }, sel);
+if (modo === 'f4') {
+  {
+    const page = await paginaMotion(1440, 900);
+    const scatta = async (nome, sel, off = 0, attesa = 1800) => {
+      const g = await geomScena(page, sel);
+      await page.evaluate((y) => window.scrollTo(0, y), g.top + off);
+      await page.waitForTimeout(attesa);
+      await page.screenshot({ path: path.join(out, nome + '.png') });
+    };
+    await scatta('lettura-t2-desktop', '#t2 .lettura', 0, 600);
+    await scatta('ponte-desktop', '.ponte-sec', 160);
+    await scatta('rail-t3-desktop', '#t3 .lettura', 120, 600);
+    // fotogrammi 0/50/100% delle transizioni t5→t6, t6→t7, t8→t9 (l'apertura della tappa di arrivo)
+    for (const [da, a] of [['t5', 't6'], ['t6', 't7'], ['t8', 't9']]) {
+      const g = await geomScena(page, `#${a} .scena`);
+      for (const p of [0, 50, 100]) {
+        await page.evaluate((y) => window.scrollTo(0, y), g.top + (p / 100) * (g.h - 900));
+        await page.waitForTimeout(1800);
+        await page.screenshot({ path: path.join(out, `trans-${da}-${a}-${String(p).padStart(3, '0')}.png`) });
+      }
+    }
+    await page.context().close();
+  }
+  {
+    const page = await paginaMotion(390, 844);
+    const y = await page.evaluate(() => document.querySelector('#t2 .lettura').getBoundingClientRect().top + scrollY);
+    await page.evaluate((v) => window.scrollTo(0, v), y + 40);
+    await page.waitForTimeout(600);
+    await page.screenshot({ path: path.join(out, 'lettura-t2-m390.png') });
+    const y3 = await page.evaluate(() => document.querySelector('#t3 .lettura').getBoundingClientRect().top + scrollY);
+    await page.evaluate((v) => window.scrollTo(0, v), y3 + 60);
+    await page.waitForTimeout(600);
+    await page.screenshot({ path: path.join(out, 'barra-m390.png') });
+    await page.click('.barra-mappa');
+    await page.waitForTimeout(400);
+    await page.screenshot({ path: path.join(out, 'mappa-aperta-m390.png') });
+    await page.context().close();
+  }
+  {
+    const page = await paginaMotion(390, 844);
+    const y = await page.evaluate(() => document.querySelector('.es1').getBoundingClientRect().top + scrollY);
+    await page.evaluate((v) => window.scrollTo(0, v), y);
+    await page.click('#fonti-ok');
+    await page.waitForTimeout(300);
+    await page.evaluate(() => document.getElementById('fonti').scrollIntoView({ block: 'start' }));
+    await page.evaluate(() => window.scrollBy(0, -60));
+    await page.waitForTimeout(200);
+    await page.screenshot({ path: path.join(out, 'esercizio1-conferma-m390.png') });
+    await page.context().close();
+    const p2 = await paginaMotion(1440, 900);
+    const y2 = await p2.evaluate(() => document.querySelector('.es1').getBoundingClientRect().top + scrollY);
+    await p2.evaluate((v) => window.scrollTo(0, v), y2);
+    await p2.click('#fonti-ok');
+    await p2.waitForTimeout(300);
+    await p2.screenshot({ path: path.join(out, 'esercizio1-conferma-desktop.png') });
+    await p2.context().close();
+  }
+}
+if (modo === 'f4video') {
+  // video dello scroll da t1 a t4 (poi ffmpeg → mp4). 1440x900 e 390x844.
+  for (const [w, h, tag] of [[1440, 900, 'desktop'], [390, 844, 'm390']]) {
+    const dir = path.join(out, 'video-tmp-' + tag);
+    const sz = w > 800 ? { width: 960, height: 600 } : { width: 390, height: 844 };
+    const ctx = await browser.newContext({ viewport: { width: w, height: h }, reducedMotion: 'no-preference', recordVideo: { dir, size: sz }, hasTouch: w < 800, isMobile: w < 800 });
+    const page = await ctx.newPage();
+    await page.goto(srv.url + '/index.html', { waitUntil: 'load' });
+    await page.evaluate(() => document.fonts.ready);
+    await page.addStyleTag({ content: 'html{scroll-behavior:auto !important}' });
+    const y0 = await page.evaluate(() => document.querySelector('#t1').getBoundingClientRect().top + scrollY - 250);
+    const y1 = await page.evaluate(() => document.querySelector('#t4 .lettura').getBoundingClientRect().top + scrollY);
+    await page.evaluate((y) => window.scrollTo(0, y), y0);
+    await page.waitForTimeout(800);
+    // scroll continuo a passi piccoli, rallentato nelle aperture; sull'area t1..t4 (tratti di lettura più veloci)
+    const passo = w > 800 ? 10 : 14;
+    for (let y = y0; y < y1; y += passo) {
+      await page.evaluate((v) => window.scrollTo(0, v), y);
+      await page.waitForTimeout(16);
+    }
+    await page.waitForTimeout(1200);
+    await ctx.close();
+    const f = fs.readdirSync(dir).find((x) => x.endsWith('.webm'));
+    fs.renameSync(path.join(dir, f), path.join(out, `f4-scroll-t1-t4-${tag}.webm`));
+    fs.rmdirSync(dir);
+  }
 }
 await browser.close();
 await srv.close();

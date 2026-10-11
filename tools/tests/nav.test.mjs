@@ -14,8 +14,8 @@ const vai = async (page, sel, off = 0) => {
 const visibile = (page, sel) => page.evaluate((s) => {
   const e = document.querySelector(s); if (!e) return false;
   const c = getComputedStyle(e); const r = e.getBoundingClientRect();
-  return c.display !== 'none' && c.visibility !== 'hidden' && +c.opacity > 0.5 && r.bottom > 0 && r.top < innerHeight;
-});
+  return c.display !== 'none' && c.visibility !== 'hidden' && +c.opacity > 0.5 && r.width > 0 && r.bottom > 0 && r.top < innerHeight;
+}, sel);
 
 test('1440: il rail compare solo durante la storia, segna la tappa attiva e i link portano alle tappe', async () => {
   const { page, ctx, problemi } = await t.pagina({ width: 1440, height: 900 });
@@ -121,15 +121,17 @@ test('desktop con motion: tutte le aperture sono alte ~180vh e il blob di ognuna
 
 test('ponte: la linea si disegna con lo scroll e i nodi si accendono in ordine', async () => {
   const { page, ctx } = await t.pagina({ width: 1440, height: 900, reducedMotion: 'no-preference' });
-  const leggi = () => page.evaluate(() => ({ w: +document.querySelector('#ponte-rivela rect').getAttribute('width'), spenti: [...document.querySelectorAll('.grafico .plot .nodo')].map((n) => n.classList.contains('spento')) }));
+  const leggi = () => page.evaluate(() => ({ w: +document.querySelector('#ponte-rivela rect').getAttribute('width'), spenti: [...document.querySelectorAll('.ponte-sec .grafico .plot .nodo')].map((n) => n.classList.contains('spento')) }));
   await vai(page, '.grafico', -900 * 0.75 + 80); await page.waitForTimeout(900);
   const a = await leggi();
   await vai(page, '.grafico', 200); await page.waitForTimeout(900);
   const b = await leggi();
   assert.ok(a.w < b.w, JSON.stringify([a.w, b.w]));
   assert.ok(a.spenti.filter(Boolean).length > b.spenti.filter(Boolean).length);
-  // in ordine: nessun nodo acceso dopo uno spento
-  const i = a.spenti.indexOf(true); assert.ok(i > 0 && a.spenti.slice(i).every((x, k) => x || a.spenti[i + k - 1] === false || k === 0 ? true : x));
+  // in ordine: prima i nodi accesi, poi tutti gli spenti (nessun nodo acceso dopo uno spento)
+  const i = a.spenti.indexOf(true);
+  assert.ok(i > 0, 'almeno un nodo acceso e uno spento: ' + JSON.stringify(a.spenti));
+  assert.ok(a.spenti.slice(i).every(Boolean), 'ordine: ' + JSON.stringify(a.spenti));
   await ctx.close();
 });
 
@@ -147,4 +149,24 @@ test('esercizio 1: dopo la conferma otto punti sull\'asse, uno per riga; sparisc
   await page.click('#fonti li:nth-child(3) .su');
   assert.equal(await page.evaluate(() => document.querySelectorAll('.asse-punti i').length), 0);
   await ctx.close();
+});
+
+test('con animazioni attive: nessuno scroll orizzontale a 320, 390, 768, 1024, 1440 (anche col pannello Mappa aperto) e nessun errore', async () => {
+  for (const w of [320, 390, 768, 1024, 1440]) {
+    const { page, ctx, problemi } = await t.pagina({ width: w, height: 800, reducedMotion: 'no-preference' });
+    const larg = () => page.evaluate(() => ({ doc: document.documentElement.scrollWidth, w: innerWidth }));
+    for (const sel of ['.ponte-sec', '#t1 .scena', '#t4 .lettura', '#t9 .scena', '#domande .scena']) {
+      await vai(page, sel);
+      const m = await larg();
+      assert.equal(m.doc, m.w, `${w}px ${sel}: scrollWidth ${m.doc}`);
+    }
+    if (w < 1200) {
+      await vai(page, '#t4 .lettura', 50);
+      await page.click('.barra-mappa'); await page.waitForTimeout(200);
+      const m = await larg(); assert.equal(m.doc, m.w, `${w}px pannello aperto`);
+      await page.keyboard.press('Escape');
+    }
+    assert.deepEqual(problemi, [], `${w}px`);
+    await ctx.close();
+  }
 });

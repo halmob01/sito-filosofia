@@ -236,7 +236,15 @@ main { display: block; overflow-x: clip; }
   background: transparent; color: #fff; font-weight: 600; font-size: 15px; cursor: pointer;
 }
 .pannello-grafico { flex: 1; display: flex; align-items: center; padding: 24px var(--m) 24px calc(var(--m) + 26px); }
-.pannello-grafico .plot { margin: 0; }
+.pannello-grafico { justify-content: center; }
+.pannello-grafico .plot { margin: 0 0 96px; max-width: 760px; aspect-ratio: 4 / 3; }
+.pannello .nodo { width: 40px; }
+/* nel pannello i nomi brevi stanno in verticale sotto ogni nodo (a 390px non c'è posto in orizzontale) */
+.pannello .nm { display: block; writing-mode: vertical-rl; font-size: 13px; color: #fff; }
+@media (min-width: 700px) {
+  .pannello-grafico .plot { aspect-ratio: 830 / 380; margin-bottom: 40px; }
+  .pannello .nm { writing-mode: horizontal-tb; }
+}
 .pannello .nodo.attivo::before { width: 13px; height: 13px; background: var(--lilac-strong); }
 .pannello .nodo.attivo .n { color: #fff; }
 

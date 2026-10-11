@@ -114,6 +114,7 @@ test('target touch di almeno 44px per pulsanti, etichette segmentate e campi (mo
     const out = [];
     for (const el of document.querySelectorAll('button, .seg label, input[type=text], textarea, .brand')) {
       if (el.closest('.hp')) continue;
+      if (!el.getClientRects().length) continue;   // non visibile (per esempio nel pannello Mappa chiuso)
       const rc = el.getBoundingClientRect();
       if (rc.width < 44 || rc.height < 44) out.push(`${el.tagName}.${el.className} ${Math.round(rc.width)}x${Math.round(rc.height)}`);
     }

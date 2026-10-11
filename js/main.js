@@ -1,8 +1,13 @@
-/* Avvio: classe js, GSAP e scene. Se GSAP non carica o qualcosa va storto resta lo stato statico dell'HTML. */
+/* Avvio: classe js, navigazione, esercizio 1, poi GSAP e scene.
+   Se GSAP non carica o qualcosa va storto restano gli stati statici dell'HTML e la navigazione funziona lo stesso. */
+import { initNav, initAsseEsercizio } from './nav.js';
 import { initScene } from './scenes.js';
 
 const html = document.documentElement;
 html.classList.add('js');
+
+try { initNav(); } catch (e) { console.warn('Navigazione non attivata:', e && e.message); }
+try { initAsseEsercizio(); } catch (e) { console.warn('Asse dell’esercizio non attivato:', e && e.message); }
 
 function avvia() {
   const gsap = window.gsap;

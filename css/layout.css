@@ -134,6 +134,122 @@ main { display: block; overflow-x: clip; }
   .esercizio .es-modulo, #form-area form, .asse-wrap, .vedi { display: none !important; }
   .grid { display: block; padding-inline: 0; }
   .scena-titolo, .display { font-size: 28pt; color: #000; }
-  .tappa { break-inside: avoid-page; }
+  .scena-titolo { break-after: avoid-page; }
+  .scena { break-inside: avoid-page; }
   body { font-size: 12pt; }
+}
+
+/* ---------- navigazione durante la storia (§5.6): rail desktop, barra e pannello Mappa sotto i 1200px ---------- */
+:root { --rail: 0px; --barra: 48px; }
+.rail, .barra { display: none; }
+.tappa { scroll-margin-top: 0; }
+
+@media (min-width: 1200px) {
+  /* il contenitore delle tappe riserva lo spazio del rail, così griglia, lettura e note a margine non ci finiscono sotto */
+  html.con-nav { --rail: 200px; }
+  html.con-nav .tappa .grid { padding-right: calc(var(--m) + var(--rail)); }
+  .rail {
+    display: block;
+    position: fixed; top: 0; right: 0; bottom: 0; z-index: 20;
+    width: var(--rail);
+    border-left: 1px solid var(--line);
+    visibility: hidden; opacity: 0;
+    transition: opacity .3s ease, visibility 0s linear .3s, background-color .3s ease, color .3s ease;
+  }
+  .rail.vista { visibility: visible; opacity: 1; transition: opacity .3s ease, visibility 0s, background-color .3s ease, color .3s ease; }
+  .rail-in {
+    position: absolute; left: 0; right: 0; top: 50%;
+    height: min(620px, calc(100svh - 120px));
+    transform: translateY(-50%);
+    padding: 0 12px 0 28px;
+  }
+  .rail-prog { position: absolute; left: 14px; top: 0; bottom: 0; width: 1px; background: var(--line); }
+  .rail-prog span { position: absolute; left: -0.5px; top: 0; width: 2px; height: calc(var(--prog, 0) * 100%); background: var(--lilac-strong); }
+  .rail-lista { list-style: none; height: 100%; display: grid; grid-template-rows: repeat(9, minmax(44px, 1fr)); }
+  .rail-lista a {
+    display: grid; grid-template-columns: 20px minmax(0, 1fr) 44px; align-items: center; column-gap: 6px;
+    height: 100%; min-height: 44px;
+    text-decoration: none; color: var(--soft);
+    font-size: 13px; font-weight: 500; line-height: 1.1;
+  }
+  .rail-n { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.04em; }
+  .rail-nome { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rail-lista a:hover, .rail-lista a.attivo { color: var(--fg); }
+  .rail-lista a.attivo .rail-nome { font-weight: 600; }
+  .rail-asse { position: relative; height: 100%; }
+  .rail-dot {
+    position: absolute; top: 50%; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px;
+    border-radius: 50%; background: var(--fg);
+  }
+  .rail-dot.vuoto { width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; background: transparent; border: 1.5px solid var(--lilac-strong); }
+  .rail-lista a.attivo .rail-dot:not(.vuoto) { width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; background: var(--lilac-strong); }
+  /* il grafico verticale sta sulla colonna dei punti (ultimi 56px di ogni riga) */
+  .rail-g { position: absolute; top: 0; bottom: 0; right: 12px; width: 44px; height: 100%; overflow: visible; pointer-events: none; }
+  .rail-g * { vector-effect: non-scaling-stroke; fill: none; }
+  .rail-linea { stroke: var(--fg); stroke-opacity: .55; stroke-width: 1; }
+  .rail-tratto { stroke: var(--fg); stroke-opacity: .45; stroke-width: 1; stroke-dasharray: 2 3; }
+  .rail-mezzo { stroke: var(--line); stroke-width: 1; stroke-dasharray: 1 4; }
+}
+
+@media (max-width: 1199px) {
+  html.con-nav .tappa { scroll-margin-top: calc(var(--barra) + env(safe-area-inset-top, 0px)); }
+  .barra {
+    display: block;
+    position: fixed; left: 0; right: 0; top: 0; z-index: 20;
+    padding-top: env(safe-area-inset-top, 0px);
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    transform: translateY(-110%);
+    transition: transform .25s ease, background-color .25s ease, color .25s ease;
+  }
+  .barra.vista { transform: none; }
+  .barra-in {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    height: var(--barra);
+    padding-inline: max(var(--m), env(safe-area-inset-left, 0px)) max(calc(var(--m) - 10px), env(safe-area-inset-right, 0px));
+  }
+  .barra-dove { margin: 0; font-size: 14px; font-weight: 500; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .barra-n { font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.02em; }
+  /* area di tocco di 44px, pill disegnata più bassa per stare nella barra da 48px */
+  .barra-mappa {
+    position: relative; flex: none; height: 44px; min-width: 44px; padding: 0 16px;
+    border: 0; background: transparent; color: var(--fg); font-weight: 600; font-size: 15px; cursor: pointer;
+  }
+  .barra-mappa::before { content: ""; position: absolute; inset: 6px 0; border: 1px solid var(--fg); border-radius: var(--radius-control); }
+  .barra-mappa:focus-visible { outline-offset: -2px; }
+  .barra-prog { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; }
+  .barra-prog span { display: block; height: 100%; width: calc(var(--prog, 0) * 100%); background: var(--lilac-strong); }
+}
+
+/* pannello Mappa: dialog modale a tutto schermo, scuro come il ponte */
+.pannello {
+  width: 100%; max-width: none; height: 100%; max-height: none; margin: 0; border: 0;
+  padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px);
+  background: var(--bg); color: var(--fg);
+}
+.pannello::backdrop { background: rgba(8, 8, 8, .6); }
+.pannello[open] { display: flex; flex-direction: column; }
+.pannello-testa { display: flex; justify-content: flex-end; align-items: center; height: 64px; padding-inline: var(--m); border-bottom: 1px solid var(--line); }
+.pannello-chiudi {
+  min-height: 44px; padding: 0 20px;
+  border: 1px solid #fff; border-radius: var(--radius-control);
+  background: transparent; color: #fff; font-weight: 600; font-size: 15px; cursor: pointer;
+}
+.pannello-grafico { flex: 1; display: flex; align-items: center; padding: 24px var(--m) 24px calc(var(--m) + 26px); }
+.pannello-grafico .plot { margin: 0; }
+.pannello .nodo.attivo::before { width: 13px; height: 13px; background: var(--lilac-strong); }
+.pannello .nodo.attivo .n { color: #fff; }
+
+/* esercizio 1: punti delle posizioni scelte sull'asse verticale */
+.asse-punti { position: absolute; left: 0; top: 0; bottom: 0; width: 30px; pointer-events: none; }
+.asse-punti i { position: absolute; left: 11px; width: 7px; height: 7px; margin-top: -3.5px; border-radius: 50%; background: var(--ink); }
+
+@media print {
+  .rail, .barra, .pannello, .asse-punti, .ponte-sec .rings-bg { display: none !important; }
+  html.scena-alta .tappa > .scena, html.scena-alta .finale > .scena { height: auto !important; }
+  html.scena-alta .scena-grid { position: static !important; height: auto !important; }
+  .tappa .grid { padding-right: 0 !important; }
+  .corpo p, .hero-lead, .ponte-testo p, .prima, .blocco-lilla p { color: #000 !important; max-width: none !important; }
+  .blocco-lilla, .prima, .corpo .nota { background: none !important; border: 0 !important; padding: 0 !important; }
+  a { text-decoration: none; }
 }

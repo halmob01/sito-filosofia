@@ -10,23 +10,9 @@ const FILE = path.join(ROOT, 'index.html');
 const check = process.argv.includes('--check');
 let html = fs.readFileSync(FILE, 'utf8');
 
-/* Tabella del piano §1.4: stato del blob, valore fuori→dentro (0 = estremo sinistro dell'asse, fuori dal blob;
-   100 = centro del blob) e grappolo di anelli fitti, decentrato in un punto libero della scena.
-   cluster = [cx, cy]; orbita = [dx, dy] spostamento del centro dell'orbita puntinata grande. */
-const SCENE = {
-  t1: { stato: 'B0', valore: 5, cluster: [136, 136], orbita: [0, 0] },
-  t2: { stato: 'B1', valore: 25, cluster: [128, 148], orbita: [-6, 6] },
-  t3: { stato: 'B3', valore: 55, cluster: [300, 80], orbita: [0, 0] },
-  t4: { stato: 'B2', valore: 70, cluster: [155, 445], orbita: [6, 4] },
-  t5: { stato: 'B4', valore: 85, cluster: [150, 150], orbita: [-4, 8] },
-  t6: { stato: 'B3', valore: 95, cluster: [300, 522], orbita: [0, 0], puntoNelVuoto: true },
-  t7: { stato: 'B5', valore: 60, cluster: [150, 142], orbita: [4, -6] },
-  t8: { stato: 'B2', specchia: true, valore: 45, cluster: [445, 445], orbita: [-6, 4] },
-  t9: { stato: 'B4', valore: 85, vuoto: 20, cluster: [160, 460], orbita: [6, 2] },
-  finale: { stato: 'B0', valore: null, cluster: [464, 136], orbita: [0, 0] },
-};
-const AX0 = 24, AX1 = 300, AY = 300;                  // asse fuori→dentro
-const xDi = (v) => +(AX0 + (AX1 - AX0) * v / 100).toFixed(1);
+import { SCENE as ELENCO, AX0, AX1, AY, xDi } from '../js/scene-data.js';
+/* Tabella del piano §1.4 in js/scene-data.js (condivisa con le animazioni) */
+const SCENE = Object.fromEntries(ELENCO.map((x) => [x.id, x]));
 
 const n1 = (x) => (Math.round(x * 10) / 10).toString();
 

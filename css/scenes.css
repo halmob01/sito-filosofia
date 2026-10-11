@@ -181,8 +181,23 @@
   .scena-finale .stage-svg { width: min(100%, 440px); }
 }
 
-/* ---------- F3: apertura della tappa 2 alta ~180vh con contenitore sticky (solo desktop con motion) ----------
+/* ---------- aperture alte ~180vh con contenitore sticky (solo desktop con motion) ----------
    La classe scena-alta la mette lo script in testa e main.js la toglie se GSAP non c'è. Sticky di CSS, non il pin di GSAP.
    overflow: clip (e non hidden) perché hidden farebbe da contenitore di scroll e romperebbe lo sticky. */
-html.scena-alta #t2 .scena { height: 180vh; height: 180svh; overflow: clip; }
-html.scena-alta #t2 .scena-grid { position: sticky; top: 0; height: 100vh; height: 100svh; min-height: 0; }
+html.scena-alta .tappa > .scena, html.scena-alta .finale > .scena { height: 180vh; height: 180svh; overflow: clip; }
+html.scena-alta .tappa > .scena > .scena-grid,
+html.scena-alta .finale > .scena > .scena-grid { position: sticky; top: 0; height: 100vh; height: 100svh; min-height: 0; }
+html.scena-alta .finale > .scena { height: 150vh; height: 150svh; }
+
+/* nodi del grafico del ponte ancora da raggiungere (solo con l'animazione attiva) */
+.nodo.spento::before { opacity: 0.28; }
+.nodo.spento .n { opacity: 0.45; }
+.nodo::before, .nodo .n { transition: opacity .25s ease; }
+
+/* con il rail le colonne delle aperture sono più strette: numero e titolo un passo sotto, così numero, titolo,
+   «quando» e formula stanno sempre nella vista da 100svh dell'apertura */
+@media (min-width: 1200px) {
+  html.con-nav .tappa { --fs-numero: clamp(110px, 13vw, 230px); --fs-display-scena: clamp(58px, 5.6vw, 100px); }
+  html.con-nav .tappa .scena-titolo.titolo-lungo { font-size: clamp(46px, 4.2vw, 74px); }
+  html.con-nav .tappa .scena-titolo.ha-accento { line-height: 1.2; }
+}
